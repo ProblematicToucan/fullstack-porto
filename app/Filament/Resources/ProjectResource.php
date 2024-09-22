@@ -88,14 +88,18 @@ class ProjectResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('project_url')
                     ->placeholder('-')
+                    ->alignStart()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('repo_url')
                     ->placeholder('-')
+                    ->alignStart()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->disk('r2')
+                    ->alignCenter()
                     ->visibility('private'),
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->alignCenter()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
