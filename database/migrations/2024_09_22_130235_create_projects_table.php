@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description');
+            $table->json('description');
             $table->string('project_url')->nullable();
             $table->string('repo_url')->nullable();
             $table->string('image')->nullable();

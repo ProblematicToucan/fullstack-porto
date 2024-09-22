@@ -19,4 +19,16 @@ class Project extends Model
         'image',
         'is_featured'
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'description' => 'array',
+        ];
+    }
 }
