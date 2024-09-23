@@ -43,4 +43,9 @@ class Project extends Model
     {
         return $this->belongsToMany(Category::class, 'project_categories');
     }
+
+    public function techStack(): BelongsToMany
+    {
+        return $this->belongsToMany(TechStack::class, 'project_tech_stacks');
+    }
 }
