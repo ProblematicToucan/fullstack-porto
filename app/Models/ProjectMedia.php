@@ -18,12 +18,15 @@ class ProjectMedia extends Model
         'media_description'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'media_type' => eMediaType::class,
+        ];
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
-
-    protected $casts = [
-        'media_type' => eMediaType::class,
-    ];
 }
