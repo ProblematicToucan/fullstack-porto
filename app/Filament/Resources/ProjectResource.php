@@ -141,6 +141,7 @@ class ProjectResource extends Resource
     {
         return [
             ProjectRelationManager::class,
+            RelationManagers\CategoriesRelationManager::class,
         ];
     }
 
