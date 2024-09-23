@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
-use App\eMediaType;
+use App\Enums\eMediaType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;

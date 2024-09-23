@@ -142,6 +142,7 @@ class ProjectResource extends Resource
         return [
             RelationManagers\ProjectMediaRelationManager::class,
             RelationManagers\CategoriesRelationManager::class,
+            RelationManagers\TechStackRelationManager::class,
         ];
     }
 
