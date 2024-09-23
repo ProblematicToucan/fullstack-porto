@@ -25,10 +25,10 @@ class TechStackResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
+                Forms\Components\TextInput::make('description')
+                    ->required(),
                 Forms\Components\TextInput::make('logo')
                     ->url()
-                    ->required(),
-                Forms\Components\TextInput::make('description')
                     ->required(),
             ]);
     }
@@ -39,10 +39,10 @@ class TechStackResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('logo')
-                    ->size(20),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('logo')
+                    ->size(20),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -57,6 +57,7 @@ class TechStackResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -65,19 +66,10 @@ class TechStackResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTechStacks::route('/'),
-            'create' => Pages\CreateTechStack::route('/create'),
-            'edit' => Pages\EditTechStack::route('/{record}/edit'),
+            'index' => Pages\ManageTechStacks::route('/'),
         ];
     }
 }

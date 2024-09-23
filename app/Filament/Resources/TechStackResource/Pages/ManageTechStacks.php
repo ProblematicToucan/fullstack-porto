@@ -4,16 +4,16 @@ namespace App\Filament\Resources\TechStackResource\Pages;
 
 use App\Filament\Resources\TechStackResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ManageRecords;
 
-class EditTechStack extends EditRecord
+class ManageTechStacks extends ManageRecords
 {
     protected static string $resource = TechStackResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }
