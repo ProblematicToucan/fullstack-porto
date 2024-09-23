@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProjectRelationManager extends RelationManager
 {
-    protected static string $relationship = 'ProjectMedia';
+    protected static string $relationship = 'projectMedia';
 
     public function form(Form $form): Form
     {

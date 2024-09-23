@@ -33,7 +33,7 @@ class Project extends Model
         ];
     }
 
-    public function ProjectMedia(): HasMany
+    public function projectMedia(): HasMany
     {
         return $this->hasMany(ProjectMedia::class);
     }
