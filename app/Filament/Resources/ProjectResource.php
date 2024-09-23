@@ -140,7 +140,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ProjectRelationManager::class,
+            RelationManagers\ProjectMediaRelationManager::class,
             RelationManagers\CategoriesRelationManager::class,
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ProjectMediaResource\RelationManagers;
+namespace App\Filament\Resources\ProjectResource\RelationManagers;
 
 use App\eMediaType;
 use Filament\Forms;
@@ -12,7 +12,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProjectRelationManager extends RelationManager
+class ProjectMediaRelationManager extends RelationManager
 {
     protected static string $relationship = 'projectMedia';
 
