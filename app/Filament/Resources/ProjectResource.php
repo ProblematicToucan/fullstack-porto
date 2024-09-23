@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ProjectMediaResource\RelationManagers\ProjectRelationManager;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,9 +34,11 @@ class ProjectResource extends Resource
                             ->placeholder('empty')
                             ->required(),
                         Forms\Components\TextInput::make('project_url')
-                            ->placeholder('empty'),
+                            ->placeholder('empty')
+                            ->url(),
                         Forms\Components\TextInput::make('repo_url')
-                            ->placeholder('empty'),
+                            ->placeholder('empty')
+                            ->url(),
                         Forms\Components\Toggle::make('is_featured')
                             ->required(),
                     ])
@@ -88,11 +92,15 @@ class ProjectResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('project_url')
                     ->placeholder('-')
-                    ->alignStart()
+                    ->copyable()
+                    ->icon('heroicon-m-clipboard')
+                    ->iconPosition(IconPosition::After)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('repo_url')
                     ->placeholder('-')
-                    ->alignStart()
+                    ->copyable()
+                    ->icon('heroicon-m-clipboard')
+                    ->iconPosition(IconPosition::After)
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->disk('r2')
@@ -132,7 +140,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProjectRelationManager::class,
         ];
     }
 
