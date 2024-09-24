@@ -95,12 +95,16 @@ class ProjectResource extends Resource
                     ->copyable()
                     ->icon('heroicon-m-clipboard')
                     ->iconPosition(IconPosition::After)
+                    ->iconColor('primary')
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('repo_url')
                     ->placeholder('-')
                     ->copyable()
                     ->icon('heroicon-m-clipboard')
                     ->iconPosition(IconPosition::After)
+                    ->iconColor('primary')
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->disk('r2')
