@@ -1,9 +1,11 @@
+import Headbar from '@/Components/Headbar'
 import { PropsWithChildren } from 'react'
 
 export default function MainLayout({ children }: PropsWithChildren) {
     return (
         <div>
-            <main>{children}</main>
+            <Headbar />
+            <main className='mt-20'>{children}</main>
         </div>
     )
 }
