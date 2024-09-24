@@ -5,7 +5,9 @@ export default function Landing() {
     return (
         <MainLayout>
             <Head title='Gamal Abdul Aziz' />
-            main landing page
+            <div>
+                You're in Landing page!
+            </div>
         </MainLayout>
     )
 }

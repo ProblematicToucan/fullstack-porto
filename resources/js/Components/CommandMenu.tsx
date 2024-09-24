@@ -2,8 +2,10 @@ import {
     Calculator,
     CreditCard,
     House,
+    Moon,
     PanelsTopLeft,
     Settings,
+    Sun,
     User,
 } from "lucide-react"
 import {
@@ -22,12 +24,21 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/Components/ui/collapsible"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { router } from "@inertiajs/react";
+import ThemeContext from "@/Theme/ThemeContext";
 
 export default function CommandMenu() {
     const [isOpen, setIsOpen] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const themeContext = useContext(ThemeContext);
+
+    // If the context is undefined, it means the component is used outside the provider
+    if (!themeContext) {
+        throw new Error('ThemeToggleButton must be used within a ThemeProvider');
+    }
+    const { theme, toggleTheme } = themeContext;
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -87,6 +98,17 @@ export default function CommandMenu() {
                                 <Settings className="mr-2 h-4 w-4" />
                                 <span>Settings</span>
                                 <CommandShortcut>⌘S</CommandShortcut>
+                            </CommandItem>
+                            <CommandItem onSelect={toggleTheme}>
+                                <span className="flex items-center">
+                                    {theme === 'dark' ? (
+                                        <Sun className="mr-2 h-4 w-4" />
+                                    ) : (
+                                        <Moon className="mr-2 h-4 w-4" />
+                                    )}
+                                    {theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                                </span>
+                                <CommandShortcut>⌘D</CommandShortcut>
                             </CommandItem>
                         </CommandGroup>
                     </CommandList>
