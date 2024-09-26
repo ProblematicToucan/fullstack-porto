@@ -1,3 +1,4 @@
+import { Terminal, TerminalGreenLine, TerminalWhiteLine } from '@/Components/Terminal'
 import { Button } from '@/Components/ui/button'
 import MainLayout from '@/Layouts/MainLayout'
 import { Head, Link } from '@inertiajs/react'
@@ -24,15 +25,22 @@ export default function Landing() {
                                 </Button>
                                 <p className="text-xs">
                                     Get connected to stay up to date with me on&nbsp;
-                                    <Link className="underline underline-offset-2" href="#">
+                                    <a className="underline underline-offset-2" href="https://www.linkedin.com/in/gamal-abdul-aziz/">
                                         LinkedIn
-                                    </Link>
+                                    </a>
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+            <div className="flex justify-center">
+                <Terminal className="border shadow-md md:min-w-[450px]">
+                    <TerminalGreenLine>$ garamm add resource</TerminalGreenLine>
+                    <TerminalWhiteLine>+ orion@10.2.3</TerminalWhiteLine>
+                    <TerminalWhiteLine>added 1 package, and audited 2 packages in 2s</TerminalWhiteLine>
+                </Terminal>
+            </div>
         </MainLayout>
     )
 }
