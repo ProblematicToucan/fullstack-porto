@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -8,6 +9,8 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Landing');
 })->name('landing');
+
+Route::resource('/project', ProjectController::class)->names('project');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -73,7 +73,7 @@ export default function CommandMenu() {
                                 <House className="mr-2 h-4 w-4" />
                                 <span>Home</span>
                             </CommandItem>
-                            <CommandItem onSelect={() => handleItemClick('project')} disabled={route().current('project')}>
+                            <CommandItem onSelect={() => handleItemClick('project.index')} disabled={route().current('project.index')}>
                                 <PanelsTopLeft className="mr-2 h-4 w-4" />
                                 <span>Projects</span>
                             </CommandItem>

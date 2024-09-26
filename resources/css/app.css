@@ -57,6 +57,21 @@
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%
     }
+
+    /* Target scrollbar elements */
+    *::-webkit-scrollbar {
+        @apply w-1 h-1;
+    }
+
+    /* Target scrollbar track (transparent) */
+    *::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    /* Target scrollbar thumb (semi-transparent) */
+    *::-webkit-scrollbar-thumb {
+        @apply rounded-full bg-gray-700 dark:bg-gray-200 opacity-50 hover:opacity-75;
+    }
 }
 
 @layer base {
