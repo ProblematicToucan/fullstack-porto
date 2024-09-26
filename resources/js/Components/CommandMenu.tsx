@@ -61,7 +61,7 @@ export default function CommandMenu() {
         <Command ref={inputRef} className="rounded-lg border shadow-md md:min-w-[450px]">
             <Collapsible
                 open={isOpen}
-                className="sticky w-full max-w-[450px] rounded-lg border shadow-md">
+                className="sticky w-full">
                 <CollapsibleTrigger asChild>
                     <CommandInput onFocus={() => setIsOpen(true)} className="border-none focus:ring-0 flex-grow" placeholder="Type a command or search..." />
                 </CollapsibleTrigger>
@@ -73,7 +73,7 @@ export default function CommandMenu() {
                                 <House className="mr-2 h-4 w-4" />
                                 <span>Home</span>
                             </CommandItem>
-                            <CommandItem onSelect={() => handleItemClick('dashboard')} disabled={route().current('dashboard')}>
+                            <CommandItem onSelect={() => handleItemClick('project')} disabled={route().current('project')}>
                                 <PanelsTopLeft className="mr-2 h-4 w-4" />
                                 <span>Projects</span>
                             </CommandItem>
