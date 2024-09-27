@@ -54,7 +54,7 @@ export default function CommandMenu() {
             searchRef.current?.blur();
         }
 
-        if (event.key === "j" && (event.metaKey || event.ctrlKey)) {
+        if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
             event.preventDefault();
             searchRef.current?.focus();
         }
