@@ -31,27 +31,50 @@ import ThemeContext from "@/Theme/ThemeContext";
 export default function CommandMenu() {
     const [isOpen, setIsOpen] = useState(false);
     const commandRef = useRef<HTMLInputElement>(null);
+    const searchRef = useRef<HTMLInputElement>(null);
     const themeContext = useContext(ThemeContext);
 
-    // If the context is undefined, it means the component is used outside the provider
+    // Throw error if not used within ThemeProvider
     if (!themeContext) {
         throw new Error('ThemeToggleButton must be used within a ThemeProvider');
     }
+
     const { theme, toggleTheme } = themeContext;
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (isOpen && commandRef.current && !commandRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
+    const handleOutsideClick = (event: MouseEvent) => {
+        if (isOpen && commandRef.current && !commandRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
+        }
+    };
 
-        document.addEventListener("mousedown", handleClickOutside);
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape" && isOpen) {
+            event.preventDefault();
+            setIsOpen(false);
+            searchRef.current?.blur();
+        }
+
+        if (event.key === "j" && (event.metaKey || event.ctrlKey)) {
+            event.preventDefault();
+            searchRef.current?.focus();
+        }
+
+        if (event.key === "d" && (event.metaKey || event.ctrlKey)) {
+            event.preventDefault();
+            toggleTheme();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener("keydown", handleKeyDown);
 
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("mousedown", handleOutsideClick);
+            document.removeEventListener("keydown", handleKeyDown);
+
         };
-    }, [isOpen]); // Update dependency array to include isOpen
+    }, [isOpen]); // Only update on isOpen change
 
     const handleItemClick = (path: string) => {
         router.visit(route(path));
@@ -63,7 +86,7 @@ export default function CommandMenu() {
                 open={isOpen}
                 className="sticky w-full">
                 <CollapsibleTrigger asChild>
-                    <CommandInput onFocus={() => setIsOpen(true)} className="border-none focus:ring-0 flex-grow" placeholder="Type a command or search..." />
+                    <CommandInput ref={searchRef} onFocus={() => setIsOpen(true)} className="border-none focus:ring-0 flex-grow" placeholder="Type a command or search..." />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                     <CommandList>
@@ -77,7 +100,7 @@ export default function CommandMenu() {
                                 <PanelsTopLeft className="mr-2 h-4 w-4" />
                                 <span>Projects</span>
                             </CommandItem>
-                            <CommandItem>
+                            <CommandItem disabled>
                                 <Calculator className="mr-2 h-4 w-4" />
                                 <span>Calculator</span>
                             </CommandItem>
