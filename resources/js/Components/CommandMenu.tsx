@@ -39,23 +39,23 @@ export default function CommandMenu() {
     }
     const { theme, toggleTheme } = themeContext;
 
-
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-                setIsOpen(false)
+            if (isOpen && inputRef.current && !inputRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
             }
-        }
+        };
 
-        document.addEventListener("mousedown", handleClickOutside)
+        document.addEventListener("mousedown", handleClickOutside);
+
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-        }
-    }, []);
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]); // Update dependency array to include isOpen
 
     const handleItemClick = (path: string) => {
-        router.visit(route(path))
-    }
+        router.visit(route(path));
+    };
 
     return (
         <Command ref={inputRef} className="rounded-lg border shadow-md md:min-w-[450px]">
