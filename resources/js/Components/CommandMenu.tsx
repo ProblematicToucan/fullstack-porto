@@ -30,7 +30,7 @@ import ThemeContext from "@/Theme/ThemeContext";
 
 export default function CommandMenu() {
     const [isOpen, setIsOpen] = useState(false);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const commandRef = useRef<HTMLInputElement>(null);
     const themeContext = useContext(ThemeContext);
 
     // If the context is undefined, it means the component is used outside the provider
@@ -41,7 +41,7 @@ export default function CommandMenu() {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (isOpen && inputRef.current && !inputRef.current.contains(event.target as Node)) {
+            if (isOpen && commandRef.current && !commandRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
@@ -58,7 +58,7 @@ export default function CommandMenu() {
     };
 
     return (
-        <Command ref={inputRef} className="rounded-lg border shadow-md md:min-w-[450px]">
+        <Command ref={commandRef} className="rounded-lg border shadow-md md:min-w-[450px]">
             <Collapsible
                 open={isOpen}
                 className="sticky w-full">
