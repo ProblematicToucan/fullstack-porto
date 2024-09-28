@@ -1,7 +1,7 @@
 import { Terminal, TerminalGreenLine, TerminalWhiteLine } from '@/Components/Terminal'
 import { Button } from '@/Components/ui/button'
 import MainLayout from '@/Layouts/MainLayout'
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 
 export default function Landing() {
     return (
