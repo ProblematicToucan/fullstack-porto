@@ -57,8 +57,10 @@ function ProjectList({
     onProjectClick,
 }: iProjectListProps) {
     return (
-        <div className="border-r w-64 p-4 overflow-y-auto md:w-[260px] lg:w-64 flex flex-col">
-            <div className="flex items-center mb-4">
+        // <div className="border-r w-64 p-4 overflow-y-auto md:w-[260px] md:flex flex-col">
+        <div className="border-r w-64 p-4 overflow-y-auto md:w-[260px] flex-col h-[800px] absolute md:relative md:flex">
+            <div className="z-0 backdrop-blur-sm lg:backdrop-blur-none h-full w-full -my-1 top-0 left-0 absolute md:hidden" />
+            <div className="z-10 relative flex items-center mb-4">
                 <h2 className="text-lg font-bold">Projects</h2>
                 <div className="ml-auto">
                     <Button variant="ghost" size="icon">
@@ -66,7 +68,7 @@ function ProjectList({
                     </Button>
                 </div>
             </div>
-            <div className="flex-1 overflow-y-auto">
+            <div className="z-10 relative flex-1 overflow-y-auto">
                 {projects.data.map((project) => (
                     <div
                         key={project.id}
@@ -76,13 +78,14 @@ function ProjectList({
                             project.id === selectedProject?.id ? null : onProjectClick(project)
                         }
                     >
-                        <div className="font-medium">{project.title}</div>
+                        <div className="font-medium truncate">{project.title}</div>
                         <div className="text-sm text-muted-foreground truncate">{project.category_names}</div>
                         <div className="text-xs text-muted-foreground truncate">{project.repo_url}</div>
                     </div>
                 ))}
             </div>
         </div>
+
     );
 }
 
@@ -101,7 +104,7 @@ function ProjectView({ selectedProject, loading, error }: iProjectViewProps) {
                 ) : selectedProject ? (
                     <>
                         <div className="flex items-center mb-4">
-                            <h2 className="text-lg font-bold">{selectedProject.title}</h2>
+                            <h2 className="text-lg font-bold w-5/6">{selectedProject.title}</h2>
                             <div className="ml-auto">
                                 <Button variant="ghost" size="icon">
                                     <Reply className="w-5 h-5" />
