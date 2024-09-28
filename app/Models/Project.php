@@ -34,7 +34,24 @@ class Project extends Model
         ];
     }
 
-    public function projectMedia(): HasMany
+
+    public function getIsFeaturedAttribute($value)
+    {
+        return $value === 1;
+    }
+
+    public function setIsFeaturedAttribute($value)
+    {
+        $this->attributes['is_featured'] = $value ? 1 : 0;
+    }
+
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function projectMedias(): HasMany
     {
         return $this->hasMany(ProjectMedia::class);
     }
@@ -44,7 +61,7 @@ class Project extends Model
         return $this->belongsToMany(Category::class, 'project_categories');
     }
 
-    public function techStack(): BelongsToMany
+    public function techStacks(): BelongsToMany
     {
         return $this->belongsToMany(TechStack::class, 'project_tech_stacks');
     }

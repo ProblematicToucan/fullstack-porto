@@ -10,7 +10,10 @@ Route::get('/', function () {
     return Inertia::render('Landing');
 })->name('landing');
 
-Route::resource('/project', ProjectController::class)->names('project');
+Route::prefix('project')->name('project.')->controller(ProjectController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{project}', 'show')->name('show');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
