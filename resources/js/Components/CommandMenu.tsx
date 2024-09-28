@@ -86,7 +86,7 @@ export default function CommandMenu() {
                 open={isOpen}
                 className="sticky w-full">
                 <CollapsibleTrigger asChild>
-                    <CommandInput ref={searchRef} onFocus={() => setIsOpen(true)} className="border-none focus:ring-0 flex-grow" placeholder="Type a command or search..." />
+                    <CommandInput ref={searchRef} onFocus={() => setIsOpen(true)} className="border-none focus:ring-0 flex-grow" placeholder="Type a command or search... [⌘K]" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                     <CommandList>
