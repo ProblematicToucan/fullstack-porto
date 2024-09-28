@@ -109,7 +109,7 @@ function ProjectView({ selectedProject, loading }: iProjectViewProps) {
             ) : selectedProject ? (
                 <>
                     <div className="flex items-center mb-4">
-                        <h2 className="text-lg font-bold w-3/4">{selectedProject.title}</h2>
+                        <h2 className="text-lg font-bold w-3/4 min-w-min">{selectedProject.title}</h2>
                         <div className="flex ml-auto">
                             <Button variant="ghost" size="icon">
                                 <Reply className="w-5 h-5" />
