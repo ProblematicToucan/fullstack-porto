@@ -27,10 +27,12 @@
         "@radix-ui/react-collapsible": "^1.1.0",
         "@radix-ui/react-dialog": "^1.1.1",
         "@radix-ui/react-slot": "^1.1.0",
+        "@radix-ui/react-toast": "^1.2.1",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "cmdk": "^1.0.0",
         "lucide-react": "^0.445.0",
+        "react-resizable-panels": "^2.1.4",
         "tailwind-merge": "^2.5.2",
         "tailwindcss-animate": "^1.0.7"
     }
