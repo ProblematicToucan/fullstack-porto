@@ -45,7 +45,7 @@ export default function Project({ projects }: PageProps) {
             <Head title='Projects' />
             <ResizablePanelGroup
                 direction="horizontal"
-                className="min-h-[800px] rounded-lg shadow-md border md:min-w-[450px]"
+                className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] rounded-lg shadow-md border md:min-w-[450px]"
             >
                 <ResizablePanel defaultSize={25}>
                     <ProjectList
