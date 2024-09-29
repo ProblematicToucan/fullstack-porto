@@ -3,9 +3,12 @@ import { Button } from '@/Components/ui/button';
 import { Head } from '@inertiajs/react';
 import { Forward, Inbox, RefreshCw, Reply } from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { iProject, PageProps } from '@/types';
+import { iProject, iProjectDescription, PageProps } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
+import DOMPurify from "dompurify";
+
+const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Project({ projects }: PageProps) {
     const [selectedProject, setSelectedProject] = useState<iProject | null>(null);
@@ -36,7 +39,7 @@ export default function Project({ projects }: PageProps) {
             <Head title='Projects' />
             <ResizablePanelGroup
                 direction="horizontal"
-                className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] rounded-lg shadow-md border md:min-w-[450px]"
+                className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] max-h-[800px] rounded-lg shadow-md border md:min-w-[450px] mb-10"
             >
                 <ResizablePanel defaultSize={25}>
                     <ProjectList
@@ -135,7 +138,7 @@ function ProjectDetails({ project }: { project: iProject }) {
     return (
         <>
             <div className="flex items-center mb-4">
-                <h2 className="text-lg font-bold w-3/4 min-w-min">{project.title}</h2>
+                <h1 className="text-5xl font-bold w-3/4 min-w-min">{project.title}</h1>
                 <div className="flex ml-auto">
                     <Button variant="ghost" size="icon">
                         <Reply className="w-5 h-5" />
@@ -149,7 +152,9 @@ function ProjectDetails({ project }: { project: iProject }) {
                 <div className="font-medium">{project.category_names}</div>
                 <div className="text-sm text-muted-foreground">{project.repo_url}</div>
             </div>
-            <div className="prose prose-lg max-w-none whitespace-pre-wrap">{project.slug}</div>
+            <div className="max-w-none whitespace-pre-wrap">
+                <ProjectDescription content={project.description} />
+            </div>
         </>
     );
 }
@@ -162,4 +167,43 @@ function NoProjectSelected() {
             <p className="text-muted-foreground">Click on a project in the sidebar to view its details.</p>
         </div>
     );
+}
+
+
+interface ProjectPostProps {
+    content: iProjectDescription[];
+}
+
+function ProjectDescription({ content }: ProjectPostProps) {
+    return (
+        <article className='prose lg:prose-xl dark:prose-invert max-w-full'>
+            {content.map((item, index) => {
+                switch (item.type) {
+                    case "Paragraph":
+                        return (
+                            <div
+                                key={index}
+                                dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(item.data.text || ""),
+                                }}
+                            />
+                        );
+
+                    case "image":
+                        return (
+                            <div key={index} className="flex justify-center my-4">
+                                <img
+                                    src={`${cdnUrl}/${item.data.image}`}
+                                    alt={`Image ${index}`}
+                                    className='h-full w-20'
+                                />
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            })}
+        </article>
+    )
 }

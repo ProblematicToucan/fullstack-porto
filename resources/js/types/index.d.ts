@@ -5,12 +5,20 @@ export interface iUser {
     email_verified_at?: string;
 }
 
+interface iProjectDescription {
+    type: string;
+    data: {
+        text?: string;
+        image?: string;
+    };
+}
+
 interface iProject {
     id: number;
     title: string;
     slug: string;
     category_names: string;
-    description: string[];
+    description: iProjectDescription[];
     project_url: string;
     repo_url: string;
     image: string;
