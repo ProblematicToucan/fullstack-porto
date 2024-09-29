@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react";
  * @see https://v0.dev/t/xiSjIAI
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-function Terminal({ children, className }: PropsWithChildren<{ className?: string }>) {
+export function Terminal({ children, className }: PropsWithChildren<{ className?: string }>) {
     return (
         <aside className={`bg-black text-white p-6 rounded-lg w-full max-w-lg font-mono ${className}`}>
             <div className="flex justify-between items-center">
@@ -24,20 +24,14 @@ function Terminal({ children, className }: PropsWithChildren<{ className?: strin
     )
 }
 
-function TerminalGreenLine({ children }: { children: React.ReactNode }) {
+export function TerminalGreenLine({ children }: { children: React.ReactNode }) {
     return (
         <p className="text-green-400">{children}</p>
     );
 }
 
-function TerminalWhiteLine({ children }: { children: React.ReactNode }) {
+export function TerminalWhiteLine({ children }: { children: React.ReactNode }) {
     return (
         <p className="text-white">{children}</p>
     );
-}
-
-export {
-    Terminal,
-    TerminalGreenLine,
-    TerminalWhiteLine
 }
