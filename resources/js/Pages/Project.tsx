@@ -170,11 +170,11 @@ function NoProjectSelected() {
 }
 
 
-interface ProjectPostProps {
+interface iProjectPostProps {
     content: iProjectDescription[];
 }
 
-function ProjectDescription({ content }: ProjectPostProps) {
+function ProjectDescription({ content }: iProjectPostProps) {
     return (
         <article className='prose lg:prose-xl dark:prose-invert max-w-full'>
             {content.map((item, index) => {
