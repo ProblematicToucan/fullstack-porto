@@ -13,6 +13,12 @@ interface iProjectDescription {
     };
 }
 
+interface iTechStack {
+    name: string;
+    logo: string;
+    description: string;
+}
+
 interface iProject {
     id: number;
     title: string;
@@ -23,6 +29,7 @@ interface iProject {
     repo_url: string;
     image: string;
     is_featured: boolean;
+    tech_stacks: iTechStack[];
 }
 
 interface iPaginate<T> {

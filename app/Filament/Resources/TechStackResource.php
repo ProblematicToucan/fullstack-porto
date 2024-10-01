@@ -25,10 +25,11 @@ class TechStackResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('description')
-                    ->required(),
                 Forms\Components\TextInput::make('logo')
                     ->url()
+                    ->required(),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull()
                     ->required(),
             ]);
     }
@@ -40,6 +41,7 @@ class TechStackResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('logo')
                     ->size(20),

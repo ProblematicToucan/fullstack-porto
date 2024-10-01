@@ -7,6 +7,7 @@ import { iProject, iProjectDescription, PageProps } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
+import TechStack from '@/Components/TechStack';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
@@ -118,7 +119,10 @@ function ProjectView({ selectedProject, loading }: iProjectViewProps) {
             {loading ? (
                 <LoadingState />
             ) : selectedProject ? (
-                <ProjectDetails project={selectedProject} />
+                <>
+                    <ProjectDetails project={selectedProject} />
+                    <TechStack techStack={selectedProject.tech_stacks} />
+                </>
             ) : (
                 <NoProjectSelected />
             )}
