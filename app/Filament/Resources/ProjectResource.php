@@ -61,6 +61,9 @@ class ProjectResource extends Resource
                                 Forms\Components\Builder\Block::make('Paragraph')
                                     ->schema([
                                         Forms\Components\RichEditor::make('text')
+                                            ->fileAttachmentsDisk('r2')
+                                            ->fileAttachmentsDirectory('project-images')
+                                            ->fileAttachmentsVisibility('private')
                                             ->hiddenLabel(),
                                     ])
                                     ->icon('heroicon-m-bars-3-bottom-left'),
