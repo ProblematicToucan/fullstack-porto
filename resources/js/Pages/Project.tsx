@@ -1,6 +1,6 @@
 import MainLayout from '@/Layouts/MainLayout';
 import { Button } from '@/Components/ui/button';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Forward, Inbox, RefreshCw, Reply } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { iProject, iProjectDescription, PageProps } from '@/types';
@@ -12,7 +12,9 @@ import TechStack from '@/Components/TechStack';
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Project({ projects }: PageProps) {
+    const [projectList, setProjects] = useState<iProject[]>(projects.data);
     const [selectedProject, setSelectedProject] = useState<iProject | null>(null);
+    const [pagination, setPagination] = useState(projects.current_page);
     const [loading, setLoading] = useState(false);
     const { toast } = useToast();
 
@@ -35,6 +37,27 @@ export default function Project({ projects }: PageProps) {
         }
     }, [selectedProject, toast]);
 
+    const handleLoadMore = useCallback(() => {
+        if (pagination >= projects.last_page) return;
+
+        router.get('/project', { page: pagination + 1 }, {
+            preserveState: true,
+            // replace: true,
+            onSuccess: (pageProps) => {
+                setProjects(prev => [...prev, ...pageProps.props.projects.data]);
+                setPagination(pageProps.props.projects.current_page);
+            },
+            onError: (error) => {
+                console.error('Error fetching project data:', error);
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "There was a problem with your request.",
+                });
+            },
+        });
+    }, [projectList, pagination, toast]);
+
     return (
         <MainLayout>
             <Head title='Projects' />
@@ -44,9 +67,12 @@ export default function Project({ projects }: PageProps) {
             >
                 <ResizablePanel defaultSize={25}>
                     <ProjectList
-                        projects={projects.data}
+                        projects={projectList}
                         selectedProject={selectedProject}
                         onProjectClick={handleProjectClick}
+                        loadMore={handleLoadMore}
+                        hasMore={projects.current_page < projects.last_page}
+                        isLoading={loading}
                     />
                 </ResizablePanel>
                 <ResizableHandle withHandle />
@@ -62,9 +88,12 @@ interface iProjectListProps {
     projects: iProject[];
     selectedProject: iProject | null;
     onProjectClick: (project: iProject) => void;
+    loadMore: () => void;
+    hasMore: boolean;
+    isLoading: boolean;
 }
 
-function ProjectList({ projects, selectedProject, onProjectClick }: iProjectListProps) {
+function ProjectList({ projects, selectedProject, onProjectClick, loadMore, hasMore, isLoading }: iProjectListProps) {
     return (
         <div className="flex p-6 h-full flex-col">
             <div className="z-10 relative flex items-center mb-4">
@@ -85,6 +114,13 @@ function ProjectList({ projects, selectedProject, onProjectClick }: iProjectList
                     />
                 ))}
             </div>
+            {projects && (
+                <div className="mt-4 flex justify-center">
+                    <Button onClick={loadMore} disabled={isLoading}>
+                        {isLoading ? 'Loading...' : 'Load More'}
+                    </Button>
+                </div>
+            )}
         </div>
     );
 }
