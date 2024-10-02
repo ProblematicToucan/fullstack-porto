@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
 import TechStack from '@/Components/TechStack';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
@@ -40,9 +41,10 @@ export default function Project({ projects }: PageProps) {
     const handleLoadMore = useCallback(() => {
         if (pagination >= projects.last_page) return;
 
+        setLoading(true);
         router.get('/project', { page: pagination + 1 }, {
             preserveState: true,
-            // replace: true,
+            replace: true,
             onSuccess: (pageProps) => {
                 setProjects(prev => [...prev, ...pageProps.props.projects.data]);
                 setPagination(pageProps.props.projects.current_page);
@@ -54,7 +56,11 @@ export default function Project({ projects }: PageProps) {
                     title: "Uh oh! Something went wrong.",
                     description: "There was a problem with your request.",
                 });
+                setLoading(false);
             },
+            onFinish() {
+                setLoading(false);
+            }
         });
     }, [projectList, pagination, toast]);
 
@@ -116,7 +122,7 @@ function ProjectList({ projects, selectedProject, onProjectClick, loadMore, hasM
             </div>
             {projects && (
                 <div className="mt-4 flex justify-center">
-                    <Button onClick={loadMore} disabled={isLoading}>
+                    <Button onClick={loadMore} disabled={isLoading || !hasMore}>
                         {isLoading ? 'Loading...' : 'Load More'}
                     </Button>
                 </div>
@@ -139,7 +145,7 @@ function ProjectListItem({ project, selected, onClick }: iProjectListItemProps) 
         >
             <div className="font-medium truncate">{project.title}</div>
             <div className="text-sm text-muted-foreground truncate">{project.category_names}</div>
-            <div className="text-xs text-muted-foreground truncate">{project.repo_url}</div>
+            {/* <div className="text-xs text-muted-foreground truncate">{project.repo_url}</div> */}
         </div>
     );
 }
@@ -232,11 +238,15 @@ function ProjectDescription({ content }: iProjectPostProps) {
                     case "image":
                         return (
                             <div key={index} className="flex justify-center my-4">
-                                <img
-                                    src={`${cdnUrl}/${item.data.image}`}
-                                    alt={`Image ${index}`}
-                                    className='h-full w-20'
-                                />
+                                <PhotoProvider>
+                                    <PhotoView src={`${cdnUrl}/${item.data.image}`}>
+                                        <img
+                                            src={`${cdnUrl}/${item.data.image}`}
+                                            alt={`Image ${index}`}
+                                            className='h-full w-20'
+                                        />
+                                    </PhotoView>
+                                </PhotoProvider>
                             </div>
                         );
 

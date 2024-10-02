@@ -77,7 +77,10 @@ export default function CommandMenu() {
     }, [isOpen]); // Only update on isOpen change
 
     const handleItemClick = (path: string) => {
-        router.visit(route(path));
+        router.visit(route(path), {
+            preserveState: true,
+            replace: true,
+        });
     };
 
     return (
