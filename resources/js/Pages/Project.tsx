@@ -3,7 +3,7 @@ import { Button } from '@/Components/ui/button';
 import { Head, router } from '@inertiajs/react';
 import { Forward, Inbox, RefreshCw, Reply } from 'lucide-react';
 import { lazy, Suspense, useCallback, useState } from 'react';
-import { iProject, iProjectDescription, PageProps } from '@/types';
+import { iProject, iProjectDescription, iProjectMedia, PageProps } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
@@ -11,6 +11,7 @@ import DOMPurify from "dompurify";
 const LazyTechStack = lazy(() => import('@/Components/TechStack'));
 const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoProvider })));
 const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoView })));
+const LazyProjectMedia = lazy(() => import('@/Components/ProjectMedia'));
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Project({ projects }: PageProps) {
@@ -165,7 +166,8 @@ function ProjectView({ selectedProject, loading }: iProjectViewProps) {
                 <>
                     <ProjectDetails project={selectedProject} />
                     <Suspense fallback={<div>Loading...</div>}>
-                        <LazyTechStack techStack={selectedProject.tech_stacks} />
+                        <LazyProjectMedia projectMedias={selectedProject.project_medias} />
+                        <LazyTechStack techStacks={selectedProject.tech_stacks} />
                     </Suspense>
                 </>
             ) : (

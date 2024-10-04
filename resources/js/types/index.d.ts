@@ -19,6 +19,12 @@ interface iTechStack {
     description: string;
 }
 
+interface iProjectMedia {
+    media_type: string;
+    media_url: string;
+    media_description: string;
+}
+
 interface iProject {
     id: number;
     title: string;
@@ -30,6 +36,7 @@ interface iProject {
     image: string;
     is_featured: boolean;
     tech_stacks: iTechStack[];
+    project_medias: iProjectMedia[];
 }
 
 interface iPaginate<T> {
