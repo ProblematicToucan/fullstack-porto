@@ -2,14 +2,15 @@ import MainLayout from '@/Layouts/MainLayout';
 import { Button } from '@/Components/ui/button';
 import { Head, router } from '@inertiajs/react';
 import { Forward, Inbox, RefreshCw, Reply } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 import { iProject, iProjectDescription, PageProps } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
-import TechStack from '@/Components/TechStack';
-import { PhotoProvider, PhotoView } from 'react-photo-view';
 
+const LazyTechStack = lazy(() => import('@/Components/TechStack'));
+const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoProvider })));
+const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoView })));
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Project({ projects }: PageProps) {
@@ -163,7 +164,9 @@ function ProjectView({ selectedProject, loading }: iProjectViewProps) {
             ) : selectedProject ? (
                 <>
                     <ProjectDetails project={selectedProject} />
-                    <TechStack techStack={selectedProject.tech_stacks} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <LazyTechStack techStack={selectedProject.tech_stacks} />
+                    </Suspense>
                 </>
             ) : (
                 <NoProjectSelected />
@@ -238,15 +241,17 @@ function ProjectDescription({ content }: iProjectPostProps) {
                     case "image":
                         return (
                             <div key={index} className="flex justify-center my-4">
-                                <PhotoProvider>
-                                    <PhotoView src={`${cdnUrl}/${item.data.image}`}>
-                                        <img
-                                            src={`${cdnUrl}/${item.data.image}`}
-                                            alt={`Image ${index}`}
-                                            className='h-full w-20'
-                                        />
-                                    </PhotoView>
-                                </PhotoProvider>
+                                <Suspense>
+                                    <LazyPhotoProvider>
+                                        <LazyPhotoView src={`${cdnUrl}/${item.data.image}`}>
+                                            <img
+                                                src={`${cdnUrl}/${item.data.image}`}
+                                                alt={`Image ${index}`}
+                                                className='h-full w-20'
+                                            />
+                                        </LazyPhotoView>
+                                    </LazyPhotoProvider>
+                                </Suspense>
                             </div>
                         );
 
