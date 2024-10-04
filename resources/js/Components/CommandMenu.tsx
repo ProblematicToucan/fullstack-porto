@@ -110,17 +110,17 @@ export default function CommandMenu() {
                         </CommandGroup>
                         <CommandSeparator />
                         <CommandGroup heading="Settings">
-                            <CommandItem>
+                            <CommandItem onSelect={() => handleItemClick('bio')} disabled={route().current('bio')}>
                                 <User className="mr-2 h-4 w-4" />
                                 <span>Profile</span>
                                 <CommandShortcut>⌘P</CommandShortcut>
                             </CommandItem>
-                            <CommandItem>
+                            <CommandItem disabled>
                                 <CreditCard className="mr-2 h-4 w-4" />
                                 <span>Billing</span>
                                 <CommandShortcut>⌘B</CommandShortcut>
                             </CommandItem>
-                            <CommandItem>
+                            <CommandItem disabled>
                                 <Settings className="mr-2 h-4 w-4" />
                                 <span>Settings</span>
                                 <CommandShortcut>⌘S</CommandShortcut>
