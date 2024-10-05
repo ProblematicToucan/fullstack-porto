@@ -1,0 +1,8 @@
+services:
+  porto:
+    build:
+        context: .
+        args:
+            VITE_APP_NAME: ${APP_NAME}
+            VITE_CDN_URL: ${R2_URL}
+    image: gamalaziz/hesoyam:latest

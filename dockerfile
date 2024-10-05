@@ -1,5 +1,9 @@
 # Node js apline builder
-FROM node:18-alpine as node-builder
+FROM node:18-alpine AS node-builder
+
+# Vite ARGS
+ARG VITE_APP_NAME
+ARG VITE_CDN_URL
 
 WORKDIR /app/public
 
@@ -16,7 +20,7 @@ RUN npm run build
 RUN rm -rf node_modules
 
 # Php alpine builder
-FROM php:8.3-alpine as laravel-builder
+FROM php:8.3-alpine AS laravel-builder
 
 WORKDIR /app/public
 
@@ -41,7 +45,7 @@ RUN install-php-extensions \
 RUN composer install --no-dev --optimize-autoloader
 
 # FrankenPHP with Laravel Octane
-FROM dunglas/frankenphp:latest-php8.3-alpine as final
+FROM dunglas/frankenphp:latest-php8.3-alpine AS final
 
 LABEL maintainer="ProblematicToucan <gamal.aziz1000@gmail.com>"
 LABEL org.opencontainers.image.title="Filament Portfolio"
