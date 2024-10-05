@@ -63,6 +63,15 @@ export default function CommandMenu() {
             event.preventDefault();
             toggleTheme();
         }
+
+        if (event.key === "p" && (event.metaKey || event.ctrlKey)) {
+            event.preventDefault();
+            if (route().current('bio')) return;
+            router.visit(route('bio'), {
+                preserveState: true,
+                replace: true,
+            });
+        }
     };
 
     useEffect(() => {
