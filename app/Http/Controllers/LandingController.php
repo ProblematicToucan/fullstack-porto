@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Seo\Meta;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
