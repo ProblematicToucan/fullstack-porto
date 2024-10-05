@@ -10,12 +10,12 @@ import { Github, Linkedin, Twitter } from 'lucide-react'
 export default function Profile() {
     return (
         <MainLayout>
-            <Head title='Bio' />
+            <Head title='Profile' />
             <ResizablePanelGroup
                 direction="horizontal"
                 className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] max-h-[800px] rounded-lg shadow-md border md:min-w-[450px] mb-10"
             >
-                <Card className='border-none shadow-none flex flex-col self-center m-60'>
+                <Card className='border-none shadow-none flex flex-col self-center m-10 lg:m-60'>
                     <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
                         <Avatar className="w-24 h-24 sm:w-32 sm:h-32">
                             <AvatarImage alt="Profile picture" src="https://gravatar.com/avatar/a050c229c02b4e62f1c916753615ce14?size=256" />
