@@ -1,0 +1,13 @@
+#!/bin/sh
+
+php artisan migrate
+
+# Clear all cache
+php artisan optimize:clear
+
+# Specific caching (icons, Filament components)
+php artisan icons:cache
+php artisan filament:cache-components
+
+# Run the main application
+exec php artisan octane:frankenphp

@@ -51,6 +51,6 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         $allowedEmailHost = env('ALLOWED_EMAIL_HOST', '@gmail.com'); // Use a default value if not set in .env
-        return str_ends_with($this->email, $allowedEmailHost); // && $this->hasVerifiedEmail();
+        return str_ends_with($this->email, $allowedEmailHost) && $this->hasVerifiedEmail();
     }
 }
