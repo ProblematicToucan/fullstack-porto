@@ -1,4 +1,3 @@
-// import { Terminal, TerminalGreenLine, TerminalWhiteLine } from '@/Components/Terminal'
 import { Button } from '@/Components/ui/button'
 import MainLayout from '@/Layouts/MainLayout'
 import { Head } from '@inertiajs/react'
@@ -34,13 +33,6 @@ export default function Landing() {
                     </div>
                 </div>
             </section>
-            {/* <div className="flex justify-center">
-                <Terminal className="border shadow-md md:min-w-[450px]">
-                    <TerminalGreenLine>$ garamm add resource</TerminalGreenLine>
-                    <TerminalWhiteLine>+ orion@10.2.3</TerminalWhiteLine>
-                    <TerminalWhiteLine>added 1 package, and audited 2 packages in 2s</TerminalWhiteLine>
-                </Terminal>
-            </div> */}
         </MainLayout>
     )
 }
