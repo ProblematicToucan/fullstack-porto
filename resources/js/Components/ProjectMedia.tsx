@@ -22,13 +22,13 @@ export default function ProjectMedia({ projectMedias }: { projectMedias: iProjec
                             {projectMedias.map((media, index) => (
                                 <Card
                                     key={index}
-                                    className="min-w-[250px] max-w-fullshadow-lg transition-transform duration-300 hover:scale-105"
+                                    className="min-w-[250px] shadow-lg transition-transform duration-300 hover:scale-105"
                                 >
-                                    <div className="relative">
+                                    <div className="relative h-36">
                                         <LazyPhotoView key={index} src={media.media_url}>
                                             <img
                                                 src={media.media_url}
-                                                className="transition-opacity duration-300 group-hover:opacity-75"
+                                                className="transition-opacity duration-300 group-hover:opacity-75 object-cover w-full h-full"
                                             />
                                         </LazyPhotoView>
                                     </div>
