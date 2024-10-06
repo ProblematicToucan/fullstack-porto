@@ -6,6 +6,11 @@ const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => (
 const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoView })));
 
 export default function ProjectMedia({ projectMedias }: { projectMedias: iProjectMedia[] }) {
+    // Render nothing if projectMedias is null or an empty array
+    if (!Array.isArray(projectMedias) || projectMedias.length === 0) {
+        return null;
+    }
+
     return (
         <section className="py-12">
             <div className="container mx-auto px-4">
