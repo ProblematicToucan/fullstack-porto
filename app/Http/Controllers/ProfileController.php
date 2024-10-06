@@ -9,6 +9,6 @@ class ProfileController extends Controller
 {
     public function __invoke()
     {
-        return Inertia::render('Profile', ['meta' => Meta::render()]);
+        return Inertia::render('Profile');
     }
 }

@@ -9,6 +9,6 @@ class LandingController extends Controller
 {
     public function __invoke()
     {
-        return Inertia::render('Landing', ['meta' => Meta::render()]);
+        return Inertia::render('Landing');
     }
 }
