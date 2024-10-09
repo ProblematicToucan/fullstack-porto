@@ -185,6 +185,14 @@ function LoadingState() {
     );
 }
 
+const renderUrl = (url: string | undefined): JSX.Element | string => {
+    return url ? (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+            {url}
+        </a>
+    ) : "-";
+};
+
 function ProjectDetails({ project }: { project: iProject }) {
     return (
         <>
@@ -201,7 +209,8 @@ function ProjectDetails({ project }: { project: iProject }) {
             </div>
             <div className="mb-4">
                 <div className="font-medium">{project.category_names}</div>
-                <div className="text-sm text-muted-foreground">{project.repo_url}</div>
+                <div className="text-sm text-muted-foreground">Project Url :  {renderUrl(project.project_url)}</div>
+                <div className="text-sm text-muted-foreground">Project Repo Url : {renderUrl(project.repo_url)}</div>
             </div>
             <div className="max-w-none whitespace-pre-wrap">
                 <ProjectDescription content={project.description} />
@@ -249,7 +258,7 @@ function ProjectDescription({ content }: iProjectPostProps) {
                                             <img
                                                 src={`${cdnUrl}/${item.data.image}`}
                                                 alt={`Image ${index}`}
-                                                className='h-full w-20'
+                                                className='h-full w-[650px]'
                                             />
                                         </LazyPhotoView>
                                     </LazyPhotoProvider>

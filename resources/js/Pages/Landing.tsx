@@ -1,6 +1,6 @@
 import { Button } from '@/Components/ui/button'
 import MainLayout from '@/Layouts/MainLayout'
-import { Head } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 
 export default function Landing() {
     return (
@@ -19,7 +19,7 @@ export default function Landing() {
                                 </p>
                             </div>
                             <div className="w-full max-w-sm space-y-2 mx-auto">
-                                <Button variant={"default"} type="submit">
+                                <Button onClick={() => router.visit(route('project.index'))} variant={"default"} type="button">
                                     Explore
                                 </Button>
                                 <p className="text-xs">

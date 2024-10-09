@@ -53,6 +53,9 @@ LABEL org.opencontainers.image.description="Production-ready Filament Portfolio 
 LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/filament-portfolio
 LABEL org.opencontainers.image.licenses=MIT
 
+# Copy custom PHP settings
+COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 # Set working directory
 WORKDIR /app/public
 
