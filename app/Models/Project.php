@@ -35,12 +35,12 @@ class Project extends Model
     }
 
 
-    public function getIsFeaturedAttribute($value)
+    public function getIsFeaturedAttribute($value): bool
     {
         return $value === 1;
     }
 
-    public function setIsFeaturedAttribute($value)
+    public function setIsFeaturedAttribute($value): void
     {
         $this->attributes['is_featured'] = $value ? 1 : 0;
     }

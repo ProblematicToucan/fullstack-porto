@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 Route::get('/', LandingController::class)->name('landing');
 
-Route::prefix('/project')->name('project.')->controller(ProjectController::class)->group(function () {
+Route::prefix('/project')->name('project.')->controller(ProjectController::class)->group(function (): void {
     Route::get('/', 'index')->name('index');
     Route::get('/{project}', 'show')->name('show');
 });

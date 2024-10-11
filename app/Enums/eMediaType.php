@@ -20,10 +20,6 @@ enum eMediaType: string implements HasLabel, HasIcon
         };
     }
 
-    /**
-     * @return string|null
-     */
-
     public function getLabel(): ?string
     {
         return $this->name;

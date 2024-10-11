@@ -25,7 +25,7 @@ class ProjectController extends Controller
         return Inertia::render(self::PROJECT_VIEW, ['projects' => $projects]);
     }
 
-    public function show(Request $request, Project $project)
+    public function show(Request $request, Project $project): Project
     {
         $project->load('categories:id,name', 'projectMedias', 'techStacks');
 
