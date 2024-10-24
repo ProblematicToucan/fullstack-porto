@@ -23,12 +23,12 @@ export default function Profile() {
                         </Avatar>
                         <div className="text-center sm:text-left">
                             <CardTitle className="text-3xl">Gamal Abdul Aziz</CardTitle>
-                            <CardDescription className="text-xl">Backend Developer</CardDescription>
+                            <CardDescription className="text-xl">Software Engineer</CardDescription>
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <span className="text-muted-foreground">
-                            Passionate backend developer for building scalable web applications.
+                            Passionate about software engineering and building scalable web applications.
                             Specializing in <Badge>PHP</Badge>, <Badge>C#</Badge>, <Badge>NodeJs</Badge>, <Badge>Python</Badge>, and cloud technologies. Always eager to learn and tackle new challenges.
                         </span>
                         <div className="flex flex-wrap justify-center sm:justify-start gap-2">
