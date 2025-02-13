@@ -46,7 +46,7 @@ class Project extends Model
     }
 
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
