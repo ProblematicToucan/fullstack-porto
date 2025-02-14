@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProjectMediaResource\RelationManagers\ProjectRelationManager;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
@@ -57,6 +56,7 @@ class ProjectResource extends Resource
                 Forms\Components\Section::make('Project Descriptions')
                     ->schema([
                         Forms\Components\Builder::make('description')
+                            ->hiddenLabel(true)
                             ->blocks([
                                 Forms\Components\Builder\Block::make('Paragraph')
                                     ->schema([
