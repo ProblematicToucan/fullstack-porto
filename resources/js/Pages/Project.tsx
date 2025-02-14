@@ -68,7 +68,10 @@ export default function Project({ projects }: PageProps) {
 
     return (
         <MainLayout>
-            <Head title='Projects' />
+            <Head>
+                <title>Projects</title>
+                <meta name="project" content="Project page"/>
+            </Head>
             <ResizablePanelGroup
                 direction="horizontal"
                 className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] max-h-[800px] rounded-lg shadow-md border md:min-w-[450px] mb-10"

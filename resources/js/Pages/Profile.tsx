@@ -10,7 +10,10 @@ import { Github, Linkedin, Twitter } from 'lucide-react'
 export default function Profile() {
     return (
         <MainLayout>
-            <Head title='Profile' />
+            <Head>
+                <title>Profile</title>
+                <meta name="profile" content="Profile page"/>
+            </Head>
             <ResizablePanelGroup
                 direction="horizontal"
                 className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] max-h-[800px] rounded-lg shadow-md border md:min-w-[450px] mb-10"

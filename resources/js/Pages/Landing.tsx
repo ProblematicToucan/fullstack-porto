@@ -5,7 +5,10 @@ import { Head, router } from '@inertiajs/react'
 export default function Landing() {
     return (
         <MainLayout>
-            <Head title='Gamal Abdul Aziz' />
+            <Head>
+                <title>Gamal Abdul Aziz</title>
+                <meta name="landing" content="Gamal Abdul Aziz - Portfolio Website" />
+            </Head>
             <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
                 <div className="container px-4 md:px-6">
                     <div className="grid gap-6 items-center">
