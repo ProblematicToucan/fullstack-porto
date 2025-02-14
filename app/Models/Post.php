@@ -18,6 +18,16 @@ class Post extends Model
         'content',
     ];
 
+    public function getIsDraftAttribute($value): bool
+    {
+        return $value === 1;
+    }
+
+    public function setIsDraftAttribute($value): void
+    {
+        $this->attributes['is_draft'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
     protected function casts(): array
     {
         return [
