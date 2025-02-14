@@ -3,7 +3,7 @@ import { Button } from '@/Components/ui/button';
 import { Head, router } from '@inertiajs/react';
 import { Forward, Inbox, RefreshCw, Reply } from 'lucide-react';
 import { lazy, Suspense, useCallback, useState } from 'react';
-import { iProject, iProjectDescription, iProjectMedia, PageProps } from '@/types';
+import { iProject, iProjectDescription, PageProps } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
