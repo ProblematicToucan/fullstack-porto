@@ -1,32 +1,32 @@
 import MainLayout from '@/Layouts/MainLayout';
-import { Button } from '@/Components/ui/button';
-import { Head, router } from '@inertiajs/react';
-import { Forward, Inbox, RefreshCw, Reply } from 'lucide-react';
-import { lazy, Suspense, useCallback, useState } from 'react';
-import { iProject, iProjectDescription, PageProps } from '@/types';
-import { useToast } from '@/hooks/use-toast';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/Components/ui/resizable';
+import {Button} from '@/Components/ui/button';
+import {Head, router} from '@inertiajs/react';
+import {Forward, Inbox, RefreshCw, Reply} from 'lucide-react';
+import {lazy, Suspense, useCallback, useState} from 'react';
+import {iProject, iProjectDescription, PageProps} from '@/types';
+import {useToast} from '@/hooks/use-toast';
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
 
 const LazyTechStack = lazy(() => import('@/Components/TechStack'));
-const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoProvider })));
-const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoView })));
+const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoProvider})));
+const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoView})));
 const LazyProjectMedia = lazy(() => import('@/Components/ProjectMedia'));
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
-export default function Project({ projects }: PageProps) {
+export default function Project({projects}: PageProps) {
     const [projectList, setProjects] = useState<iProject[]>(projects.data);
     const [selectedProject, setSelectedProject] = useState<iProject | null>(null);
     const [pagination, setPagination] = useState(projects.current_page);
     const [loading, setLoading] = useState(false);
-    const { toast } = useToast();
+    const {toast} = useToast();
 
     const handleProjectClick = useCallback(async (project: iProject) => {
         if (project.id === selectedProject?.id) return; // Prevent duplicate fetch
 
         setLoading(true);
         try {
-            const { data } = await window.axios.get<iProject>(`/project/${project.slug}`);
+            const {data} = await window.axios.get<iProject>(`/project/${project.slug}`);
             setSelectedProject(data);
         } catch (error) {
             console.error('Error fetching project data:', error);
@@ -44,7 +44,7 @@ export default function Project({ projects }: PageProps) {
         if (pagination >= projects.last_page) return;
 
         setLoading(true);
-        router.get('/project', { page: pagination + 1 }, {
+        router.get('/project', {page: pagination + 1}, {
             preserveState: true,
             replace: true,
             onSuccess: (pageProps) => {
@@ -76,7 +76,7 @@ export default function Project({ projects }: PageProps) {
                 direction="horizontal"
                 className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] max-h-[800px] rounded-lg shadow-md border md:min-w-[450px] mb-10"
             >
-                <ResizablePanel defaultSize={25}>
+                <ResizablePanel defaultSize={25} maxSize={50}>
                     <ProjectList
                         projects={projectList}
                         selectedProject={selectedProject}
@@ -86,9 +86,9 @@ export default function Project({ projects }: PageProps) {
                         isLoading={loading}
                     />
                 </ResizablePanel>
-                <ResizableHandle withHandle />
+                <ResizableHandle withHandle/>
                 <ResizablePanel defaultSize={75}>
-                    <ProjectView selectedProject={selectedProject} loading={loading} />
+                    <ProjectView selectedProject={selectedProject} loading={loading}/>
                 </ResizablePanel>
             </ResizablePanelGroup>
         </MainLayout>
@@ -104,14 +104,14 @@ interface iProjectListProps {
     isLoading: boolean;
 }
 
-function ProjectList({ projects, selectedProject, onProjectClick, loadMore, hasMore, isLoading }: iProjectListProps) {
+function ProjectList({projects, selectedProject, onProjectClick, loadMore, hasMore, isLoading}: iProjectListProps) {
     return (
         <div className="flex p-6 h-full flex-col">
             <div className="z-10 relative flex items-center mb-4">
                 <h2 className="text-lg font-bold">Projects</h2>
                 <div className="ml-auto">
                     <Button variant="ghost" size="icon">
-                        <RefreshCw className="w-5 h-5" />
+                        <RefreshCw className="w-5 h-5"/>
                     </Button>
                 </div>
             </div>
@@ -142,7 +142,7 @@ interface iProjectListItemProps {
     onClick: (project: iProject) => void;
 }
 
-function ProjectListItem({ project, selected, onClick }: iProjectListItemProps) {
+function ProjectListItem({project, selected, onClick}: iProjectListItemProps) {
     return (
         <div
             className={`px-3 py-2 rounded-md cursor-pointer transition-colors ${selected ? 'bg-muted' : 'hover:bg-muted'}`}
@@ -160,21 +160,21 @@ interface iProjectViewProps {
     loading: boolean;
 }
 
-function ProjectView({ selectedProject, loading }: iProjectViewProps) {
+function ProjectView({selectedProject, loading}: iProjectViewProps) {
     return (
         <div className="flex-1 h-full p-6 overflow-y-auto">
             {loading ? (
-                <LoadingState />
+                <LoadingState/>
             ) : selectedProject ? (
                 <>
-                    <ProjectDetails project={selectedProject} />
+                    <ProjectDetails project={selectedProject}/>
                     <Suspense fallback={<div>Loading...</div>}>
-                        <LazyProjectMedia projectMedias={selectedProject.project_medias} />
-                        <LazyTechStack techStacks={selectedProject.tech_stacks} />
+                        <LazyProjectMedia projectMedias={selectedProject.project_medias}/>
+                        <LazyTechStack techStacks={selectedProject.tech_stacks}/>
                     </Suspense>
                 </>
             ) : (
-                <NoProjectSelected />
+                <NoProjectSelected/>
             )}
         </div>
     );
@@ -196,27 +196,27 @@ const renderUrl = (url: string | undefined): JSX.Element | string => {
     ) : "-";
 };
 
-function ProjectDetails({ project }: { project: iProject }) {
+function ProjectDetails({project}: { project: iProject }) {
     return (
         <>
             <div className="flex items-center mb-4">
                 <h1 className="text-5xl font-bold w-3/4 min-w-min">{project.title}</h1>
                 <div className="flex ml-auto">
                     <Button variant="ghost" size="icon">
-                        <Reply className="w-5 h-5" />
+                        <Reply className="w-5 h-5"/>
                     </Button>
                     <Button variant="ghost" size="icon">
-                        <Forward className="w-5 h-5" />
+                        <Forward className="w-5 h-5"/>
                     </Button>
                 </div>
             </div>
             <div className="mb-4">
                 <div className="font-medium">{project.category_names}</div>
-                <div className="text-sm text-muted-foreground">Project Url :  {renderUrl(project.project_url)}</div>
+                <div className="text-sm text-muted-foreground">Project Url : {renderUrl(project.project_url)}</div>
                 <div className="text-sm text-muted-foreground">Project Repo Url : {renderUrl(project.repo_url)}</div>
             </div>
             <div className="max-w-none whitespace-pre-wrap">
-                <ProjectDescription content={project.description} />
+                <ProjectDescription content={project.description}/>
             </div>
         </>
     );
@@ -225,7 +225,7 @@ function ProjectDetails({ project }: { project: iProject }) {
 function NoProjectSelected() {
     return (
         <div className="flex flex-col items-center justify-center h-full">
-            <Inbox className="w-16 h-16 mb-4" />
+            <Inbox className="w-16 h-16 mb-4"/>
             <h2 className="text-lg font-bold mb-2">No project selected</h2>
             <p className="text-muted-foreground">Click on a project in the sidebar to view its details.</p>
         </div>
@@ -237,7 +237,7 @@ interface iProjectPostProps {
     content: iProjectDescription[];
 }
 
-function ProjectDescription({ content }: iProjectPostProps) {
+function ProjectDescription({content}: iProjectPostProps) {
     return (
         <article className='prose lg:prose-xl dark:prose-invert max-w-full'>
             {content.map((item, index) => {
