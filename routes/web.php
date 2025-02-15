@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +17,4 @@ Route::prefix('/post')->name('post.')->controller(PostController::class)->group(
     Route::get('/{post}', 'show')->name('show');
 });
 
-Route::get('/bio', ProfileController::class)->name('bio');
+Route::inertia('/bio', 'Profile')->name('bio');

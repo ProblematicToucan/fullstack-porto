@@ -1,7 +1,7 @@
 import {
     Calculator,
     CreditCard,
-    House,
+    House, MessageSquareCode,
     Moon,
     PanelsTopLeft,
     Settings,
@@ -112,9 +112,9 @@ export default function CommandMenu() {
                                 <PanelsTopLeft className="mr-2 h-4 w-4" />
                                 <span>Projects</span>
                             </CommandItem>
-                            <CommandItem disabled>
-                                <Calculator className="mr-2 h-4 w-4" />
-                                <span>Calculator</span>
+                            <CommandItem onSelect={() => handleItemClick('post.index')} disabled={route().current('post.index')}>
+                                <MessageSquareCode className="mr-2 h-4 w-4" />
+                                <span>Posts</span>
                             </CommandItem>
                         </CommandGroup>
                         <CommandSeparator />
