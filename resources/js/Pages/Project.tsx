@@ -3,17 +3,14 @@ import {Button} from '@/Components/ui/button';
 import {Head, router} from '@inertiajs/react';
 import {Forward, Inbox, Reply} from 'lucide-react';
 import {lazy, Suspense, useCallback, useState} from 'react';
-import {iProject, PageProps} from '@/types';
+import {iListItemProps, iListProps, iProject, iViewProps, PageProps} from '@/types';
 import {useToast} from '@/hooks/use-toast';
 import MailView from "@/Components/MailView";
 import ListView from "@/Components/ListView";
 import SeoContent from "@/Components/SeoContent";
 
 const LazyTechStack = lazy(() => import('@/Components/TechStack'));
-const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoProvider})));
-const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoView})));
 const LazyProjectMedia = lazy(() => import('@/Components/ProjectMedia'));
-const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Project({projects}: PageProps) {
     const [projectList, setProjects] = useState<iProject[]>(projects.data ?? []);
@@ -75,80 +72,60 @@ export default function Project({projects}: PageProps) {
             </Head>
             <MailView>
                 <ProjectList
-                    projects={projectList}
-                    selectedProject={selectedProject}
-                    onProjectClick={handleProjectClick}
+                    listItems={projectList}
+                    selectedItem={selectedProject}
+                    onItemClick={handleProjectClick}
                     loadMore={handleLoadMore}
                     hasMore={projects.current_page < projects.last_page}
                     isLoading={loading}
                 />
-                <ProjectView selectedProject={selectedProject} loading={loading}/>
+                <ProjectView selected={selectedProject} loading={loading}/>
             </MailView>
         </MainLayout>
     );
 }
 
-interface iProjectListProps {
-    projects: iProject[];
-    selectedProject: iProject | null;
-    onProjectClick: (project: iProject) => void;
-    loadMore: () => void;
-    hasMore: boolean;
-    isLoading: boolean;
-}
-
-function ProjectList({projects, selectedProject, onProjectClick, loadMore, hasMore, isLoading}: iProjectListProps) {
+function ProjectList({listItems, selectedItem, onItemClick, loadMore, hasMore, isLoading}: iListProps<iProject>) {
     return (
         <ListView
             title="Project"
-            listItems={projects}
-            selectedItem={selectedProject}
-            onItemClick={onProjectClick}
+            listItems={listItems}
+            selectedItem={selectedItem}
+            onItemClick={onItemClick}
             loadMore={loadMore}
             hasMore={hasMore}
             isLoading={isLoading}
             renderItem={(project, selected, onClick) => (
-                <ProjectListItem key={project.id} project={project} selected={selected} onClick={onClick}/>
+                <ProjectListItem key={project.id} item={project} selected={selected} onClick={onClick}/>
             )}>
 
         </ListView>
     );
 }
 
-interface iProjectListItemProps {
-    project: iProject;
-    selected: boolean;
-    onClick: (project: iProject) => void;
-}
-
-function ProjectListItem({project, selected, onClick}: iProjectListItemProps) {
+function ProjectListItem({item, selected, onClick}: iListItemProps<iProject>) {
     return (
         <div
             className={`px-3 py-2 rounded-md cursor-pointer transition-colors ${selected ? 'bg-muted' : 'hover:bg-muted'}`}
-            onClick={() => onClick(project)}
+            onClick={() => onClick(item)}
         >
-            <div className="font-medium truncate">{project.title}</div>
-            <div className="text-sm text-muted-foreground truncate">{project.category_names}</div>
+            <div className="font-medium truncate">{item.title}</div>
+            <div className="text-sm text-muted-foreground truncate">{item.category_names}</div>
         </div>
     );
 }
 
-interface iProjectViewProps {
-    selectedProject: iProject | null;
-    loading: boolean;
-}
-
-function ProjectView({selectedProject, loading}: iProjectViewProps) {
+function ProjectView({selected, loading}: iViewProps<iProject>) {
     return (
         <div className="flex-1 h-full p-6 overflow-y-auto">
             {loading ? (
                 <LoadingState/>
-            ) : selectedProject ? (
+            ) : selected ? (
                 <>
-                    <ProjectDetails project={selectedProject}/>
+                    <ProjectDetails project={selected}/>
                     <Suspense fallback={<div>Loading...</div>}>
-                        <LazyProjectMedia projectMedias={selectedProject.project_medias}/>
-                        <LazyTechStack techStacks={selectedProject.tech_stacks}/>
+                        <LazyProjectMedia projectMedias={selected.project_medias}/>
+                        <LazyTechStack techStacks={selected.tech_stacks}/>
                     </Suspense>
                 </>
             ) : (

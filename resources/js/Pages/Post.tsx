@@ -133,16 +133,6 @@ function LoadingState() {
     );
 }
 
-function NoProjectSelected() {
-    return (
-        <div className="flex flex-col items-center justify-center h-full">
-            <Inbox className="w-16 h-16 mb-4"/>
-            <h2 className="text-lg font-bold mb-2">No post selected</h2>
-            <p className="text-muted-foreground">Click on a post in the sidebar to view its details.</p>
-        </div>
-    );
-}
-
 function PostDetails({post}: { post: iPost }) {
     return (
         <>
@@ -161,5 +151,15 @@ function PostDetails({post}: { post: iPost }) {
                 <SeoContent content={post.content}/>
             </div>
         </>
+    );
+}
+
+function NoProjectSelected() {
+    return (
+        <div className="flex flex-col items-center justify-center h-full">
+            <Inbox className="w-16 h-16 mb-4"/>
+            <h2 className="text-lg font-bold mb-2">No post selected</h2>
+            <p className="text-muted-foreground">Click on a post in the sidebar to view its details.</p>
+        </div>
     );
 }
