@@ -13,6 +13,14 @@ interface iProjectDescription {
     };
 }
 
+interface iPostContent {
+    type: string;
+    data: {
+        text: string;
+        image: string;
+    }
+}
+
 interface iTechStack {
     name: string;
     logo: string;
@@ -39,6 +47,34 @@ interface iProject {
     project_medias: iProjectMedia[];
 }
 
+interface iPost {
+    id: number;
+    title: string;
+    slug: string;
+    is_public: boolean;
+    content: iPostContent[];
+}
+
+interface iListProps<T> {
+    listItems: T[];
+    selectedItem: T | null;
+    onItemClick: (item: T) => void;
+    loadMore: () => void;
+    hasMore: boolean;
+    isLoading: boolean;
+}
+
+interface iListItemProps<T> {
+    item: T;
+    selected: boolean;
+    onClick: (t: T) => void;
+}
+
+interface iViewProps<T> {
+    selected: T | null;
+    loading: boolean;
+}
+
 interface iPaginate<T> {
     current_page: number,
     data: T[],
@@ -59,4 +95,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         user: iUser;
     };
     projects: iPaginate<iProject>;
+    posts: iPaginate<iPost>;
 };

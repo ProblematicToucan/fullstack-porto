@@ -5,8 +5,8 @@ import {Forward, Inbox, RefreshCw, Reply} from 'lucide-react';
 import {lazy, Suspense, useCallback, useState} from 'react';
 import {iProject, iProjectDescription, PageProps} from '@/types';
 import {useToast} from '@/hooks/use-toast';
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/Components/ui/resizable';
 import DOMPurify from "dompurify";
+import MailView from "@/Components/MailView";
 
 const LazyTechStack = lazy(() => import('@/Components/TechStack'));
 const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoProvider})));
@@ -15,7 +15,7 @@ const LazyProjectMedia = lazy(() => import('@/Components/ProjectMedia'));
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Project({projects}: PageProps) {
-    const [projectList, setProjects] = useState<iProject[]>(projects.data);
+    const [projectList, setProjects] = useState<iProject[]>(projects.data ?? []);
     const [selectedProject, setSelectedProject] = useState<iProject | null>(null);
     const [pagination, setPagination] = useState(projects.current_page);
     const [loading, setLoading] = useState(false);
@@ -72,25 +72,17 @@ export default function Project({projects}: PageProps) {
                 <title>Projects</title>
                 <meta name="project" content="Project page"/>
             </Head>
-            <ResizablePanelGroup
-                direction="horizontal"
-                className="min-h-[500px] md:min-h-[600px] lg:min-h-[800px] max-h-[800px] rounded-lg shadow-md border md:min-w-[450px] mb-10"
-            >
-                <ResizablePanel defaultSize={25} maxSize={50}>
-                    <ProjectList
-                        projects={projectList}
-                        selectedProject={selectedProject}
-                        onProjectClick={handleProjectClick}
-                        loadMore={handleLoadMore}
-                        hasMore={projects.current_page < projects.last_page}
-                        isLoading={loading}
-                    />
-                </ResizablePanel>
-                <ResizableHandle withHandle/>
-                <ResizablePanel defaultSize={75}>
-                    <ProjectView selectedProject={selectedProject} loading={loading}/>
-                </ResizablePanel>
-            </ResizablePanelGroup>
+            <MailView>
+                <ProjectList
+                    projects={projectList}
+                    selectedProject={selectedProject}
+                    onProjectClick={handleProjectClick}
+                    loadMore={handleLoadMore}
+                    hasMore={projects.current_page < projects.last_page}
+                    isLoading={loading}
+                />
+                <ProjectView selectedProject={selectedProject} loading={loading}/>
+            </MailView>
         </MainLayout>
     );
 }
@@ -150,7 +142,6 @@ function ProjectListItem({project, selected, onClick}: iProjectListItemProps) {
         >
             <div className="font-medium truncate">{project.title}</div>
             <div className="text-sm text-muted-foreground truncate">{project.category_names}</div>
-            {/* <div className="text-xs text-muted-foreground truncate">{project.repo_url}</div> */}
         </div>
     );
 }
