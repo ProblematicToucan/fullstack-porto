@@ -1,12 +1,13 @@
 import MainLayout from '@/Layouts/MainLayout';
 import {Button} from '@/Components/ui/button';
 import {Head, router} from '@inertiajs/react';
-import {Forward, Inbox, RefreshCw, Reply} from 'lucide-react';
+import {Forward, Inbox, Reply} from 'lucide-react';
 import {lazy, Suspense, useCallback, useState} from 'react';
 import {iProject, iProjectDescription, PageProps} from '@/types';
 import {useToast} from '@/hooks/use-toast';
 import DOMPurify from "dompurify";
 import MailView from "@/Components/MailView";
+import ListView from "@/Components/ListView";
 
 const LazyTechStack = lazy(() => import('@/Components/TechStack'));
 const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoProvider})));
@@ -98,33 +99,19 @@ interface iProjectListProps {
 
 function ProjectList({projects, selectedProject, onProjectClick, loadMore, hasMore, isLoading}: iProjectListProps) {
     return (
-        <div className="flex p-6 h-full flex-col">
-            <div className="z-10 relative flex items-center mb-4">
-                <h2 className="text-lg font-bold">Projects</h2>
-                <div className="ml-auto">
-                    <Button variant="ghost" size="icon">
-                        <RefreshCw className="w-5 h-5"/>
-                    </Button>
-                </div>
-            </div>
-            <div className="z-10 relative flex-1 overflow-y-auto">
-                {projects.map(project => (
-                    <ProjectListItem
-                        key={project.id}
-                        project={project}
-                        selected={selectedProject?.id === project.id}
-                        onClick={onProjectClick}
-                    />
-                ))}
-            </div>
-            {projects && (
-                <div className="mt-4 flex justify-center">
-                    <Button onClick={loadMore} disabled={isLoading || !hasMore}>
-                        {isLoading ? 'Loading...' : 'Load More'}
-                    </Button>
-                </div>
-            )}
-        </div>
+        <ListView
+            title="Project"
+            listItems={projects}
+            selectedItem={selectedProject}
+            onItemClick={onProjectClick}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            isLoading={isLoading}
+            renderItem={(project, selected, onClick) => (
+                <ProjectListItem key={project.id} project={project} selected={selected} onClick={onClick}/>
+            )}>
+
+        </ListView>
     );
 }
 

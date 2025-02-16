@@ -1,11 +1,11 @@
 import MainLayout from "@/Layouts/MainLayout";
 import {Head} from "@inertiajs/react";
 import {iListItemProps, iListProps, iPost, iViewProps, PageProps} from "@/types";
-import {Button} from "@/Components/ui/button";
-import {Inbox, RefreshCw} from "lucide-react";
+import {Inbox} from "lucide-react";
 import {useState} from "react";
 import {useToast} from "@/hooks/use-toast";
 import MailView from "@/Components/MailView";
+import ListView from "@/Components/ListView";
 
 export default function Post({posts}: PageProps) {
     const [postList, setPostList] = useState<iPost[]>(posts.data ?? []);
@@ -37,33 +37,19 @@ export default function Post({posts}: PageProps) {
 
 function PostList({listItems, selectedItem, onItemClick, loadMore, hasMore, isLoading}: iListProps<iPost>) {
     return (
-        <div className="flex p-6 h-full flex-col">
-            <div className="z-10 relative flex items-center mb-4">
-                <h2 className="text-lg font-bold">Posts</h2>
-                <div className="ml-auto">
-                    <Button variant="ghost" size="icon">
-                        <RefreshCw className="w-5 h-5"/>
-                    </Button>
-                </div>
-            </div>
-            <div className="z-10 relative flex-1 overflow-y-auto">
-                {listItems.map((post) => (
-                    <PostListItem
-                        key={post.id}
-                        item={post}
-                        selected={selectedItem?.id === post.id}
-                        onClick={onItemClick}
-                    />
-                ))}
-            </div>
-            {listItems && (
-                <div className="mt-4 flex justify-center">
-                    <Button onClick={loadMore} disabled={isLoading || !hasMore}>
-                        {isLoading ? 'Loading...' : 'Load More'}
-                    </Button>
-                </div>
-            )}
-        </div>
+        <ListView
+            title="Posts"
+            listItems={listItems}
+            selectedItem={selectedItem}
+            onItemClick={onItemClick}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            isLoading={isLoading}
+            renderItem={(post, selected, onClick) => (
+                <PostListItem key={post.id} item={post} selected={selected} onClick={onClick}/>
+            )}>
+
+        </ListView>
     );
 }
 
