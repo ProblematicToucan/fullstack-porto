@@ -13,14 +13,6 @@ interface iSeoContent {
     }
 }
 
-interface iPostContent {
-    type: string;
-    data: {
-        text: string;
-        image: string;
-    }
-}
-
 interface iTechStack {
     name: string;
     logo: string;
