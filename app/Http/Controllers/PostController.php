@@ -15,7 +15,12 @@ class PostController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $post = Post::query()->select('id', 'title', 'slug', 'is_public')->where('is_public', '=', true)->paginate(self::INDEX_PER_PAGE);
+        $post = Post::query()
+            ->select('id', 'title', 'slug', 'is_public', 'updated_at')
+            ->where('is_public', '=', true)
+            ->orderBy('updated_at', 'desc')
+            ->paginate(self::INDEX_PER_PAGE)
+            ->toArray();
 
         return Inertia::render(self::VIEW, ['posts' => $post]);
     }

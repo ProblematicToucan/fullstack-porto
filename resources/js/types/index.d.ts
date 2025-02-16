@@ -53,6 +53,7 @@ interface iPost {
     slug: string;
     is_public: boolean;
     content: iSeoContent[];
+    updated_at: string;
 }
 
 interface iListProps<T> {

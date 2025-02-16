@@ -1,7 +1,7 @@
 import MainLayout from "@/Layouts/MainLayout";
 import {Head, router} from "@inertiajs/react";
 import {iListItemProps, iListProps, iPost, iViewProps, PageProps} from "@/types";
-import {Forward, Inbox, Reply} from "lucide-react";
+import {Calendar, Forward, Inbox, Reply} from "lucide-react";
 import {useCallback, useState} from "react";
 import {useToast} from "@/hooks/use-toast";
 import MailView from "@/Components/MailView";
@@ -107,6 +107,7 @@ function PostListItem({item, selected, onClick}: iListItemProps<iPost>) {
             onClick={() => onClick(item)}
         >
             <div className="font-medium truncate">{item.title}</div>
+            <div className="text-sm text-muted-foreground truncate">{item.updated_at}</div>
         </div>
     );
 }
@@ -145,6 +146,12 @@ function PostDetails({post}: { post: iPost }) {
                     <Button variant="ghost" size="icon">
                         <Forward className="w-5 h-5"/>
                     </Button>
+                </div>
+            </div>
+            <div className="mb-4">
+                <div className="font-medium flex items-center gap-2">
+                    <Calendar className="w-5 h-5"/>
+                    <span>{post.updated_at}</span>
                 </div>
             </div>
             <div className="max-w-none whitespace-pre-wrap">
