@@ -1,11 +1,13 @@
 import MainLayout from "@/Layouts/MainLayout";
-import {Head} from "@inertiajs/react";
+import {Head, router} from "@inertiajs/react";
 import {iListItemProps, iListProps, iPost, iViewProps, PageProps} from "@/types";
-import {Inbox} from "lucide-react";
-import {useState} from "react";
+import {Forward, Inbox, Reply} from "lucide-react";
+import {useCallback, useState} from "react";
 import {useToast} from "@/hooks/use-toast";
 import MailView from "@/Components/MailView";
 import ListView from "@/Components/ListView";
+import {Button} from "@/Components/ui/button";
+import SeoContent from "@/Components/SeoContent";
 
 export default function Post({posts}: PageProps) {
     const [postList, setPostList] = useState<iPost[]>(posts.data ?? []);
@@ -13,6 +15,51 @@ export default function Post({posts}: PageProps) {
     const [pagination, setPagination] = useState(posts.current_page);
     const [loading, setLoading] = useState(false);
     const {toast} = useToast();
+
+    const handlePostClick = useCallback(async (post: iPost) => {
+        if (post.id === selectedPost?.id) return;
+
+        setLoading(true);
+        try {
+            const {data} = await window.axios.get<iPost>(`/post/${post.slug}`);
+            setSelectedPost(data);
+        } catch (error) {
+            console.error('Error fetching post data:', error);
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your request.",
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, [selectedPost, toast]);
+
+    const handleLoadMore = useCallback(() => {
+        if (pagination >= posts.last_page) return;
+
+        setLoading(true);
+        router.get('/project', {page: pagination + 1}, {
+            preserveState: true,
+            replace: true,
+            onSuccess: (pageProps) => {
+                setPostList(prev => [...prev, ...pageProps.props.posts.data]);
+                setPagination(pageProps.props.projects.current_page);
+            },
+            onError: (error) => {
+                console.error('Error fetching project data:', error);
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "There was a problem with your request.",
+                });
+                setLoading(false);
+            },
+            onFinish() {
+                setLoading(false);
+            }
+        });
+    }, [postList, pagination, toast]);
 
     return (
         <MainLayout>
@@ -24,8 +71,8 @@ export default function Post({posts}: PageProps) {
                 <PostList
                     listItems={postList}
                     selectedItem={selectedPost}
-                    onItemClick={console.log}
-                    loadMore={console.log}
+                    onItemClick={handlePostClick}
+                    loadMore={handleLoadMore}
                     hasMore={posts.current_page < posts.last_page}
                     isLoading={loading}
                 />
@@ -70,9 +117,7 @@ function PostView({selected, loading}: iViewProps<iPost>) {
             {loading ? (
                 <LoadingState/>
             ) : selected ? (
-                <>
-                    selected
-                </>
+                <PostDetails post={selected}/>
             ) : (
                 <NoProjectSelected/>
             )}
@@ -95,5 +140,26 @@ function NoProjectSelected() {
             <h2 className="text-lg font-bold mb-2">No post selected</h2>
             <p className="text-muted-foreground">Click on a post in the sidebar to view its details.</p>
         </div>
+    );
+}
+
+function PostDetails({post}: { post: iPost }) {
+    return (
+        <>
+            <div className="flex items-center mb-4">
+                <h1 className="text-5xl font-bold w-3/4 min-w-min">{post.title}</h1>
+                <div className="flex ml-auto">
+                    <Button variant="ghost" size="icon">
+                        <Reply className="w-5 h-5"/>
+                    </Button>
+                    <Button variant="ghost" size="icon">
+                        <Forward className="w-5 h-5"/>
+                    </Button>
+                </div>
+            </div>
+            <div className="max-w-none whitespace-pre-wrap">
+                <SeoContent content={post.content}/>
+            </div>
+        </>
     );
 }

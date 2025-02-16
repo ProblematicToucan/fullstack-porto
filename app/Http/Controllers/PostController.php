@@ -9,12 +9,13 @@ class PostController extends Controller
 {
     const string VIEW = 'Post';
     const int INDEX_PER_PAGE = 5;
+
     /**
      * Display a listing of the resource.
      */
     public function index(): \Inertia\Response
     {
-        $post = Post::query()->select('id','title','slug','is_public')->paginate(self::INDEX_PER_PAGE);
+        $post = Post::query()->select('id', 'title', 'slug', 'is_public')->where('is_public', '=', true)->paginate(self::INDEX_PER_PAGE);
 
         return Inertia::render(self::VIEW, ['posts' => $post]);
     }

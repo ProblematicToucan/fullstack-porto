@@ -5,12 +5,12 @@ export interface iUser {
     email_verified_at?: string;
 }
 
-interface iProjectDescription {
+interface iSeoContent {
     type: string;
     data: {
         text?: string;
         image?: string;
-    };
+    }
 }
 
 interface iPostContent {
@@ -38,7 +38,7 @@ interface iProject {
     title: string;
     slug: string;
     category_names: string;
-    description: iProjectDescription[];
+    description: iSeoContent[];
     project_url: string;
     repo_url: string;
     image: string;
@@ -52,7 +52,7 @@ interface iPost {
     title: string;
     slug: string;
     is_public: boolean;
-    content: iPostContent[];
+    content: iSeoContent[];
 }
 
 interface iListProps<T> {

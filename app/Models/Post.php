@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property string $title
+ * @property string $slug
+ * @property bool $is_public
+ * @property string $content
+ */
 class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
@@ -18,14 +24,14 @@ class Post extends Model
         'content',
     ];
 
-    public function getIsDraftAttribute($value): bool
+    public function getIsPublicAttribute($value): bool
     {
         return $value === 1;
     }
 
-    public function setIsDraftAttribute($value): void
+    public function setIsPublicAttribute($value): void
     {
-        $this->attributes['is_draft'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        $this->attributes['is_public'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
     protected function casts(): array
@@ -37,6 +43,6 @@ class Post extends Model
 
     public function getRouteKeyName(): string
     {
-        return  'slug';
+        return 'slug';
     }
 }

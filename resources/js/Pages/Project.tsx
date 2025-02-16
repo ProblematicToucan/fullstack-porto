@@ -3,11 +3,11 @@ import {Button} from '@/Components/ui/button';
 import {Head, router} from '@inertiajs/react';
 import {Forward, Inbox, Reply} from 'lucide-react';
 import {lazy, Suspense, useCallback, useState} from 'react';
-import {iProject, iProjectDescription, PageProps} from '@/types';
+import {iProject, PageProps} from '@/types';
 import {useToast} from '@/hooks/use-toast';
-import DOMPurify from "dompurify";
 import MailView from "@/Components/MailView";
 import ListView from "@/Components/ListView";
+import SeoContent from "@/Components/SeoContent";
 
 const LazyTechStack = lazy(() => import('@/Components/TechStack'));
 const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoProvider})));
@@ -194,7 +194,7 @@ function ProjectDetails({project}: { project: iProject }) {
                 <div className="text-sm text-muted-foreground">Project Repo Url : {renderUrl(project.repo_url)}</div>
             </div>
             <div className="max-w-none whitespace-pre-wrap">
-                <ProjectDescription content={project.description}/>
+                <SeoContent content={project.description}/>
             </div>
         </>
     );
@@ -208,49 +208,4 @@ function NoProjectSelected() {
             <p className="text-muted-foreground">Click on a project in the sidebar to view its details.</p>
         </div>
     );
-}
-
-
-interface iProjectPostProps {
-    content: iProjectDescription[];
-}
-
-function ProjectDescription({content}: iProjectPostProps) {
-    return (
-        <article className='prose lg:prose-xl dark:prose-invert max-w-full'>
-            {content.map((item, index) => {
-                switch (item.type) {
-                    case "Paragraph":
-                        return (
-                            <div
-                                key={index}
-                                dangerouslySetInnerHTML={{
-                                    __html: DOMPurify.sanitize(item.data.text || ""),
-                                }}
-                            />
-                        );
-
-                    case "image":
-                        return (
-                            <div key={index} className="flex justify-center my-4">
-                                <Suspense>
-                                    <LazyPhotoProvider>
-                                        <LazyPhotoView src={`${cdnUrl}/${item.data.image}`}>
-                                            <img
-                                                src={`${cdnUrl}/${item.data.image}`}
-                                                alt={`Image ${index}`}
-                                                className='h-full w-[650px]'
-                                            />
-                                        </LazyPhotoView>
-                                    </LazyPhotoProvider>
-                                </Suspense>
-                            </div>
-                        );
-
-                    default:
-                        return null;
-                }
-            })}
-        </article>
-    )
 }
