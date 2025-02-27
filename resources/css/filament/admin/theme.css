@@ -1,0 +1,11 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+.fi-topbar>nav {
+    @apply bg-gray-50 dark:bg-gray-950 !important;
+}
+
+.fi-ta-table>thead>tr {
+    @apply bg-transparent !important;
+}
