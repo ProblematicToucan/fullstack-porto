@@ -14,7 +14,7 @@
             <div class="relative text-center">
 
                 <div class="flex flex-col mb-6 space-y-2">
-                    <h1 class="text-2xl font-semibold tracking-tight">Login</h1>
+                    <h1 class="text-2xl font-semibold tracking-tight text-primary-600 dark:text-primary-400">Login</h1>
                     @error('form.email')
                         <p class="text-sm font-medium text-red-500">{{ $message }}</p>
                     @enderror
@@ -36,7 +36,7 @@
 
                     <div class="flex items-center mb-4">
                         <input wire:model='form.remember' id="remember" type="checkbox"
-                            class="w-4 h-4 bg-neutral-800 border-none rounded text-neutral-800 focus:ring-0 ">
+                            class="w-4 h-4 bg-neutral-400 dark:bg-neutral-800 border-none rounded text-neutral-400 dark:text-neutral-800 focus:ring-0 ">
                         <label for="remember" class="ml-2 text-sm font-medium ">Remember Me</label>
                     </div>
 

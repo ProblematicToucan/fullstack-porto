@@ -24,6 +24,7 @@
     </title>
 
     @viteReactRefresh
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 
     <style>
         [x-cloak] {
@@ -32,7 +33,6 @@
     </style>
 
     @filamentStyles
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
 
     @stack('styles')
 
