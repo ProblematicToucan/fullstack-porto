@@ -16,23 +16,23 @@
                 <div class="flex flex-col mb-6 space-y-2">
                     <h1 class="text-2xl font-semibold tracking-tight">Login</h1>
                     @error('form.email')
-                        <p class="text-sm text-red-500">{{ $message }}</p>
+                        <p class="text-sm font-medium text-red-500">{{ $message }}</p>
                     @enderror
                     @error('form.password')
-                        <p class="text-sm text-red-500">{{ $message }}</p>
+                        <p class="text-sm font-medium text-red-500">{{ $message }}</p>
                     @enderror
                     @if (!$errors->has('form.email') && !$errors->has('form.password'))
-                        <p class="text-sm text-neutral-500">Enter your credentials to log in</p>
+                        <p class="text-sm font-medium text-neutral-500">Enter your credentials to log in</p>
                     @endif
                 </div>
                 <form wire:submit='authenticate' class="space-y-2">
                     <input wire:model='form.email' id="email" type="email" name="email" placeholder="name@example.com"
                         autocomplete="username"
-                        class="flex w-full h-10 px-3 py-2 text-sm bg-background border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50">
+                        class="flex w-full h-10 px-3 py-2 text-sm font-medium bg-background border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50">
 
                     <input wire:model='form.password' id="password" type="password" name="password"
                         placeholder="password" autocomplete="current-password"
-                        class="flex w-full h-10 px-3 py-2 text-sm bg-background border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50">
+                        class="flex w-full h-10 px-3 py-2 text-sm font-medium bg-background border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-300 disabled:cursor-not-allowed disabled:opacity-50">
 
                     <div class="flex items-center mb-4">
                         <input wire:model='form.remember' id="remember" type="checkbox"
@@ -48,7 +48,8 @@
                         <div class="absolute inset-0 flex items-center"><span class="w-full border-t"></span>
                         </div>
                         <div class="relative flex justify-center text-xs uppercase">
-                            <span class="px-2 bg-background text-neutral-500">Or continue with</span>
+                            <span class="px-2 bg-background text-neutral-500 text-xs font-medium">Or continue
+                                with</span>
                         </div>
                     </div>
                     <button
