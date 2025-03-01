@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-            ->topNavigation()
+            ->navigation(false)
             ->profile()
             ->breadcrumbs(false)
             ->colors([
