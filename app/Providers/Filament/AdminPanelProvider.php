@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(Login::class)
             ->topNavigation()
+            ->profile()
             ->breadcrumbs(false)
             ->colors([
                 'primary' => Color::Teal,
