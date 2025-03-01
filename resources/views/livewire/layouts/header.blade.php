@@ -78,19 +78,21 @@
             </div>
             <div x-show="navigationMenu == 'learn-more'" class="flex items-stretch justify-center w-full p-6">
                 <div class="w-72">
-                    <a href="#_" @click="navigationMenuClose()"
+                    <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer"
+                        @click="navigationMenuClose()"
                         class="block px-3.5 py-3 text-sm rounded hover:bg-secondary-foreground/10">
                         <span class="block mb-1 font-medium text-secondary-foreground">Tailwind CSS</span>
                         <span class="block font-light leading-5 opacity-50">A utility first CSS framework for building
                             amazing websites.</span>
                     </a>
-                    <a href="#_" @click="navigationMenuClose()"
+                    <a href="https://laravel.com/" target="_blank" rel="noopener noreferrer"
+                        @click="navigationMenuClose()"
                         class="block px-3.5 py-3 text-sm rounded hover:bg-secondary-foreground/10">
                         <span class="block mb-1 font-medium text-secondary-foreground">Laravel</span>
                         <span class="block font-light leading-5 opacity-50">The perfect all-in-one framework for
                             building amazing apps.</span>
                     </a>
-                    <a href="#_" @click="navigationMenuClose()"
+                    <a href="https://devdojo.com/pines" @click="navigationMenuClose()"
                         class="block px-3.5 py-3 text-sm rounded hover:bg-secondary-foreground/10">
                         <span class="block mb-1 font-medium text-secondary-foreground">Pines UI</span>
                         <span class="block leading-5 opacity-50">An Alpine JS and Tailwind CSS UI library for awesome
@@ -98,19 +100,21 @@
                     </a>
                 </div>
                 <div class="w-72">
-                    <a href="#_" @click="navigationMenuClose()"
+                    <a href="https://alpinejs.dev/" target="_blank" rel="noopener noreferrer"
+                        @click="navigationMenuClose()"
                         class="block px-3.5 py-3 text-sm rounded hover:bg-secondary-foreground/10">
                         <span class="block mb-1 font-medium text-secondary-foreground">AlpineJS</span>
                         <span class="block font-light leading-5 opacity-50">A framework without the complex setup or
                             heavy dependencies.</span>
                     </a>
-                    <a href="#_" @click="navigationMenuClose()"
+                    <a href="https://livewire.laravel.com/" target="_blank" rel="noopener noreferrer"
+                        @click="navigationMenuClose()"
                         class="block px-3.5 py-3 text-sm rounded hover:bg-secondary-foreground/10">
                         <span class="block mb-1 font-medium text-secondary-foreground">Livewire</span>
                         <span class="block leading-5 opacity-50">A seamless integration of server-side and client-side
                             interactions.</span>
                     </a>
-                    <a href="#_" @click="navigationMenuClose()"
+                    <a href="#_" target="_blank" rel="noopener noreferrer" @click="navigationMenuClose()"
                         class="block px-3.5 py-3 text-sm rounded hover:bg-secondary-foreground/10">
                         <span class="block mb-1 font-medium text-secondary-foreground">Tails</span>
                         <span class="block leading-5 opacity-50">The ultimate Tailwind CSS design tool that helps you
