@@ -37,7 +37,8 @@
                     <div class="flex items-center mb-4">
                         <input wire:model='form.remember' id="remember" type="checkbox"
                             class="w-4 h-4 bg-neutral-400 dark:bg-neutral-800 border-none rounded text-neutral-400 dark:text-neutral-800 focus:ring-0 ">
-                        <label for="remember" class="ml-2 text-sm font-medium ">Remember Me</label>
+                        <label for="remember" class="ml-2 text-sm font-medium text-foreground/50">Remember
+                            Me</label>
                     </div>
 
                     <button wire:loading.class="opacity-50" type="submit"
