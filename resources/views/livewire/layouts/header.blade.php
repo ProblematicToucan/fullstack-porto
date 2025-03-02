@@ -1,10 +1,11 @@
-<?php /**
- * @var \Illuminate\Support\Collection<\Filament\Navigation\NavigationItem> $navigation
- * */ ?>
 @props(['navigation' => null])
-@php
-    $chunks = $navigation->chunk(3);
-@endphp
+<?php
+/**
+ * @var \Illuminate\Support\Collection<\Filament\Navigation\NavigationItem> $navigation
+ * */
+$chunks = $navigation->chunk(3);
+?>
+
 <nav x-data="navigationMenu"
     class="sticky top-0 z-10 w-auto bg-gray-50 px-4 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 md:px-6 lg:px-8">
     <div class="relative">
