@@ -32,14 +32,5 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https'); // Disable this if you're not use ssl.
         }
-        FilamentAsset::register(
-            assets: [
-                Css::make('custom-css', Vite::asset('resources/css/app.css'))
-            ],
-        );
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::TOPBAR_AFTER,
-            fn(): string => Livewire::mount('layouts.header')
-        );
     }
 }
