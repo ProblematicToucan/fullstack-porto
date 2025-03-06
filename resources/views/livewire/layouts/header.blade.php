@@ -59,13 +59,15 @@ $chunks = $navigation->chunk(3);
                 class="flex justify-center w-auto h-auto overflow-hidden rounded-md shadow-sm ring-1 ring-gray-950/5 bg-background dark:bg-gray-900 dark:ring-white/10">
                 <div x-show="navigationMenu == 'getting-started'"
                     class="flex items-stretch justify-center w-full max-w-2xl p-6 gap-x-3 h-[312px]">
-                    <div class="flex-shrink-0 w-48 rounded pt-28 pb-7 bg-gradient-to-br from-primary-600 to-purple-700">
+                    <a href="{{ route('landing')}}" target="_blank" rel="noopener noreferrer"
+                        @click="navigationMenuClose()"
+                        class="flex-shrink-0 w-48 rounded pt-28 pb-7 bg-gradient-to-br from-primary-600 to-purple-700">
                         <div class="p-4 text-white flex flex-col justify-end h-full">
                             <span class="block font-bold">Porto</span>
                             <span class="block text-sm opacity-60">A full-stack portfolio that build using Laravel
                                 Filament.</span>
                         </div>
-                    </div>
+                    </a>
                     <div class="w-72">
                         <a href="https://filamentphp.com/" target="_blank" rel="noopener noreferrer"
                             @click="navigationMenuClose()"
