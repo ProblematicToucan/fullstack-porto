@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "prebuild": "npx tailwindcss -i resources/css/app.css -o public/css/app.css --minify",
         "build": "tsc && vite build"
     },
     "devDependencies": {

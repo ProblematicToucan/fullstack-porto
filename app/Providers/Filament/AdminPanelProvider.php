@@ -71,7 +71,7 @@ class AdminPanelProvider extends PanelProvider
     public function register(): void
     {
         parent::register();
-        FilamentAsset::register(assets: [Css::make('custom-css', Vite::asset('resources/css/app.css'))]);
+        FilamentAsset::register(assets: [Css::make('custom-css', asset('css/app.css'))]);
         FilamentView::registerRenderHook(PanelsRenderHook::TOPBAR_AFTER, fn(): string => Livewire::mount('layouts.header'));
         FilamentView::registerRenderHook(PanelsRenderHook::BODY_END, fn(): string => Blade::render("@vite('resources/js/app.js')"));
     }
