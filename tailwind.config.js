@@ -1,8 +1,10 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import preset from './vendor/filament/filament/tailwind.config.preset'
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    presets: [preset],
     darkMode: ['class'],
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',

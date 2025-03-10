@@ -1,12 +1,12 @@
-import {iSeoContent} from "@/types";
+import { iSeoContent } from "@/types";
 import DOMPurify from "dompurify";
-import {lazy, Suspense} from "react";
+import { lazy, Suspense } from "react";
 
-const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoProvider})));
-const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({default: module.PhotoView})));
+const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoProvider })));
+const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoView })));
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
-export default function SeoContent({content}: { content: iSeoContent[] }) {
+export default function SeoContent({ content }: { content: iSeoContent[] }) {
     return (
         <article className='prose lg:prose-xl dark:prose-invert max-w-full'>
             {content.map((item, index) => {
@@ -16,7 +16,7 @@ export default function SeoContent({content}: { content: iSeoContent[] }) {
                             <div
                                 key={index}
                                 dangerouslySetInnerHTML={{
-                                    __html: DOMPurify.sanitize(item.data.text || ""),
+                                    __html: DOMPurify.sanitize(item.data.text ?? ""),
                                 }}
                             />
                         );

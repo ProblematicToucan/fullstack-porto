@@ -2,13 +2,16 @@
 
 namespace App\Providers\Filament;
 
+use App\Livewire\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Assets\Css;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
@@ -20,6 +23,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Livewire\Livewire;
+use Vite;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -27,12 +32,17 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
+            ->navigation(false)
+            ->profile()
+            ->breadcrumbs(false)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Teal,
             ])
+            ->darkMode(false)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -62,6 +72,8 @@ class AdminPanelProvider extends PanelProvider
     public function register(): void
     {
         parent::register();
+        FilamentAsset::register(assets: [Css::make('custom-css', asset('css/app.css'))]);
+        FilamentView::registerRenderHook(PanelsRenderHook::TOPBAR_AFTER, fn(): string => Livewire::mount('layouts.header'));
         FilamentView::registerRenderHook(PanelsRenderHook::BODY_END, fn(): string => Blade::render("@vite('resources/js/app.js')"));
     }
 }

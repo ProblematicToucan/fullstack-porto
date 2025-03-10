@@ -26,7 +26,7 @@ class PostResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required(),
                 Forms\Components\TextInput::make('slug')
-                    ->default(fn (): string => Str::uuid()->toString())
+                    ->default(fn(): string => Str::uuid()->toString())
                     ->disabled()
                     ->dehydrated()
                     ->required(),
@@ -71,8 +71,7 @@ class PostResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_public')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_public'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
