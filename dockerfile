@@ -1,6 +1,9 @@
 # PHP Alpine builder for dependencies
 FROM php:8.3-alpine AS laravel-builder
 
+# Upgrade
+RUN apk update && apk upgrade
+
 WORKDIR /app
 
 # Copy project files
@@ -23,6 +26,9 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Node.js Alpine Builder
 FROM node:18-alpine AS node-builder
+
+# Upgrade
+RUN apk update && apk upgrade
 
 # Vite ARGS
 ARG VITE_APP_NAME
@@ -53,6 +59,9 @@ LABEL org.opencontainers.image.title="Filament Portfolio"
 LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
 LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/filament-portfolio
 LABEL org.opencontainers.image.licenses=MIT
+
+# Upgrade
+RUN apk update && apk upgrade
 
 # Copy custom PHP settings
 COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
