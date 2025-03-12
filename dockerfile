@@ -54,6 +54,9 @@ RUN rm -rf node_modules
 # Final FrankenPHP Image
 FROM dunglas/frankenphp:latest-php8.3-alpine AS final
 
+# Domain Server Name
+ENV SERVER_NAME=garamm.dev
+
 LABEL maintainer="ProblematicToucan <gamal.aziz1000@gmail.com>"
 LABEL org.opencontainers.image.title="Filament Portfolio"
 LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
@@ -62,6 +65,9 @@ LABEL org.opencontainers.image.licenses=MIT
 
 # Upgrade
 RUN apk update && apk upgrade
+
+# Production
+RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 # Copy custom PHP settings
 COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini

@@ -57,6 +57,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function getFilamentAvatarUrl(): string|null
     {
-        return 'https://github.com/shadcn.png';
+        return 'https://avatars.githubusercontent.com/u/124599?v=4';
     }
 }
