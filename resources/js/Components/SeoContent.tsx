@@ -4,7 +4,7 @@ import { lazy, Suspense } from "react";
 
 const LazyPhotoProvider = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoProvider })));
 const LazyPhotoView = lazy(() => import('react-photo-view').then(module => ({ default: module.PhotoView })));
-const cdnUrl = import.meta.env.VITE_CDN_URL || 'https://cdn.garamm.dev';
+const cdnUrl = 'https://cdn.garamm.dev';
 
 export default function SeoContent({ content }: { content: iSeoContent[] }) {
     return (
