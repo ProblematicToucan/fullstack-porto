@@ -136,18 +136,32 @@ docker-compose up -d
 ## 📱 **Screenshots**
 
 ### Frontend
-- **Landing Page** - Beautiful hero section with featured projects
-- **Project Gallery** - Grid layout with filtering and search
-- **Project Details** - Rich project showcase with media gallery
-- **Blog Section** - Clean, readable blog layout
-- **About Page** - Personal profile and bio
+
+#### Landing Page
+![Landing Page](screenshots/fullstack-porto.test_landing.png)
+*Beautiful hero section with featured projects and modern design*
+
+#### Project Gallery
+![Project Page](screenshots/fullstack-porto.test_project.png)
+*Grid layout with filtering, search, and detailed project showcase*
+
+#### Profile Page
+![Profile Page](screenshots/fullstack-porto.test_profile.png)
+*Personal profile and bio section*
 
 ### Admin Panel
-- **Dashboard** - Overview of content and statistics
-- **Project Management** - Create, edit, and organize projects
-- **Blog Editor** - Rich text editor for blog posts
-- **Media Library** - Upload and manage images/videos
-- **Settings** - Configure site settings and preferences
+
+#### Project Management
+![Admin Projects](screenshots/fullstack-porto.test_admin_projects.png)
+*Create, edit, and organize projects with rich media support*
+
+#### Blog Management
+![Admin Posts](screenshots/fullstack-porto.test_admin_posts.png)
+*Rich text editor for blog posts with full content management*
+
+#### Blog Editor
+![Admin Post Editor](screenshots/fullstack-porto.test_admin_posts_89899702-2abd-479a-96b9-c87e9d987e81_edit.png)
+*Advanced blog post editor with media integration*
 
 ## 🎨 **Customization**
 
