@@ -9,7 +9,7 @@ export default function Landing() {
                 <title>Gamal Abdul Aziz</title>
                 <meta name="landing" content="Gamal Abdul Aziz - Portfolio Website" />
             </Head>
-            <section className="w-full min-h-screen flex items-center justify-center">
+            <section className="w-full h-full flex items-center justify-center">
                 <div className="container px-4 md:px-6">
                     <div className="grid gap-6 items-center">
                         <div className="flex flex-col justify-center space-y-4 text-center">
