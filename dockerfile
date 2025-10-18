@@ -1,9 +1,6 @@
 # PHP Alpine builder for dependencies
 FROM php:8.3-alpine AS laravel-builder
 
-# Upgrade
-RUN apk update && apk upgrade
-
 WORKDIR /app
 
 # Copy project files
@@ -22,13 +19,15 @@ RUN install-php-extensions \
     pcntl
 
 # Install Laravel dependencies (without dev)
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader \
+    && composer clear-cache
+
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
 
 # Node.js Alpine Builder
 FROM node:18-alpine AS node-builder
-
-# Upgrade
-RUN apk update && apk upgrade
 
 # Vite ARGS
 ARG VITE_APP_NAME
@@ -42,14 +41,8 @@ COPY . .
 # Copy the vendor directory from the Laravel builder (needed for Tailwind preset)
 COPY --from=laravel-builder /app/vendor /app/vendor
 
-# Install Node dependencies
-RUN npm install
-
-# Build Vite
-RUN npm run build
-
-# Cleanup
-RUN rm -rf node_modules
+# Install Node dependencies, build vite, and cleanup
+RUN npm ci && npm run build && npm cache clean --force && rm -rf node_modules
 
 # Final FrankenPHP Image
 FROM dunglas/frankenphp:latest-php8.3-alpine AS final
@@ -62,9 +55,6 @@ LABEL org.opencontainers.image.title="Filament Portfolio"
 LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
 LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/filament-portfolio
 LABEL org.opencontainers.image.licenses=MIT
-
-# Upgrade
-RUN apk update && apk upgrade
 
 # Production
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
