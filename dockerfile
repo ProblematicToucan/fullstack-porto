@@ -11,7 +11,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install required PHP extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions pdo_pgsql zip
+RUN install-php-extensions \
+    pdo_pgsql \
+    zip
 
 # Install Laravel dependencies (without dev)
 RUN composer install --no-dev --optimize-autoloader
