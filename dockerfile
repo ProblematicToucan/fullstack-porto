@@ -1,6 +1,9 @@
 # PHP Alpine builder for dependencies
 FROM php:8.3-alpine AS laravel-builder
 
+# Upgrade
+RUN apk update && apk upgrade
+
 WORKDIR /app
 
 # Copy project files
@@ -12,22 +15,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install required PHP extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
-    pdo_mysql \
+    pdo_pgsql \
     intl \
     zip \
     opcache \
     pcntl
 
 # Install Laravel dependencies (without dev)
-RUN composer install --no-dev --optimize-autoloader && \
-    composer clear-cache
-
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+RUN composer install --no-dev --optimize-autoloader
 
 # Node.js Alpine Builder
 FROM node:18-alpine AS node-builder
+
+# Upgrade
+RUN apk update && apk upgrade
 
 # Vite ARGS
 ARG VITE_APP_NAME
@@ -51,7 +52,7 @@ RUN npm run build
 RUN rm -rf node_modules
 
 # Final FrankenPHP Image
-FROM dunglas/frankenphp:php8.4-alpine AS final
+FROM dunglas/frankenphp:latest-php8.3-alpine AS final
 
 # Domain Server Name
 ENV SERVER_NAME=garamm.dev
@@ -61,6 +62,9 @@ LABEL org.opencontainers.image.title="Filament Portfolio"
 LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
 LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/filament-portfolio
 LABEL org.opencontainers.image.licenses=MIT
+
+# Upgrade
+RUN apk update && apk upgrade
 
 # Production
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
@@ -72,7 +76,10 @@ COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 WORKDIR /app
 
 # Install required PHP extensions
-RUN install-php-extensions pdo_pgsql intl pcntl opcache
+RUN install-php-extensions \
+    pdo_pgsql \
+    intl \
+    pcntl
 
 # Copy built Laravel project
 COPY --from=laravel-builder /app /app
@@ -88,4 +95,4 @@ EXPOSE 8000
 ENTRYPOINT ["./run"]
 
 # Healthcheck
-HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=18 CMD php artisan octane:status || exit 1
+HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=8 CMD php artisan octane:status || exit 1
