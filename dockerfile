@@ -14,8 +14,8 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 RUN install-php-extensions pdo_pgsql zip
 
 # Install Laravel dependencies (without dev)
-RUN composer install --no-dev --optimize-autoloader \
-    && composer clear-cache
+RUN composer install --no-dev --optimize-autoloader && \
+    composer clear-cache
 
 RUN php artisan config:cache && \
     php artisan route:cache && \
