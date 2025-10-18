@@ -95,4 +95,4 @@ EXPOSE 8000
 ENTRYPOINT ["./run"]
 
 # Healthcheck
-HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=8 CMD php artisan octane:status || exit 1
+HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=18 CMD php artisan octane:status || exit 1
