@@ -1,9 +1,6 @@
 # PHP Alpine builder for dependencies
 FROM php:8.3-alpine AS laravel-builder
 
-# Upgrade
-RUN apk update && apk upgrade
-
 WORKDIR /app
 
 # Copy project files
@@ -26,9 +23,6 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Node.js Alpine Builder
 FROM node:18-alpine AS node-builder
-
-# Upgrade
-RUN apk update && apk upgrade
 
 # Vite ARGS
 ARG VITE_APP_NAME
@@ -63,9 +57,6 @@ LABEL org.opencontainers.image.description="Production-ready Filament Portfolio 
 LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/filament-portfolio
 LABEL org.opencontainers.image.licenses=MIT
 
-# Upgrade
-RUN apk update && apk upgrade
-
 # Production
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
@@ -95,4 +86,4 @@ EXPOSE 8000
 ENTRYPOINT ["./run"]
 
 # Healthcheck
-HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=8 CMD php artisan octane:status || exit 1
+HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=18 CMD php artisan octane:status || exit 1
