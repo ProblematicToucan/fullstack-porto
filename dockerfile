@@ -11,15 +11,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install required PHP extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions \
-    pdo_mysql \
-    intl \
-    zip \
-    opcache \
-    pcntl
+RUN install-php-extensions pdo_pgsql zip
 
 # Install Laravel dependencies (without dev)
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader \
+    && composer clear-cache
+
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
 
 # Node.js Alpine Builder
 FROM node:18-alpine AS node-builder
@@ -67,10 +67,7 @@ COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 WORKDIR /app
 
 # Install required PHP extensions
-RUN install-php-extensions \
-    pdo_mysql \
-    intl \
-    pcntl
+RUN install-php-extensions pdo_pgsql intl pcntl opcache
 
 # Copy built Laravel project
 COPY --from=laravel-builder /app /app
