@@ -25,14 +25,45 @@ import {
     CollapsibleTrigger,
 } from "@/Components/ui/collapsible"
 import { useContext, useEffect, useRef, useState } from "react"
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import ThemeContext from "@/Theme/ThemeContext";
+
+// Safe route helper for SSR compatibility
+const safeRoute = (name: string, params?: Record<string, any>): string => {
+    if (typeof route !== 'undefined' && route) {
+        return route(name, params);
+    }
+    // Fallback for SSR - return a basic path
+    const routeMap: Record<string, string> = {
+        'landing': '/',
+        'project.index': '/project',
+        'post.index': '/post',
+        'bio': '/bio',
+    };
+    return routeMap[name] || '/';
+};
+
+// Safe route current check for SSR compatibility
+const isCurrentRoute = (routeName: string, currentComponent?: string): boolean => {
+    if (typeof route !== 'undefined' && route) {
+        return route().current(routeName) || false;
+    }
+    // Fallback for SSR - check component name
+    const componentMap: Record<string, string> = {
+        'landing': 'Landing',
+        'project.index': 'Project',
+        'post.index': 'Post',
+        'bio': 'Profile',
+    };
+    return componentMap[routeName] === currentComponent;
+};
 
 export default function CommandMenu() {
     const [isOpen, setIsOpen] = useState(false);
     const commandRef = useRef<HTMLInputElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
     const themeContext = useContext(ThemeContext);
+    const { component } = usePage();
 
     // Throw error if not used within ThemeProvider
     if (!themeContext) {
@@ -66,8 +97,8 @@ export default function CommandMenu() {
 
         if (event.key === "p" && (event.metaKey || event.ctrlKey)) {
             event.preventDefault();
-            if (route().current('bio')) return;
-            router.visit(route('bio'), {
+            if (isCurrentRoute('bio', component as string)) return;
+            router.visit(safeRoute('bio'), {
                 preserveState: true,
                 replace: true,
             });
@@ -75,6 +106,9 @@ export default function CommandMenu() {
     };
 
     useEffect(() => {
+        // Only run in browser environment
+        if (typeof document === 'undefined') return;
+
         document.addEventListener("mousedown", handleOutsideClick);
         document.addEventListener("keydown", handleKeyDown);
 
@@ -86,7 +120,7 @@ export default function CommandMenu() {
     }, [isOpen]); // Only update on isOpen change
 
     const handleItemClick = (path: string) => {
-        router.visit(route(path), {
+        router.visit(safeRoute(path), {
             preserveState: true,
             replace: true,
         });
@@ -104,22 +138,22 @@ export default function CommandMenu() {
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup heading="Suggestions">
-                            <CommandItem onSelect={() => handleItemClick('landing')} disabled={route().current('landing')}>
+                            <CommandItem onSelect={() => handleItemClick('landing')} disabled={isCurrentRoute('landing', component as string)}>
                                 <House className="mr-2 h-4 w-4" />
                                 <span>Home</span>
                             </CommandItem>
-                            <CommandItem onSelect={() => handleItemClick('project.index')} disabled={route().current('project.index')}>
+                            <CommandItem onSelect={() => handleItemClick('project.index')} disabled={isCurrentRoute('project.index', component as string)}>
                                 <PanelsTopLeft className="mr-2 h-4 w-4" />
                                 <span>Projects</span>
                             </CommandItem>
-                            <CommandItem onSelect={() => handleItemClick('post.index')} disabled={route().current('post.index')}>
+                            <CommandItem onSelect={() => handleItemClick('post.index')} disabled={isCurrentRoute('post.index', component as string)}>
                                 <MessageSquareCode className="mr-2 h-4 w-4" />
                                 <span>Posts</span>
                             </CommandItem>
                         </CommandGroup>
                         <CommandSeparator />
                         <CommandGroup heading="Settings">
-                            <CommandItem onSelect={() => handleItemClick('bio')} disabled={route().current('bio')}>
+                            <CommandItem onSelect={() => handleItemClick('bio')} disabled={isCurrentRoute('bio', component as string)}>
                                 <User className="mr-2 h-4 w-4" />
                                 <span>Profile</span>
                                 <CommandShortcut>⌘P</CommandShortcut>
