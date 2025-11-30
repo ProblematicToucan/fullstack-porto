@@ -9,5 +9,22 @@ php artisan optimize:clear
 php artisan icons:cache
 php artisan filament:cache-components
 
+# Start SSR server in the background
+php artisan inertia:start-ssr &
+SSR_PID=$!
+
+# Function to cleanup SSR server on exit
+cleanup() {
+    if [ ! -z "$SSR_PID" ]; then
+        kill $SSR_PID 2>/dev/null || true
+    fi
+}
+
+# Trap signals to cleanup
+trap cleanup EXIT INT TERM
+
+# Wait a moment for SSR server to start
+sleep 2
+
 # Run the main application
 exec php artisan octane:frankenphp
