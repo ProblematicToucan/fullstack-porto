@@ -52,7 +52,7 @@ RUN npm run build
 RUN rm -rf node_modules
 
 # Final FrankenPHP Image
-FROM dunglas/frankenphp:latest-php8.4-alpine AS final
+FROM dunglas/frankenphp:1.9-php8.4-alpine AS final
 
 # Domain Server Name
 ENV SERVER_NAME=garamm.dev
