@@ -1,5 +1,5 @@
 # PHP Alpine builder for dependencies
-FROM php:8.3-alpine AS laravel-builder
+FROM php:8.4-alpine AS laravel-builder
 
 # Upgrade
 RUN apk update && apk upgrade
@@ -52,7 +52,7 @@ RUN npm run build
 RUN rm -rf node_modules
 
 # Final FrankenPHP Image
-FROM dunglas/frankenphp:latest-php8.3-alpine AS final
+FROM dunglas/frankenphp:latest-php8.4-alpine AS final
 
 # Domain Server Name
 ENV SERVER_NAME=garamm.dev
