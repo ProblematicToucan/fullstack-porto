@@ -6,6 +6,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/js/app.tsx', 'resources/js/app.js', 'resources/css/app.css', 'resources/css/filament/admin/theme.css'],
+            ssr: 'resources/js/ssr.tsx',
             refresh: [
                 ...refreshPaths,
                 'app/**'
@@ -13,4 +14,7 @@ export default defineConfig({
         }),
         react(),
     ],
+    esbuild: {
+        jsx: 'automatic',
+    },
 });
