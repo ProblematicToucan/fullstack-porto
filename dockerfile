@@ -66,6 +66,9 @@ LABEL org.opencontainers.image.licenses=MIT
 # Upgrade
 RUN apk update && apk upgrade
 
+# Install node runtime
+RUN apk add --no-cache nodejs
+
 # Production
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
