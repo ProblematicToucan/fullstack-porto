@@ -57,7 +57,7 @@ ENV SERVER_NAME=garamm.dev
 LABEL maintainer="ProblematicToucan <gamal.aziz1000@gmail.com>"
 LABEL org.opencontainers.image.title="Filament Portfolio"
 LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
-LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/filament-portfolio
+LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/fullstack-porto
 LABEL org.opencontainers.image.licenses=MIT
 
 # Upgrade
