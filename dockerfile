@@ -87,6 +87,7 @@ RUN install-php-extensions \
 # Copy built Laravel project
 COPY --from=laravel-builder /app /app
 COPY --from=node-builder /app/public /app/public
+COPY --from=node-builder /app/node_modules /app/node_modules
 COPY --from=node-builder /app/bootstrap/ssr /app/bootstrap/ssr
 
 # Make the entrypoint script executable
