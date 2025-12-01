@@ -48,9 +48,6 @@ RUN npm install
 # Build Vite
 RUN npm run build
 
-# Cleanup
-RUN rm -rf node_modules
-
 # Final FrankenPHP Image
 FROM dunglas/frankenphp:1.9-php8.4-alpine AS final
 
