@@ -87,8 +87,18 @@ COPY --from=node-builder /app/public /app/public
 COPY --from=node-builder /app/node_modules /app/node_modules
 COPY --from=node-builder /app/bootstrap/ssr /app/bootstrap/ssr
 
+# Create non-root user (fixed UID/GID for consistency)
+RUN addgroup -g 1000 app && \
+    adduser -u 1000 -G app -s /bin/sh -D app
+
+# Ensure storage and cache are writable
+RUN chown -R app:app /app
+
 # Make the entrypoint script executable
 RUN chmod +x ./run
+
+# Run as non-root user
+USER app
 
 # Expose Laravel Octane port
 EXPOSE 8000
