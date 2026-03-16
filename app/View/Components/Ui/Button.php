@@ -15,12 +15,17 @@ class Button extends Component
      * the button automatically shows a loading spinner and is disabled (pointer-events
      * disabled via disabled state) until the request completes.
      *
+     * When href is provided, the component renders an <a> tag styled as a button,
+     * with an optional trailing link arrow icon.
+     *
      * @param  string  $variant  One of: primary, secondary, outline, ghost, subtle, danger
      * @param  string  $size  One of: sm, md, lg
-     * @param  string  $type  HTML button type: button, submit, reset
+     * @param  string  $type  HTML button type: button, submit, reset (ignored when href is set)
      * @param  bool  $loading  When true (default), shows spinner and disables during Livewire requests. Set :loading="false" to disable.
-     * @param  string|null  $icon  Optional leading icon (any Blade Icons name, e.g. heroicon-o-ellipsis-horizontal)
-     * @param  string|null  $iconTrailing  Optional trailing icon (any Blade Icons name)
+     * @param  string|null  $icon  Optional leading icon (Blade Icons name, e.g. heroicon-o-ellipsis-horizontal)
+     * @param  string|null  $iconTrailing  Optional trailing icon: Blade Icons name or built-in (e.g. arrow-up-right)
+     * @param  string|null  $href  When set, renders an <a> tag instead of a button
+     * @param  bool  $inset  When true with ghost or subtle variant, applies negative margin to negate padding for better alignment
      */
     public function __construct(
         public string $variant = 'primary',
@@ -29,8 +34,30 @@ class Button extends Component
         public bool $loading = true,
         public ?string $icon = null,
         public ?string $iconTrailing = null,
+        public ?string $href = null,
+        public bool $inset = false,
     ) {
         //
+    }
+
+    /** Built-in trailing icon names that render a custom SVG (e.g. arrow-up-right). */
+    private const BUILT_IN_TRAILING_ICONS = ['arrow-up-right'];
+
+    /**
+     * Whether the trailing icon is a built-in (custom SVG) rather than a Blade Icon.
+     */
+    public function isBuiltInTrailingIcon(): bool
+    {
+        return $this->iconTrailing !== null
+            && in_array($this->iconTrailing, self::BUILT_IN_TRAILING_ICONS, true);
+    }
+
+    /**
+     * Whether the component should render as a link.
+     */
+    public function isLink(): bool
+    {
+        return $this->href !== null && $this->href !== '';
     }
 
     /**
@@ -50,7 +77,7 @@ class Button extends Component
      */
     public function baseClasses(): string
     {
-        return 'inline-flex items-center justify-center rounded-sm border text-sm font-medium leading-normal transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
+        return 'inline-flex items-center justify-center rounded-sm border text-sm font-medium leading-normal transition-colors focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-50';
     }
 
     /**
@@ -78,6 +105,22 @@ class Button extends Component
             'sm' => 'px-3 py-1 text-xs',
             'lg' => 'px-6 py-2.5 text-base',
             default => 'px-5 py-1.5',
+        };
+    }
+
+    /**
+     * When inset is true and variant is ghost or subtle, negative margin classes to negate padding for alignment.
+     */
+    public function insetClasses(): string
+    {
+        if (! $this->inset || ! in_array($this->variant, ['ghost', 'subtle'], true)) {
+            return '';
+        }
+
+        return match ($this->size) {
+            'sm' => '-mx-3 -my-1',
+            'lg' => '-mx-6 -my-2.5',
+            default => '-mx-5 -my-1.5',
         };
     }
 
