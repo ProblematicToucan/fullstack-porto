@@ -12,7 +12,7 @@
         </header>
 
         <div class="prose prose-zinc dark:prose-invert max-w-none text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300">
-            {!! $post->content !!}
+            {!! \App\Support\PostContentSanitizer::sanitize($post->content) !!}
         </div>
     </article>
 @endsection
