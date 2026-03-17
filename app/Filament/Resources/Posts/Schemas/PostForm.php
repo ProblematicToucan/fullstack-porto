@@ -17,7 +17,17 @@ class PostForm
                 TextInput::make('title')
                     ->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? ''))),
+                    ->afterStateUpdated(function ($state, $set, $get, $record = null): void {
+                        $currentSlug = $get('slug');
+                        $newSlug = Str::slug($state ?? '');
+                        $previousTitle = $record?->title;
+                        $previousAutoSlug = $previousTitle !== null ? Str::slug($previousTitle) : null;
+                        $shouldSet = $currentSlug === ''
+                            || ($previousAutoSlug !== null && $currentSlug === $previousAutoSlug);
+                        if ($shouldSet) {
+                            $set('slug', $newSlug);
+                        }
+                    }),
                 TextInput::make('slug')
                     ->required()
                     ->unique(ignoreRecord: true)
