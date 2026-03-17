@@ -34,6 +34,7 @@ class PostForm
                     ->helperText('Auto-filled from title; you can edit manually.'),
                 Toggle::make('is_public'),
                 RichEditor::make('content')
+                    ->json()
                     ->columnSpanFull(),
             ]);
     }
