@@ -19,7 +19,7 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'content' => 'string',
+        'content' => 'array',
     ];
 
     public function getRouteKeyName(): string
