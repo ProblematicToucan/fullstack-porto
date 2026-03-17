@@ -122,9 +122,9 @@
                 </div>
             </div>
             <div
-                class="bg-[#fff2f2] dark:bg-[#1D0002] relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-335/376 lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden">
+                class="bg-[#fff2f2] dark:bg-[#1D0002] relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-335/376 lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden flex flex-col">
                 {{-- Laravel Logo --}}
-                <svg class="w-full text-[#F53003] dark:text-[#F61500] transition-all translate-y-0 opacity-100 max-w-none duration-750 starting:opacity-0 starting:translate-y-6"
+                <svg class="w-full text-[#F53003] dark:text-[#F61500] transition-all translate-y-0 opacity-100 max-w-none duration-750 starting:opacity-0 starting:translate-y-6 shrink-0"
                     viewBox="0 0 438 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.2036 -3H0V102.197H49.5189V86.7187H17.2036V-3Z" fill="currentColor" />
                     <path
@@ -143,8 +143,10 @@
                         fill="currentColor" />
                 </svg>
 
+                {{-- 12 SVG at bottom of card --}}
+                <div class="mt-auto flex justify-end lg:justify-center">
                 {{-- Light Mode 12 SVG --}}
-                <svg class="w-[448px] max-w-none relative -mt-[4.9rem] -ml-8 lg:ml-0 lg:-mt-[6.6rem] dark:hidden"
+                <svg class="w-[448px] max-w-none relative -ml-8 lg:ml-0 dark:hidden"
                     viewBox="0 0 440 376" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g
                         class="transition-all delay-300 translate-y-0 opacity-100 duration-750 starting:opacity-0 starting:translate-y-4">
@@ -316,7 +318,7 @@
                 </svg>
 
                 {{-- Dark Mode 12 SVG --}}
-                <svg class="w-[448px] max-w-none relative -mt-[4.9rem] -ml-8 lg:ml-0 lg:-mt-[6.6rem] hidden dark:block"
+                <svg class="w-[448px] max-w-none relative -ml-8 lg:ml-0 hidden dark:block"
                     viewBox="0 0 440 376" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g
                         class="transition-all delay-300 translate-y-0 opacity-100 duration-750 starting:opacity-0 starting:translate-y-4">
@@ -480,8 +482,9 @@
                             stroke="#FF750F" stroke-width="1" />
                     </g>
                 </svg>
+                </div>
                 <div
-                    class="absolute inset-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]">
+                    class="absolute inset-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] pointer-events-none">
                 </div>
             </div>
         </main>
