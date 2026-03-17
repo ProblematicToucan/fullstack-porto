@@ -55,7 +55,7 @@ class PostContentSanitizer
                 $html = match ($markType) {
                     'bold' => "<strong>{$html}</strong>",
                     'italic' => "<em>{$html}</em>",
-                    'link' => '<a href="'.\e($mark['attrs']['href'] ?? '#').">{$html}</a>",
+                    'link' => '<a href="' . \e($mark['attrs']['href'] ?? '#') . '">' . $html . '</a>',
                     'code' => "<code>{$html}</code>",
                     'strike' => "<s>{$html}</s>",
                     'underline' => "<u>{$html}</u>",
