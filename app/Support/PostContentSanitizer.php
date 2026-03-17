@@ -40,22 +40,26 @@ class PostContentSanitizer
 
     /**
      * Convert TipTap/ProseMirror JSON document to HTML. Only emits whitelisted tags; text is escaped.
+     * Defensively validates node shape so malformed payloads degrade to empty output instead of throwing.
      */
     private static function tiptapJsonToHtml(array $node): string
     {
         $type = $node['type'] ?? '';
-        $content = $node['content'] ?? [];
+        $content = \is_array($node['content'] ?? null) ? $node['content'] : [];
         $text = $node['text'] ?? null;
 
-        if ($text !== null) {
-            $html = e($text);
-            $marks = $node['marks'] ?? [];
+        if ($text !== null && \is_scalar($text)) {
+            $html = e((string) $text);
+            $marks = \is_array($node['marks'] ?? null) ? $node['marks'] : [];
             foreach ($marks as $mark) {
+                if (!\is_array($mark)) {
+                    continue;
+                }
                 $markType = $mark['type'] ?? '';
                 $html = match ($markType) {
                     'bold' => "<strong>{$html}</strong>",
                     'italic' => "<em>{$html}</em>",
-                    'link' => '<a href="' . \e($mark['attrs']['href'] ?? '#') . '">' . $html . '</a>',
+                    'link' => '<a href="' . \e(self::linkHrefFromMark($mark)) . '">' . $html . '</a>',
                     'code' => "<code>{$html}</code>",
                     'strike' => "<s>{$html}</s>",
                     'underline' => "<u>{$html}</u>",
@@ -86,9 +90,24 @@ class PostContentSanitizer
         };
     }
 
+    /**
+     * Safe href from link mark: attrs must be array and href must be string; otherwise '#'.
+     */
+    private static function linkHrefFromMark(array $mark): string
+    {
+        $attrs = $mark['attrs'] ?? null;
+        if (!\is_array($attrs)) {
+            return '#';
+        }
+        $href = $attrs['href'] ?? null;
+
+        return \is_string($href) ? $href : '#';
+    }
+
     private static function headingOpenTag(array $node): string
     {
-        $level = (int) ($node['attrs']['level'] ?? 1);
+        $attrs = \is_array($node['attrs'] ?? null) ? $node['attrs'] : [];
+        $level = (int) ($attrs['level'] ?? 1);
         $level = max(1, min(6, $level));
 
         return "<h{$level}>";
@@ -96,7 +115,8 @@ class PostContentSanitizer
 
     private static function headingCloseTag(array $node): string
     {
-        $level = (int) ($node['attrs']['level'] ?? 1);
+        $attrs = \is_array($node['attrs'] ?? null) ? $node['attrs'] : [];
+        $level = (int) ($attrs['level'] ?? 1);
         $level = max(1, min(6, $level));
 
         return "</h{$level}>";
