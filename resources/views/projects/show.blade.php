@@ -23,7 +23,9 @@
 
         @if($project->description !== null && $project->description !== [])
             <div class="mb-6 prose prose-zinc dark:prose-invert max-w-none">
-                @if(is_array($project->description))
+                @if(is_array($project->description) && \App\Support\PostContentSanitizer::isBuilderBlocks($project->description))
+                    {!! \App\Support\PostContentSanitizer::sanitize($project->description) !!}
+                @elseif(is_array($project->description))
                     @foreach($project->description as $block)
                         @if(is_string($block))
                             <p class="text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300 mb-3">{{ $block }}</p>

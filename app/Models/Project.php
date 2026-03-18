@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
@@ -26,6 +27,20 @@ class Project extends Model
     protected $casts = [
         'description' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Project $project): void {
+            if (filled($project->title) && (string) $project->slug === '') {
+                $base = Str::slug($project->title);
+                $project->slug = $base;
+                $count = 0;
+                while (static::query()->where('slug', $project->slug)->when($project->exists, fn ($q) => $q->whereKeyNot($project->getKey()))->exists()) {
+                    $project->slug = $base.'-'.(++$count);
+                }
+            }
+        });
+    }
 
     public function getRouteKeyName(): string
     {
