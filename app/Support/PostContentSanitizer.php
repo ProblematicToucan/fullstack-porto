@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 
@@ -41,15 +42,16 @@ class PostContentSanitizer
     /**
      * Check if array is Filament Builder format: list of items with 'type' and 'data' keys.
      */
-    private static function isBuilderBlocks(array $content): bool
+    public static function isBuilderBlocks(array $content): bool
     {
         if ($content === []) {
             return false;
         }
         $first = reset($content);
-        if (!\is_array($first)) {
+        if (! \is_array($first)) {
             return false;
         }
+
         return \array_key_exists('type', $first) && \array_key_exists('data', $first);
     }
 
@@ -60,7 +62,7 @@ class PostContentSanitizer
     {
         $out = '';
         foreach ($blocks as $item) {
-            if (!\is_array($item)) {
+            if (! \is_array($item)) {
                 continue;
             }
             $type = $item['type'] ?? '';
@@ -87,13 +89,14 @@ class PostContentSanitizer
             return '';
         }
         if (\is_string($text)) {
-            return self::sanitizer()->sanitize('<p>' . $text . '</p>');
+            return self::sanitizer()->sanitize('<p>'.$text.'</p>');
         }
         if (\is_array($text)) {
             $inner = self::tiptapJsonToHtml($text);
             if ($inner === '') {
                 return '';
             }
+
             return self::sanitizer()->sanitize($inner);
         }
 
@@ -110,19 +113,19 @@ class PostContentSanitizer
         if ($url === '') {
             return '';
         }
-        if (!str_starts_with($url, 'http') && !str_starts_with($url, '/')) {
-            $url = \Illuminate\Support\Facades\Storage::url($url);
+        if (! str_starts_with($url, 'http') && ! str_starts_with($url, '/')) {
+            $url = Storage::url($url);
         }
         $alt = \is_string($data['alt'] ?? null) ? $data['alt'] : '';
 
-        return '<figure class="my-4"><img src="' . \e($url) . '" alt="' . \e($alt) . '" class="max-w-full h-auto rounded-lg" loading="lazy">' . ($alt !== '' ? '<figcaption class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">' . \e($alt) . '</figcaption>' : '') . '</figure>';
+        return '<figure class="my-4"><img src="'.\e($url).'" alt="'.\e($alt).'" class="max-w-full h-auto rounded-lg" loading="lazy">'.($alt !== '' ? '<figcaption class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">'.\e($alt).'</figcaption>' : '').'</figure>';
     }
 
     private static function sanitizer(): HtmlSanitizer
     {
         if (self::$sanitizer === null) {
             self::$sanitizer = new HtmlSanitizer(
-                (new HtmlSanitizerConfig())
+                (new HtmlSanitizerConfig)
                     ->allowSafeElements()
                     ->allowRelativeLinks()
             );
@@ -145,14 +148,14 @@ class PostContentSanitizer
             $html = e((string) $text);
             $marks = \is_array($node['marks'] ?? null) ? $node['marks'] : [];
             foreach ($marks as $mark) {
-                if (!\is_array($mark)) {
+                if (! \is_array($mark)) {
                     continue;
                 }
                 $markType = $mark['type'] ?? '';
                 $html = match ($markType) {
                     'bold' => "<strong>{$html}</strong>",
                     'italic' => "<em>{$html}</em>",
-                    'link' => '<a href="' . \e(self::linkHrefFromMark($mark)) . '">' . $html . '</a>',
+                    'link' => '<a href="'.\e(self::linkHrefFromMark($mark)).'">'.$html.'</a>',
                     'code' => "<code>{$html}</code>",
                     'strike' => "<s>{$html}</s>",
                     'underline' => "<u>{$html}</u>",
@@ -189,7 +192,7 @@ class PostContentSanitizer
     private static function linkHrefFromMark(array $mark): string
     {
         $attrs = $mark['attrs'] ?? null;
-        if (!\is_array($attrs)) {
+        if (! \is_array($attrs)) {
             return '#';
         }
         $href = $attrs['href'] ?? null;
