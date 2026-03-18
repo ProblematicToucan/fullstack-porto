@@ -2,15 +2,10 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
-use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Builder\Block;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class PostForm
@@ -22,44 +17,24 @@ class PostForm
                 TextInput::make('title')
                     ->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug((string) ($state ?? '')))),
+                    ->afterStateUpdated(function ($state, $set, $get, $record = null): void {
+                        $currentSlug = $get('slug');
+                        $newSlug = Str::slug($state ?? '');
+                        $previousTitle = $record?->title;
+                        $previousAutoSlug = $previousTitle !== null ? Str::slug($previousTitle) : null;
+                        $shouldSet = $currentSlug === ''
+                            || ($previousAutoSlug !== null && $currentSlug === $previousAutoSlug);
+                        if ($shouldSet) {
+                            $set('slug', $newSlug);
+                        }
+                    }),
                 TextInput::make('slug')
-                    ->disabled()
-                    ->dehydrated(false)
-                    ->default(fn ($get) => Str::slug((string) ($get('title') ?? '')))
-                    ->helperText('Generated from title when you save.'),
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->helperText('Auto-filled from title; you can edit manually.'),
                 Toggle::make('is_public'),
-                Section::make('Content')
-                    ->schema([
-                        Builder::make('content')
-                            ->hiddenLabel()
-                            ->blocks([
-                                Block::make('paragraph')
-                                    ->label(fn (?array $state): string => $state === null ? 'Paragraph' : 'Paragraph')
-                                    ->icon(Heroicon::Bars3BottomLeft)
-                                    ->schema([
-                                        RichEditor::make('text')
-                                            ->disableToolbarButtons([
-                                                'attachFiles',
-                                            ])
-                                            ->hiddenLabel(),
-                                    ]),
-                                Block::make('image')
-                                    ->label('Image')
-                                    ->icon(Heroicon::Photo)
-                                    ->schema([
-                                        FileUpload::make('image')
-                                            ->hiddenLabel()
-                                            ->directory('post-images')
-                                            ->visibility('public')
-                                            ->image()
-                                            ->imageEditor(),
-                                    ]),
-                            ])
-                            ->blockNumbers()
-                            ->blockIcons()
-                            ->columnSpanFull(),
-                    ])
+                RichEditor::make('content')
+                    ->json()
                     ->columnSpanFull(),
             ]);
     }

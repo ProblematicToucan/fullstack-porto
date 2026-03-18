@@ -7,7 +7,7 @@
         {{ $slot }}
     </button>
 @else
-    <a href="{{ $renderedHref() }}" @if($isExternal()) target="_blank" rel="noopener noreferrer" @else wire:navigate @endif {{ $merged }}>
+    <a href="{{ $href }}" @if($external) target="_blank" rel="noopener noreferrer" @else wire:navigate @endif {{ $merged }}>
         {{ $slot }}
     </a>
 @endif

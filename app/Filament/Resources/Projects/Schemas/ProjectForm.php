@@ -2,15 +2,11 @@
 
 namespace App\Filament\Resources\Projects\Schemas;
 
-use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class ProjectForm
@@ -24,41 +20,10 @@ class ProjectForm
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? ''))),
                 TextInput::make('slug')
-                    ->disabled()
-                    ->dehydrated(false)
-                    ->default(fn ($get) => Str::slug((string) ($get('title') ?? '')))
-                    ->helperText('Generated from title when you save.'),
-                Section::make('Description')
-                    ->schema([
-                        Builder::make('description')
-                            ->hiddenLabel()
-                            ->blocks([
-                                Block::make('paragraph')
-                                    ->label('Paragraph')
-                                    ->icon(Heroicon::Bars3BottomLeft)
-                                    ->schema([
-                                        RichEditor::make('text')
-                                            ->disableToolbarButtons([
-                                                'attachFiles',
-                                            ])
-                                            ->hiddenLabel(),
-                                    ]),
-                                Block::make('image')
-                                    ->label('Image')
-                                    ->icon(Heroicon::Photo)
-                                    ->schema([
-                                        FileUpload::make('image')
-                                            ->hiddenLabel()
-                                            ->directory('project-description-images')
-                                            ->visibility('public')
-                                            ->image()
-                                            ->imageEditor(),
-                                    ]),
-                            ])
-                            ->blockNumbers()
-                            ->blockIcons()
-                            ->columnSpanFull(),
-                    ])
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->helperText('Auto-filled from title; you can edit manually.'),
+                KeyValue::make('description')
                     ->columnSpanFull(),
                 TextInput::make('project_url')
                     ->url()
