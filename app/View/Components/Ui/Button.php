@@ -49,7 +49,7 @@ class Button extends Component
     public function isBuiltInTrailingIcon(): bool
     {
         return $this->iconTrailing !== null
-            && \in_array($this->iconTrailing, self::BUILT_IN_TRAILING_ICONS, true);
+            && in_array($this->iconTrailing, self::BUILT_IN_TRAILING_ICONS, true);
     }
 
     /**
@@ -113,7 +113,7 @@ class Button extends Component
      */
     public function insetClasses(): string
     {
-        if (!$this->inset || !in_array($this->variant, ['ghost', 'subtle'], true)) {
+        if (! $this->inset || ! in_array($this->variant, ['ghost', 'subtle'], true)) {
             return '';
         }
 

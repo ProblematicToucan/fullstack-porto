@@ -19,13 +19,10 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         $title = fake()->sentence(3);
-
         return [
             'title' => $title,
-            'slug' => Str::slug($title).'-'.fake()->unique()->regexify('[a-z0-9]{6}'),
-            'description' => [
-                ['type' => 'paragraph', 'data' => ['text' => '<p>'.fake()->paragraphs(2, true).'</p>']],
-            ],
+            'slug' => Str::slug($title) . '-' . fake()->unique()->regexify('[a-z0-9]{6}'),
+            'description' => ['en' => fake()->paragraphs(2, true)],
             'project_url' => fake()->optional(0.7)->url(),
             'repo_url' => fake()->optional(0.5)->url(),
             'image' => fake()->optional(0.5)->imageUrl(),
