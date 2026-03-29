@@ -55,6 +55,9 @@ FROM dunglas/frankenphp:1.12.1-php8.4-alpine AS final
 # Set the server name
 ENV SERVER_NAME=garamm.dev
 
+# Production
+RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+
 LABEL maintainer="ProblematicToucan <gamal.aziz1000@gmail.com>"
 LABEL org.opencontainers.image.title="Filament Portfolio"
 LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
