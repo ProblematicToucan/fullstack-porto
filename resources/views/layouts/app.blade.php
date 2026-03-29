@@ -26,8 +26,10 @@
     </header>
     @endpersist
 
-    <main class="flex-1 w-full max-w-4xl mx-auto px-6 py-8 lg:py-12">
-        @yield('content')
+    <main class="flex-1 w-full min-w-0 max-w-4xl mx-auto px-6 py-8 lg:py-12">
+        <div class="min-w-0">
+            @yield('content')
+        </div>
     </main>
 
     @livewireScripts

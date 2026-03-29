@@ -1,5 +1,5 @@
 @if($isLink())
-    <a href="{{ $href }}" wire:navigate {{ $attributes->merge(['class' => $baseClasses() . ' ' . $variantClasses() . ' ' . $sizeClasses() . ' ' . $insetClasses() . ' gap-1.5 no-underline']) }}>
+    <a href="{{ $href }}" @if($shouldWireNavigate()) wire:navigate @endif {{ $attributes->merge(['class' => $baseClasses() . ' ' . $variantClasses() . ' ' . $sizeClasses() . ' ' . $insetClasses() . ' gap-1.5 no-underline']) }}>
         @if($icon)
             {!! svg($icon, $iconSizeClasses() . ' shrink-0', ['aria-hidden' => 'true'])->toHtml() !!}
         @endif

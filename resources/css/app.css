@@ -1,5 +1,15 @@
 @import 'tailwindcss';
 
+@layer base {
+    /**
+     * Reserve space for the vertical scrollbar so centered layouts (nav, max-w-4xl main)
+     * do not shift horizontally when switching between short pages and long pages.
+     */
+    html {
+        scrollbar-gutter: stable;
+    }
+}
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';

@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\TechStack;
 
 describe('Landing', function () {
     test('GET / returns 200', function () {
@@ -30,6 +31,25 @@ describe('Projects', function () {
     test('GET project show with nonexistent slug returns 404', function () {
         $response = $this->get(route('project.show', 'nonexistent'));
         $response->assertStatus(404);
+    });
+
+    test('project show renders tech stack logo when logo URL is set', function () {
+        $project = Project::factory()->create(['slug' => 'with-stack']);
+        $tech = TechStack::query()->create([
+            'name' => 'Laravel',
+            'slug' => 'laravel',
+            'logo' => 'https://example.com/laravel.svg',
+            'description' => 'PHP framework for web artisans.',
+        ]);
+        $project->techStacks()->attach($tech);
+
+        $response = $this->get(route('project.show', 'with-stack'));
+
+        $response->assertSuccessful();
+        $response->assertSee('https://example.com/laravel.svg', false);
+        $response->assertSee('Laravel', false);
+        $response->assertSee('PHP framework for web artisans.', false);
+        $response->assertSee('role="tooltip"', false);
     });
 });
 

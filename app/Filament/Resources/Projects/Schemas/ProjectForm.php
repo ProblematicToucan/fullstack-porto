@@ -49,6 +49,7 @@ class ProjectForm
                                     ->schema([
                                         FileUpload::make('image')
                                             ->hiddenLabel()
+                                            ->disk(config('filesystems.uploads_disk'))
                                             ->directory('project-description-images')
                                             ->visibility('public')
                                             ->image()
@@ -67,8 +68,10 @@ class ProjectForm
                     ->url()
                     ->label('Repository URL'),
                 FileUpload::make('image')
+                    ->disk(config('filesystems.uploads_disk'))
                     ->image()
-                    ->directory('projects'),
+                    ->directory('projects')
+                    ->visibility('public'),
                 Toggle::make('is_featured'),
             ]);
     }

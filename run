@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Run migrations
+php artisan migrate
+
+# Cache
+php artisan optimize
+
+# Run the main application
+exec php artisan octane:frankenphp
