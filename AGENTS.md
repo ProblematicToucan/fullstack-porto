@@ -12,6 +12,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - php - 8.4
 - filament/filament (FILAMENT) - v5
 - laravel/framework (LARAVEL) - v12
+- laravel/octane (OCTANE) - v2
 - laravel/prompts (PROMPTS) - v0
 - livewire/livewire (LIVEWIRE) - v4
 - laravel/boost (BOOST) - v2
@@ -21,7 +22,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/sail (SAIL) - v1
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
-- alpinejs (ALPINEJS) - v3
 - tailwindcss (TAILWINDCSS) - v4
 
 ## Skills Activation
@@ -232,6 +232,24 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ### Models
 
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
+
+=== octane/core rules ===
+
+# Octane
+
+- Octane boots the application once and reuses it across requests, so singletons persist between requests.
+- The Laravel container's `scoped` method may be used as a safe alternative to `singleton`.
+- Never inject the container, request, or config repository into a singleton's constructor; use a resolver closure or `bind()` instead:
+
+```php
+// Bad
+$this->app->singleton(Service::class, fn (Application $app) => new Service($app['request']));
+
+// Good
+$this->app->singleton(Service::class, fn () => new Service(fn () => request()));
+```
+
+- Never append to static properties, as they accumulate in memory across requests.
 
 === pint/core rules ===
 
