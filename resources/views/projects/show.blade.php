@@ -22,7 +22,7 @@
         @endif
 
         @if($project->description !== null && $project->description !== [])
-            <div class="mb-6 prose prose-zinc dark:prose-invert max-w-none [&_p]:my-0 [&_p+p]:mt-6 [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6">
+            <div class="mb-6 text-justify prose prose-zinc dark:prose-invert max-w-none [&_p]:my-0 [&_p]:text-justify [&_p+p]:mt-6 [&_li]:text-justify [&_blockquote]:text-justify [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6 [&_figcaption]:text-start">
                 @if(is_array($project->description) && \App\Support\PostContentSanitizer::isBuilderBlocks($project->description))
                     {!! \App\Support\PostContentSanitizer::sanitize($project->description) !!}
                 @elseif(is_array($project->description))
