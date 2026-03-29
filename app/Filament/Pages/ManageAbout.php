@@ -6,8 +6,8 @@ use App\Models\About;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
@@ -63,6 +63,7 @@ class ManageAbout extends Page
                     ->rows(6),
                 FileUpload::make('avatar')
                     ->label('Avatar')
+                    ->disk(config('filesystems.uploads_disk'))
                     ->image()
                     ->directory('about')
                     ->visibility('public'),

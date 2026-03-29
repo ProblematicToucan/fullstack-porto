@@ -23,7 +23,7 @@
                         <x-ui.link href="{{ route('project.show', $project) }}" variant="ghost" class="block group">
                             <div class="overflow-hidden rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] mb-3">
                                 @if($project->image)
-                                    <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}"
+                                    <img src="{{ \App\Support\PublicStorageUrl::url($project->image) }}" alt="{{ $project->title }}"
                                         class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
                                 @else
                                     <div class="w-full h-40 flex items-center justify-center text-[#706f6c] dark:text-[#A1A09A] text-sm">

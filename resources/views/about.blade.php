@@ -7,7 +7,7 @@
         <article>
             @if($about->avatar)
                 <div class="mb-6">
-                    <img src="{{ Storage::url($about->avatar) }}" alt="About" class="rounded-full w-24 h-24 object-cover border border-[#e3e3e0] dark:border-[#3E3E3A]" />
+                    <img src="{{ \App\Support\PublicStorageUrl::url($about->avatar) }}" alt="About" class="rounded-full w-24 h-24 object-cover border border-[#e3e3e0] dark:border-[#3E3E3A]" />
                 </div>
             @endif
 

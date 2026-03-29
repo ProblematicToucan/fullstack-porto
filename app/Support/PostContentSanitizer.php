@@ -2,7 +2,6 @@
 
 namespace App\Support;
 
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 
@@ -114,7 +113,7 @@ class PostContentSanitizer
             return '';
         }
         if (! str_starts_with($url, 'http') && ! str_starts_with($url, '/')) {
-            $url = Storage::url($url);
+            $url = PublicStorageUrl::url($url);
         }
         $alt = \is_string($data['alt'] ?? null) ? $data['alt'] : '';
 

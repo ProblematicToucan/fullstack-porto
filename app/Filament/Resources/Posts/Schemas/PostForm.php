@@ -50,6 +50,7 @@ class PostForm
                                     ->schema([
                                         FileUpload::make('image')
                                             ->hiddenLabel()
+                                            ->disk(config('filesystems.uploads_disk'))
                                             ->directory('post-images')
                                             ->visibility('public')
                                             ->image()

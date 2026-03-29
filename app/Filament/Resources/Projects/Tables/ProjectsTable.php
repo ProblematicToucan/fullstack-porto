@@ -35,6 +35,7 @@ class ProjectsTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 ImageColumn::make('image')
+                    ->disk(config('filesystems.uploads_disk'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->dateTime()
