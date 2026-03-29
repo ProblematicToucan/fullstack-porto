@@ -55,7 +55,7 @@ class PostContentSanitizer
     }
 
     /**
-     * Render Filament Builder blocks (paragraph, image) to HTML.
+     * Render Filament Builder blocks (paragraph, code, image) to HTML.
      */
     private static function builderBlocksToHtml(array $blocks): string
     {
@@ -76,6 +76,7 @@ class PostContentSanitizer
     {
         return match ($type) {
             'paragraph' => self::builderParagraphToHtml($data),
+            'code' => self::builderCodeToHtml($data),
             'image' => self::builderImageToHtml($data),
             default => '',
         };
@@ -118,6 +119,21 @@ class PostContentSanitizer
         $alt = \is_string($data['alt'] ?? null) ? $data['alt'] : '';
 
         return '<figure class="my-4"><img src="'.\e($url).'" alt="'.\e($alt).'" class="max-w-full h-auto rounded-lg" loading="lazy">'.($alt !== '' ? '<figcaption class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">'.\e($alt).'</figcaption>' : '').'</figure>';
+    }
+
+    /**
+     * Plain code block from Builder (textarea); escaped and passed through the HTML sanitizer.
+     */
+    private static function builderCodeToHtml(array $data): string
+    {
+        $text = $data['text'] ?? null;
+        if ($text === null || $text === '') {
+            return '';
+        }
+
+        $escaped = e((string) $text);
+
+        return self::sanitizer()->sanitize('<pre><code>'.$escaped.'</code></pre>');
     }
 
     private static function sanitizer(): HtmlSanitizer

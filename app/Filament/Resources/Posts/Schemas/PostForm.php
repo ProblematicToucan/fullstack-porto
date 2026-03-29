@@ -6,6 +6,7 @@ use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -42,6 +43,15 @@ class PostForm
                                             ->disableToolbarButtons([
                                                 'attachFiles',
                                             ])
+                                            ->hiddenLabel(),
+                                    ]),
+                                Block::make('code')
+                                    ->label('Code')
+                                    ->icon(Heroicon::CodeBracket)
+                                    ->schema([
+                                        Textarea::make('text')
+                                            ->rows(10)
+                                            ->extraInputAttributes(['class' => 'font-mono text-sm'])
                                             ->hiddenLabel(),
                                     ]),
                                 Block::make('image')

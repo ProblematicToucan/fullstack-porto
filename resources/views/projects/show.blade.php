@@ -22,7 +22,7 @@
         @endif
 
         @if($project->description !== null && $project->description !== [])
-            <div class="mb-6 text-justify prose prose-zinc dark:prose-invert max-w-none [&_p]:my-0 [&_p]:text-justify [&_p+p]:mt-6 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:text-justify [&_blockquote]:text-justify [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6 [&_figcaption]:text-start">
+            <div class="mb-6 text-justify prose prose-zinc dark:prose-invert max-w-none [&_p]:my-0 [&_p]:text-justify [&_p+p]:mt-6 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:text-justify [&_blockquote]:text-justify [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6 [&_figcaption]:text-start [&_p_code]:rounded-md [&_p_code]:bg-zinc-100 [&_p_code]:px-1.5 [&_p_code]:py-px [&_p_code]:font-mono [&_p_code]:text-[0.9em] dark:[&_p_code]:bg-zinc-800 [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-zinc-200 [&_pre]:bg-zinc-50 [&_pre]:p-4 dark:[&_pre]:border-zinc-700 dark:[&_pre]:bg-zinc-900/40 [&_pre_code]:block [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:font-mono [&_pre_code]:text-[13px] [&_pre_code]:leading-relaxed">
                 @if(is_array($project->description) && \App\Support\PostContentSanitizer::isBuilderBlocks($project->description))
                     {!! \App\Support\PostContentSanitizer::sanitize($project->description) !!}
                 @elseif(is_array($project->description))
