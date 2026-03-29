@@ -22,19 +22,21 @@
         @endif
 
         @if($project->description !== null && $project->description !== [])
-            <div class="mb-6 prose prose-zinc dark:prose-invert max-w-none">
+            <div class="mb-6 prose prose-zinc dark:prose-invert max-w-none [&_p]:my-0 [&_p+p]:mt-6 [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6">
                 @if(is_array($project->description) && \App\Support\PostContentSanitizer::isBuilderBlocks($project->description))
                     {!! \App\Support\PostContentSanitizer::sanitize($project->description) !!}
                 @elseif(is_array($project->description))
-                    @foreach($project->description as $block)
-                        @if(is_string($block))
-                            <p class="text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300 mb-3">{{ $block }}</p>
-                        @elseif(is_array($block))
-                            <p class="text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300 mb-3">
-                                {{ $block['content'] ?? $block['text'] ?? '' }}
-                            </p>
-                        @endif
-                    @endforeach
+                    <div class="not-prose space-y-6">
+                        @foreach($project->description as $block)
+                            @if(is_string($block))
+                                <p class="text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300">{{ $block }}</p>
+                            @elseif(is_array($block))
+                                <p class="text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300">
+                                    {{ $block['content'] ?? $block['text'] ?? '' }}
+                                </p>
+                            @endif
+                        @endforeach
+                    </div>
                 @else
                     <p class="text-[13px] leading-[20px] text-zinc-700 dark:text-zinc-300">{{ $project->description }}</p>
                 @endif
