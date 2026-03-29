@@ -55,7 +55,14 @@
                 <x-ui.text size="sm" variant="subtle" class="mb-2">Tech stack</x-ui.text>
                 <div class="flex flex-wrap gap-2">
                     @foreach($project->techStacks as $tech)
-                        <x-ui.badge color="blue" size="sm">{{ $tech->name }}</x-ui.badge>
+                        @if(filled($tech->logo))
+                            <span class="inline-flex items-center gap-2 rounded-md border border-[#e3e3e0] bg-white/60 px-2 py-1.5 text-[13px] text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-zinc-900/40 dark:text-[#EDEDEC]">
+                                <img src="{{ $tech->logo }}" alt="" width="20" height="20" class="size-5 shrink-0 object-contain" loading="lazy" decoding="async" />
+                                <span>{{ $tech->name }}</span>
+                            </span>
+                        @else
+                            <x-ui.badge color="blue" size="sm">{{ $tech->name }}</x-ui.badge>
+                        @endif
                     @endforeach
                 </div>
             </div>
