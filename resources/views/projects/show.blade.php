@@ -55,14 +55,24 @@
                 <x-ui.text size="sm" variant="subtle" class="mb-2">Tech stack</x-ui.text>
                 <div class="flex flex-wrap gap-2">
                     @foreach($project->techStacks as $tech)
-                        @if(filled($tech->logo))
-                            <span class="inline-flex items-center gap-2 rounded-md border border-[#e3e3e0] bg-white/60 px-2 py-1.5 text-[13px] text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-zinc-900/40 dark:text-[#EDEDEC]">
-                                <img src="{{ $tech->logo }}" alt="" width="20" height="20" class="size-5 shrink-0 object-contain" loading="lazy" decoding="async" />
-                                <span>{{ $tech->name }}</span>
-                            </span>
-                        @else
-                            <x-ui.badge color="blue" size="sm">{{ $tech->name }}</x-ui.badge>
-                        @endif
+                        <span @class([
+                            'group relative inline-flex',
+                            'cursor-help' => filled($tech->description),
+                        ])>
+                            @if(filled($tech->logo))
+                                <span class="inline-flex items-center gap-2 rounded-md border border-[#e3e3e0] bg-white/60 px-2 py-1.5 text-[13px] text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-zinc-900/40 dark:text-[#EDEDEC]">
+                                    <img src="{{ $tech->logo }}" alt="" width="20" height="20" class="size-5 shrink-0 object-contain" loading="lazy" decoding="async" />
+                                    <span>{{ $tech->name }}</span>
+                                </span>
+                            @else
+                                <x-ui.badge color="blue" size="sm">{{ $tech->name }}</x-ui.badge>
+                            @endif
+                            @if(filled($tech->description))
+                                <span role="tooltip" class="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 w-max max-w-xs -translate-x-1/2 rounded-md border border-[#e3e3e0] bg-[#fafafa] px-2.5 py-2 text-left text-[12px] leading-snug text-zinc-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 dark:border-[#3E3E3A] dark:bg-zinc-800 dark:text-zinc-200">
+                                    {{ $tech->description }}
+                                </span>
+                            @endif
+                        </span>
                     @endforeach
                 </div>
             </div>

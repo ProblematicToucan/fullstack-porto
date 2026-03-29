@@ -39,7 +39,7 @@ describe('Projects', function () {
             'name' => 'Laravel',
             'slug' => 'laravel',
             'logo' => 'https://example.com/laravel.svg',
-            'description' => null,
+            'description' => 'PHP framework for web artisans.',
         ]);
         $project->techStacks()->attach($tech);
 
@@ -48,6 +48,8 @@ describe('Projects', function () {
         $response->assertSuccessful();
         $response->assertSee('https://example.com/laravel.svg', false);
         $response->assertSee('Laravel', false);
+        $response->assertSee('PHP framework for web artisans.', false);
+        $response->assertSee('role="tooltip"', false);
     });
 });
 
