@@ -24,9 +24,9 @@
                             <div class="overflow-hidden rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] mb-3">
                                 @if($project->image)
                                     <img src="{{ \App\Support\PublicStorageUrl::url($project->image) }}" alt="{{ $project->title }}"
-                                        class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                                        class="block w-full h-auto max-w-full group-hover:opacity-95 transition-opacity duration-300" loading="lazy" decoding="async" />
                                 @else
-                                    <div class="w-full h-40 flex items-center justify-center text-[#706f6c] dark:text-[#A1A09A] text-sm">
+                                    <div class="w-full min-h-40 flex items-center justify-center text-[#706f6c] dark:text-[#A1A09A] text-sm">
                                         No image
                                     </div>
                                 @endif

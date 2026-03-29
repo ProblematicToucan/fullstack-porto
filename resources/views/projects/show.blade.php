@@ -17,7 +17,7 @@
 
         @if($project->image)
             <div class="mb-6 overflow-hidden rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A]">
-                <img src="{{ \App\Support\PublicStorageUrl::url($project->image) }}" alt="{{ $project->title }}" class="w-full max-h-[400px] object-cover" />
+                <img src="{{ \App\Support\PublicStorageUrl::url($project->image) }}" alt="{{ $project->title }}" class="block w-full h-auto max-w-full" loading="eager" decoding="async" />
             </div>
         @endif
 
@@ -88,7 +88,7 @@
                         <li>
                             @if($media->media_type === 'image' && $media->media_url)
                                 <img src="{{ \App\Support\PublicStorageUrl::url($media->media_url) }}" alt="{{ $media->media_description ?? 'Project media' }}"
-                                    class="max-w-full rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] max-h-64 object-cover" />
+                                    class="block w-full h-auto max-w-full rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A]" loading="lazy" decoding="async" />
                             @elseif($media->media_url)
                                 <a href="{{ Str::startsWith($media->media_url, ['http', '/']) ? $media->media_url : \App\Support\PublicStorageUrl::url($media->media_url) }}"
                                     target="_blank" rel="noopener noreferrer"
