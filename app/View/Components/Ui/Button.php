@@ -61,6 +61,40 @@ class Button extends Component
     }
 
     /**
+     * Use Livewire SPA navigation only for in-app links. External URLs, new-tab links,
+     * and special schemes must use a full navigation so the browser opens the correct destination.
+     */
+    public function shouldWireNavigate(): bool
+    {
+        if (! $this->isLink()) {
+            return false;
+        }
+
+        if ($this->attributes->get('target') === '_blank') {
+            return false;
+        }
+
+        $href = (string) $this->href;
+
+        if (str_starts_with($href, 'mailto:') || str_starts_with($href, 'tel:')) {
+            return false;
+        }
+
+        if (str_starts_with($href, 'http://') || str_starts_with($href, 'https://')) {
+            $linkHost = parse_url($href, PHP_URL_HOST);
+            if ($linkHost === null) {
+                return false;
+            }
+
+            if (strcasecmp($linkHost, request()->getHttpHost()) !== 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Icon size classes per button size (for use with Blade Icons svg() helper).
      */
     public function iconSizeClasses(): string
@@ -113,7 +147,7 @@ class Button extends Component
      */
     public function insetClasses(): string
     {
-        if (!$this->inset || !in_array($this->variant, ['ghost', 'subtle'], true)) {
+        if (! $this->inset || ! in_array($this->variant, ['ghost', 'subtle'], true)) {
             return '';
         }
 
