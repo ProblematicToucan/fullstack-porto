@@ -4,11 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser as FilamentUserContract;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUserContract
 {
@@ -52,5 +53,13 @@ class User extends Authenticatable implements FilamentUserContract
     public function canAccessPanel(Panel $panel): bool
     {
         return true; // or your real rule: email domain, role, etc.
+    }
+
+    /**
+     * @return HasMany<AgentConversation, $this>
+     */
+    public function agentConversations(): HasMany
+    {
+        return $this->hasMany(AgentConversation::class);
     }
 }
