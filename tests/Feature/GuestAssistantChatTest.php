@@ -5,6 +5,12 @@ use App\Livewire\Ai\GuestAssistantChat;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
+it('wraps the guest assistant in a persist region for SPA navigation', function (): void {
+    $this->get(route('home'))
+        ->assertSuccessful()
+        ->assertSee('x-persist="guest-assistant"', false);
+});
+
 it('validates message is required when sending', function (): void {
     Livewire::test(GuestAssistantChat::class)
         ->call('send')
