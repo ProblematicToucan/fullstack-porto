@@ -12,11 +12,14 @@
         >
             <textarea
                 id="guest-assistant-message"
+                x-ref="composerInput"
                 wire:model="message"
-                rows="2"
+                rows="1"
                 maxlength="10000"
                 placeholder="{{ __('How can I help you today?') }}"
-                class="min-h-[3.25rem] w-full resize-none border-0 bg-transparent px-2 py-1.5 text-sm text-[#1b1b18] placeholder:text-neutral-400 focus:outline-none focus:ring-0 dark:text-[#EDEDEC]"
+                class="scrollbar-thin min-h-[2.75rem] w-full resize-none overflow-x-hidden border-0 bg-transparent px-2 py-1.5 text-sm leading-5 text-[#1b1b18] placeholder:text-neutral-400 focus:outline-none focus:ring-0 dark:text-[#EDEDEC]"
+                x-init="$nextTick(() => composerResize())"
+                @input="composerResize()"
                 @keydown.meta.enter.prevent="submitSend()"
                 @keydown.ctrl.enter.prevent="submitSend()"
             ></textarea>

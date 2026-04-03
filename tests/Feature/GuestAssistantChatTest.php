@@ -35,6 +35,8 @@ it('renders optimistic send flow and agent typing markup in the chat panel', fun
         ->and($html)->toContain('wire:loading')
         ->and($html)->toContain(__('Agent is typing'))
         ->and($html)->toContain('x-ref="threadRoot"')
+        ->and($html)->toContain('x-ref="composerInput"')
+        ->and($html)->toContain('composerResize')
         ->and($html)->toContain('isNearBottom');
 });
 
