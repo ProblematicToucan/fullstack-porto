@@ -65,4 +65,21 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
             'value' => $schema->string()->required(),
         ];
     }
+
+    /**
+     * Turn persisted assistant {@code content} into user-facing text.
+     *
+     * Conversation memory stores structured replies as JSON in {@code agent_conversation_messages.content}
+     * (the SDK persists {@see AgentResponse::$text}, which for structured output is the raw JSON string).
+     */
+    public static function formatStoredAssistantContent(string $rawContent): string
+    {
+        $decoded = json_decode($rawContent, true);
+
+        if (\is_array($decoded) && \array_key_exists('value', $decoded)) {
+            return (string) $decoded['value'];
+        }
+
+        return $rawContent;
+    }
 }

@@ -90,10 +90,12 @@ class GuestAssistantChat extends Component
         $this->thread = AgentConversationMessage::query()
             ->where('conversation_id', $conversationId)
             ->orderBy('created_at')
-            ->get(['role', 'content'])
+            ->get(['role', 'content', 'agent'])
             ->map(fn (AgentConversationMessage $m): array => [
                 'role' => $m->role,
-                'content' => $m->content,
+                'content' => $m->role === 'assistant' && $m->agent === GuestAssistant::class
+                    ? GuestAssistant::formatStoredAssistantContent($m->content)
+                    : $m->content,
             ])
             ->all();
     }

@@ -27,9 +27,25 @@ it('stores conversation id in session and loads messages into the thread after s
 
     $id = session('guest_assistant_conversation_id');
 
+    $assistantRow = DB::table('agent_conversation_messages')
+        ->where('conversation_id', $id)
+        ->where('role', 'assistant')
+        ->first();
+
+    $assistantBubble = collect($test->instance()->thread)->firstWhere('role', 'assistant');
+
     expect($id)->not->toBeNull()
         ->and(DB::table('agent_conversation_messages')->where('conversation_id', $id)->count())->toBe(2)
-        ->and($test->instance()->thread)->toHaveCount(2);
+        ->and($test->instance()->thread)->toHaveCount(2)
+        ->and((string) $assistantRow->content)->toContain('value');
+
+    expect($assistantBubble)->not->toBeNull()
+        ->and($assistantBubble['content'])->toBe('Hello from assistant');
+});
+
+it('extracts the structured value key for display', function (): void {
+    expect(GuestAssistant::formatStoredAssistantContent('{"value":"Hi"}'))->toBe('Hi')
+        ->and(GuestAssistant::formatStoredAssistantContent('not json'))->toBe('not json');
 });
 
 it('continues the same conversation on a second message', function (): void {
