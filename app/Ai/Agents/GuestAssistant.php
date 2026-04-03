@@ -4,16 +4,23 @@ namespace App\Ai\Agents;
 
 use App\Ai\GuestConversationParticipant;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Ai\Attributes\Model;
+use Laravel\Ai\Attributes\Provider;
+use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 use Laravel\Ai\Responses\AgentResponse;
 use Stringable;
 
+#[Provider(Lab::OpenAI)]
+#[Model('gpt-5.4-mini')]
+#[Temperature(0.1)]
 class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasTools
 {
     use Promptable;
