@@ -3,16 +3,17 @@
         "cursor"
     ],
     "guidelines": true,
-    "herd_mcp": true,
     "mcp": true,
     "nightwatch_mcp": false,
     "packages": [
-        "filament/filament"
+        "filament/filament",
+        "laravel/ai"
     ],
     "sail": false,
     "skills": [
         "laravel-best-practices",
         "pest-testing",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "ai-sdk-development"
     ]
 }
