@@ -33,7 +33,9 @@ it('renders optimistic send flow and agent typing markup in the chat panel', fun
     expect($html)->toContain('optimisticUser')
         ->and($html)->toContain('submitSend')
         ->and($html)->toContain('wire:loading')
-        ->and($html)->toContain(__('Agent is typing'));
+        ->and($html)->toContain(__('Agent is typing'))
+        ->and($html)->toContain('x-ref="threadRoot"')
+        ->and($html)->toContain('isNearBottom');
 });
 
 it('stores conversation id in session and loads messages into the thread after send', function (): void {

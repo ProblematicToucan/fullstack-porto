@@ -1,4 +1,5 @@
 <div
+    x-ref="threadRoot"
     class="scrollbar-thin max-h-72 min-h-[8rem] overflow-y-auto px-4 py-3 text-sm"
     role="log"
     aria-live="polite"

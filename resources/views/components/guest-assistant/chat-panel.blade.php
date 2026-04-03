@@ -4,9 +4,37 @@
     wire:transition="guest-assistant-surface"
     x-data="{
         optimisticUser: null,
+        nearBottomThresholdPx: 80,
         init() {
             $wire.$watch('thread', () => {
                 this.optimisticUser = null
+            })
+            // Panel mounts only when the chat is opened; land on the latest messages (matches guest-assistant-surface ~220ms transition).
+            this.scheduleScrollToBottom()
+            setTimeout(() => this.scheduleScrollToBottom(), 240)
+        },
+        threadScrollEl() {
+            return this.$refs.threadRoot
+        },
+        isNearBottom() {
+            const el = this.threadScrollEl()
+            if (! el) {
+                return true
+            }
+            const { scrollTop, scrollHeight, clientHeight } = el
+            return scrollHeight - scrollTop - clientHeight <= this.nearBottomThresholdPx
+        },
+        scrollThreadToBottom() {
+            const el = this.threadScrollEl()
+            if (! el) {
+                return
+            }
+            el.scrollTop = el.scrollHeight
+        },
+        scheduleScrollToBottom() {
+            this.$nextTick(() => {
+                this.scrollThreadToBottom()
+                requestAnimationFrame(() => this.scrollThreadToBottom())
             })
         },
         submitSend() {
@@ -15,10 +43,17 @@
             if (! msg) {
                 return
             }
+            const stickToBottom = this.isNearBottom()
             this.optimisticUser = msg
             $wire.set('message', '')
+            if (stickToBottom) {
+                this.scheduleScrollToBottom()
+            }
             $wire.send(msg).finally(() => {
                 this.optimisticUser = null
+                if (stickToBottom) {
+                    this.scheduleScrollToBottom()
+                }
             })
         },
     }"
