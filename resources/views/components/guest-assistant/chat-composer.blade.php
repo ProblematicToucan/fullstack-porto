@@ -5,7 +5,7 @@
         </p>
     @endif
 
-    <form wire:submit="send" class="flex flex-col gap-2">
+    <form @submit.prevent="submitSend()" class="flex flex-col gap-2">
         <label class="sr-only" for="guest-assistant-message">{{ __('Message') }}</label>
         <div
             class="flex flex-col gap-2 rounded-xl border border-[#e3e3e0] bg-white p-2 dark:border-[#3E3E3A] dark:bg-[#0a0a0a]"
@@ -17,8 +17,8 @@
                 maxlength="10000"
                 placeholder="{{ __('How can I help you today?') }}"
                 class="min-h-[3.25rem] w-full resize-none border-0 bg-transparent px-2 py-1.5 text-sm text-[#1b1b18] placeholder:text-neutral-400 focus:outline-none focus:ring-0 dark:text-[#EDEDEC]"
-                wire:keydown.meta.enter.prevent="$wire.send()"
-                wire:keydown.ctrl.enter.prevent="$wire.send()"
+                @keydown.meta.enter.prevent="submitSend()"
+                @keydown.ctrl.enter.prevent="submitSend()"
             ></textarea>
 
             <div

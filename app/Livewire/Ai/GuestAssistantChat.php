@@ -44,8 +44,13 @@ class GuestAssistantChat extends Component
         $this->isOpen = false;
     }
 
-    public function send(): void
+    /**
+     * @param  string|null  $userMessage  When omitted, uses the bound {@see $message} property (e.g. tests).
+     */
+    public function send(?string $userMessage = null): void
     {
+        $this->message = trim((string) ($userMessage ?? $this->message));
+
         $this->validate([
             'message' => ['required', 'string', 'max:10000'],
         ]);

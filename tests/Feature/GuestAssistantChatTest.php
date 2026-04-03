@@ -25,6 +25,17 @@ it('scopes the composer submit button loading state to the send action', functio
     expect($html)->toContain('wire:target="send"');
 });
 
+it('renders optimistic send flow and agent typing markup in the chat panel', function (): void {
+    $html = Livewire::test(GuestAssistantChat::class)
+        ->call('toggle')
+        ->html();
+
+    expect($html)->toContain('optimisticUser')
+        ->and($html)->toContain('submitSend')
+        ->and($html)->toContain('wire:loading')
+        ->and($html)->toContain(__('Agent is typing'));
+});
+
 it('stores conversation id in session and loads messages into the thread after send', function (): void {
     GuestAssistant::fake([
         ['value' => 'Hello from assistant'],
