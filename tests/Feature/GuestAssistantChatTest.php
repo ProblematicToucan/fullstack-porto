@@ -11,6 +11,14 @@ it('validates message is required when sending', function (): void {
         ->assertHasErrors(['message' => 'required']);
 });
 
+it('scopes the composer submit button loading state to the send action', function (): void {
+    $html = Livewire::test(GuestAssistantChat::class)
+        ->call('toggle')
+        ->html();
+
+    expect($html)->toContain('wire:target="send"');
+});
+
 it('stores conversation id in session and loads messages into the thread after send', function (): void {
     GuestAssistant::fake([
         ['value' => 'Hello from assistant'],

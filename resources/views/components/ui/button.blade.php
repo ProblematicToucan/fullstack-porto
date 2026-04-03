@@ -18,10 +18,21 @@
         @endif
     </a>
 @else
-    <button type="{{ $type }}" @if($loading) wire:loading.attr="disabled" @endif {{ $attributes->merge(['class' => $baseClasses() . ' ' . $variantClasses() . ' ' . $sizeClasses() . ' ' . $insetClasses() . ' gap-1.5']) }}>
+    <button
+        type="{{ $type }}"
         @if($loading)
-            <span class="hidden shrink-0 motion-reduce:animate-none" wire:loading.remove.class="hidden"
-                wire:loading.class="inline-flex">
+            wire:loading.attr="disabled"
+            @if($loadingTarget) wire:target="{{ $loadingTarget }}" @endif
+        @endif
+        {{ $attributes->merge(['class' => $baseClasses() . ' ' . $variantClasses() . ' ' . $sizeClasses() . ' ' . $insetClasses() . ' gap-1.5']) }}
+    >
+        @if($loading)
+            <span
+                class="hidden shrink-0 motion-reduce:animate-none"
+                @if($loadingTarget) wire:target="{{ $loadingTarget }}" @endif
+                wire:loading.remove.class="hidden"
+                wire:loading.class="inline-flex"
+            >
                 {!! svg('heroicon-o-arrow-path', $iconSizeClasses() . ' animate-spin', ['aria-hidden' => 'true'])->toHtml() !!}
             </span>
         @endif

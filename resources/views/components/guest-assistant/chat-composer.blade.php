@@ -36,6 +36,7 @@
                         size="sm"
                         icon="heroicon-o-paper-airplane"
                         :loading="true"
+                        loading-target="send"
                     />
                 </div>
             </div>

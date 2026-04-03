@@ -1,13 +1,7 @@
 @import 'tailwindcss';
 
-@layer base {
-    /**
-     * Reserve space for the vertical scrollbar so centered layouts (nav, max-w-4xl main)
-     * do not shift horizontally when switching between short pages and long pages.
-     */
-    html {
-        scrollbar-gutter: stable;
-    }
+html {
+    scrollbar-gutter: stable;
 }
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -18,4 +12,36 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/** Guest assistant launcher ↔ panel (Livewire wire:transition; opacity-only on old/new). */
+::view-transition-group(guest-assistant-surface) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(guest-assistant-surface),
+::view-transition-new(guest-assistant-surface) {
+    animation-duration: inherit;
+    animation-timing-function: inherit;
+}
+
+::view-transition-old(guest-assistant-surface) {
+    animation-name: guest-assistant-surface-out;
+}
+
+::view-transition-new(guest-assistant-surface) {
+    animation-name: guest-assistant-surface-in;
+}
+
+@keyframes guest-assistant-surface-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes guest-assistant-surface-out {
+    to {
+        opacity: 0;
+    }
 }
