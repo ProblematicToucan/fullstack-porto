@@ -33,20 +33,21 @@
 
         <li class="flex justify-start" wire:loading wire:target="send">
             <div
-                class="flex max-w-[90%] items-center gap-0.5 rounded-2xl border border-[#e3e3e0] bg-white px-3 py-2.5 text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-[#0a0a0a] dark:text-[#EDEDEC]"
+                class="flex items-center gap-0.5 py-1"
+                role="status"
                 aria-label="{{ __('Agent is typing') }}"
             >
                 <span class="sr-only">{{ __('Agent is typing') }}</span>
                 <span
-                    class="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-current opacity-70 [animation-delay:-0.3s]"
+                    class="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 opacity-80 [animation-delay:-0.3s] dark:bg-neutral-500"
                     aria-hidden="true"
                 ></span>
                 <span
-                    class="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-current opacity-70 [animation-delay:-0.15s]"
+                    class="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 opacity-80 [animation-delay:-0.15s] dark:bg-neutral-500"
                     aria-hidden="true"
                 ></span>
                 <span
-                    class="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-current opacity-70"
+                    class="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 opacity-80 dark:bg-neutral-500"
                     aria-hidden="true"
                 ></span>
             </div>
