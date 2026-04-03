@@ -2,19 +2,22 @@
 
 namespace App\Ai\Agents;
 
+use App\Ai\GuestConversationParticipant;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
+use Laravel\Ai\Responses\AgentResponse;
 use Stringable;
 
 class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasTools
 {
     use Promptable;
+    use RemembersConversations;
 
     /**
      * Get the instructions that the agent should follow.
@@ -25,13 +28,22 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
     }
 
     /**
-     * Get the list of messages comprising the conversation so far.
+     * Start or continue guest chat: conversation rows use null {@code user_id}.
      *
-     * @return Message[]
+     * Persist the returned {@see AgentResponse::$conversationId} client-side
+     * and pass it to {@see continueGuestConversation()} on later requests.
      */
-    public function messages(): iterable
+    public function forGuest(): static
     {
-        return [];
+        return $this->forUser(new GuestConversationParticipant);
+    }
+
+    /**
+     * Resume a guest thread using the conversation id from a prior response.
+     */
+    public function continueGuestConversation(string $conversationId): static
+    {
+        return $this->continue($conversationId, new GuestConversationParticipant);
     }
 
     /**
