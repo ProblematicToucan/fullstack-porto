@@ -32,6 +32,8 @@
         </div>
     </main>
 
+    <livewire:ai.guest-assistant-chat />
+
     @livewireScripts
 </body>
 
