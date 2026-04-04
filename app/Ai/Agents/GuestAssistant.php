@@ -4,6 +4,7 @@ namespace App\Ai\Agents;
 
 use App\Ai\GuestConversationParticipant;
 use App\Ai\Tools\PortfolioKnowledgeSearch;
+use App\Models\About;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Provider;
@@ -32,7 +33,11 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
      */
     public function instructions(): Stringable|string
     {
-        return 'You are a helpful assistant that can help users with their questions and about this personal portfolio website. When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering.';
+        $base = 'You are a helpful assistant for this personal portfolio website. Use the following About-page context as ground truth for who is your owner and runs this site, their bio, and links. When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering.';
+
+        $about = About::agentInstructionsContext();
+
+        return $about === '' ? $base : "{$base}\n\n{$about}";
     }
 
     /**
