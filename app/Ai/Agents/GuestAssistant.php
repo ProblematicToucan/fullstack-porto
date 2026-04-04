@@ -3,6 +3,7 @@
 namespace App\Ai\Agents;
 
 use App\Ai\GuestConversationParticipant;
+use App\Models\KnowledgeChunk;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Provider;
@@ -16,6 +17,7 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 use Laravel\Ai\Responses\AgentResponse;
+use Laravel\Ai\Tools\SimilaritySearch;
 use Stringable;
 
 #[Provider(Lab::OpenAI)]
@@ -31,7 +33,7 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
      */
     public function instructions(): Stringable|string
     {
-        return 'You are a helpful assistant that can help users with their questions and about this personal portfolio website.';
+        return 'You are a helpful assistant that can help users with their questions and about this personal portfolio website. When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering.';
     }
 
     /**
@@ -60,7 +62,15 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
      */
     public function tools(): iterable
     {
-        return [];
+        return [
+            SimilaritySearch::usingModel(
+                KnowledgeChunk::class,
+                'embedding',
+                minSimilarity: 0.4,
+                limit: 12,
+                query: fn ($query) => $query->searchable(),
+            )->withDescription('Search indexed text from this portfolio\'s public blog posts and projects. Use for factual questions about posts, projects, or the site owner\'s work.'),
+        ];
     }
 
     /**

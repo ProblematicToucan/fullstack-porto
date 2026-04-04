@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Observers\PostKnowledgeObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+#[ObservedBy([PostKnowledgeObserver::class])]
 class Post extends Model
 {
     use HasFactory, SoftDeletes;
@@ -17,6 +21,7 @@ class Post extends Model
         'slug',
         'is_public',
         'content',
+        'knowledge_source_hash',
     ];
 
     protected $casts = [
@@ -31,7 +36,7 @@ class Post extends Model
                 $post->slug = $base;
                 $count = 0;
                 while (static::query()->where('slug', $post->slug)->when($post->exists, fn ($q) => $q->whereKeyNot($post->getKey()))->exists()) {
-                    $post->slug = $base . '-' . (++$count);
+                    $post->slug = $base.'-'.(++$count);
                 }
             }
         });
@@ -45,5 +50,10 @@ class Post extends Model
     public function scopePublic(Builder $query): Builder
     {
         return $query->where('is_public', true);
+    }
+
+    public function knowledgeChunks(): HasMany
+    {
+        return $this->hasMany(KnowledgeChunk::class);
     }
 }

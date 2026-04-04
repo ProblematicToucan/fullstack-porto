@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\ProjectKnowledgeObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+#[ObservedBy([ProjectKnowledgeObserver::class])]
 class Project extends Model
 {
     use HasFactory, SoftDeletes;
@@ -22,6 +25,7 @@ class Project extends Model
         'repo_url',
         'image',
         'is_featured',
+        'knowledge_source_hash',
     ];
 
     protected $casts = [
@@ -60,6 +64,11 @@ class Project extends Model
     public function projectMedias(): HasMany
     {
         return $this->hasMany(ProjectMedia::class);
+    }
+
+    public function knowledgeChunks(): HasMany
+    {
+        return $this->hasMany(KnowledgeChunk::class);
     }
 
     protected function isFeatured(): Attribute
