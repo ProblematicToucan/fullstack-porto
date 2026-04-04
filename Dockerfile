@@ -60,7 +60,7 @@ RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 LABEL maintainer="ProblematicToucan <gamal.aziz1000@gmail.com>"
 LABEL org.opencontainers.image.title="Filament Portfolio"
-LABEL org.opencontainers.image.description="Production-ready Filament Portfolio with Octane"
+LABEL org.opencontainers.image.description="Production Filament portfolio: FrankenPHP Octane and queue workers under supervisord"
 LABEL org.opencontainers.image.source=https://github.com/ProblematicToucan/fullstack-porto
 LABEL org.opencontainers.image.licenses=MIT
 
@@ -69,6 +69,9 @@ RUN install-php-extensions \
     pdo_pgsql \
     intl \
     pcntl
+
+# Install supervisor for process management
+RUN apk add --no-cache supervisor
 
 # Workdir
 WORKDIR /app
