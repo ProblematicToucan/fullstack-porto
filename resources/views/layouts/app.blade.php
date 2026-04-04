@@ -32,6 +32,10 @@
         </div>
     </main>
 
+    @persist('guest-assistant')
+        <livewire:ai.guest-assistant-chat />
+    @endpersist
+
     @livewireScripts
 </body>
 

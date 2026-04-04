@@ -1,12 +1,47 @@
 @import 'tailwindcss';
 
-@layer base {
-    /**
-     * Reserve space for the vertical scrollbar so centered layouts (nav, max-w-4xl main)
-     * do not shift horizontally when switching between short pages and long pages.
-     */
-    html {
-        scrollbar-gutter: stable;
+html {
+    scrollbar-gutter: stable;
+}
+
+/**
+ * Thin scrollbars (Firefox scrollbar-width / scrollbar-color + WebKit pseudo-elements).
+ * Apply `scrollbar-thin` to any overflow-auto container.
+ */
+@layer utilities {
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: #a3a3a3 transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        border-radius: 9999px;
+        background-color: #a3a3a3;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background-color: #737373;
+    }
+
+    .dark .scrollbar-thin {
+        scrollbar-color: #525252 transparent;
+    }
+
+    .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: #525252;
+    }
+
+    .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background-color: #737373;
     }
 }
 
@@ -18,4 +53,36 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/** Guest assistant launcher ↔ panel (Livewire wire:transition; opacity-only on old/new). */
+::view-transition-group(guest-assistant-surface) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(guest-assistant-surface),
+::view-transition-new(guest-assistant-surface) {
+    animation-duration: inherit;
+    animation-timing-function: inherit;
+}
+
+::view-transition-old(guest-assistant-surface) {
+    animation-name: guest-assistant-surface-out;
+}
+
+::view-transition-new(guest-assistant-surface) {
+    animation-name: guest-assistant-surface-in;
+}
+
+@keyframes guest-assistant-surface-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes guest-assistant-surface-out {
+    to {
+        opacity: 0;
+    }
 }

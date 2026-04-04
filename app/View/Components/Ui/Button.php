@@ -22,6 +22,7 @@ class Button extends Component
      * @param  string  $size  One of: sm, md, lg
      * @param  string  $type  HTML button type: button, submit, reset (ignored when href is set)
      * @param  bool  $loading  When true (default), shows spinner and disables during Livewire requests. Set :loading="false" to disable.
+     * @param  string|null  $loadingTarget  When set (e.g. "send"), wire:loading only runs for that action. Prevents layout shift on other requests (e.g. close panel).
      * @param  string|null  $icon  Optional leading icon (Blade Icons name, e.g. heroicon-o-ellipsis-horizontal)
      * @param  string|null  $iconTrailing  Optional trailing icon: Blade Icons name or built-in (e.g. arrow-up-right)
      * @param  string|null  $href  When set, renders an <a> tag instead of a button
@@ -32,6 +33,7 @@ class Button extends Component
         public string $size = 'md',
         public string $type = 'button',
         public bool $loading = true,
+        public ?string $loadingTarget = null,
         public ?string $icon = null,
         public ?string $iconTrailing = null,
         public ?string $href = null,
