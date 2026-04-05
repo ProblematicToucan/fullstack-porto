@@ -3,6 +3,7 @@
 namespace App\Ai\Agents;
 
 use App\Ai\GuestConversationParticipant;
+use App\Ai\Middleware\GuestAssistantGuardrails;
 use App\Ai\Tools\GetPortfolioProject;
 use App\Ai\Tools\ListPortfolioProjects;
 use App\Ai\Tools\PortfolioKnowledgeSearch;
@@ -16,6 +17,7 @@ use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
+use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
@@ -27,7 +29,7 @@ use Stringable;
 #[Provider(Lab::OpenAI)]
 #[Model('gpt-5.4-mini')]
 #[Temperature(0.55)]
-class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasTools
+class GuestAssistant implements Agent, Conversational, HasMiddleware, HasStructuredOutput, HasTools
 {
     use Promptable;
     use RemembersConversations;
@@ -83,6 +85,16 @@ TXT;
     public function continueGuestConversation(string $conversationId): static
     {
         return $this->continue($conversationId, new GuestConversationParticipant);
+    }
+
+    /**
+     * @return list<object>
+     */
+    public function middleware(): array
+    {
+        return [
+            new GuestAssistantGuardrails,
+        ];
     }
 
     /**
