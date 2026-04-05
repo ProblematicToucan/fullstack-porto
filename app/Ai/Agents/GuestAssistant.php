@@ -38,7 +38,7 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
     public function instructions(): Stringable|string
     {
         $base = <<<'TXT'
-You are a helpful assistant for this personal portfolio website. Use the following About-page context as ground truth for who runs this site, their bio, and links.
+You are a helpful assistant for this personal portfolio website. Use the following About-page context as ground truth for who is your owner and runs this site, their bio, and links.
 
 When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering. For the project catalog (listing projects or full details by slug), use the list portfolio projects and get portfolio project tools so your facts match the database.
 
