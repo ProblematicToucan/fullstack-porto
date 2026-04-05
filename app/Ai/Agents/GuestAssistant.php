@@ -3,6 +3,8 @@
 namespace App\Ai\Agents;
 
 use App\Ai\GuestConversationParticipant;
+use App\Ai\Tools\GetPortfolioProject;
+use App\Ai\Tools\ListPortfolioProjects;
 use App\Ai\Tools\PortfolioKnowledgeSearch;
 use App\Models\About;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -22,7 +24,7 @@ use Stringable;
 
 #[Provider(Lab::OpenAI)]
 #[Model('gpt-5.4-mini')]
-#[Temperature(0.1)]
+#[Temperature(0.3)]
 class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasTools
 {
     use Promptable;
@@ -33,7 +35,7 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
      */
     public function instructions(): Stringable|string
     {
-        $base = 'You are a helpful assistant for this personal portfolio website. Use the following About-page context as ground truth for who is your owner and runs this site, their bio, and links. When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering.';
+        $base = 'You are a helpful assistant for this personal portfolio website. Use the following About-page context as ground truth for who is your owner and runs this site, their bio, and links. When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering. For structured questions about the project catalog (listing every project or full details for one project by slug), use the list portfolio projects and get portfolio project tools so your facts match the database.';
 
         $about = About::agentInstructionsContext();
 
@@ -68,6 +70,8 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
     {
         return [
             new PortfolioKnowledgeSearch,
+            new ListPortfolioProjects,
+            new GetPortfolioProject,
         ];
     }
 
