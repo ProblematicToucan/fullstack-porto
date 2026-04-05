@@ -40,6 +40,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Guest assistant guardrails
+    |--------------------------------------------------------------------------
+    |
+    | Performance-first defaults: input is moderated once per message (cached by
+    | content hash). Post-generation moderation is off unless you enable it.
+    |
+    */
+
+    'guest_assistant_guardrails' => [
+        'moderation_model' => env('GUEST_ASSISTANT_MODERATION_MODEL', 'omni-moderation-latest'),
+        'moderate_output' => env('GUEST_ASSISTANT_MODERATE_OUTPUT', false),
+        'input_moderation_cache_ttl' => (int) env('GUEST_ASSISTANT_MODERATION_CACHE_TTL', 3600),
+        'moderation_http_timeout' => (int) env('GUEST_ASSISTANT_MODERATION_HTTP_TIMEOUT', 5),
+        'moderation_http_connect_timeout' => (int) env('GUEST_ASSISTANT_MODERATION_HTTP_CONNECT_TIMEOUT', 2),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | AI Providers
     |--------------------------------------------------------------------------
     |

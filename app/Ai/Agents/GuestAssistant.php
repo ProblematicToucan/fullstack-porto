@@ -3,17 +3,21 @@
 namespace App\Ai\Agents;
 
 use App\Ai\GuestConversationParticipant;
+use App\Ai\Middleware\GuestAssistantGuardrails;
 use App\Ai\Tools\GetPortfolioProject;
 use App\Ai\Tools\ListPortfolioProjects;
 use App\Ai\Tools\PortfolioKnowledgeSearch;
 use App\Models\About;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
+use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
@@ -24,8 +28,8 @@ use Stringable;
 
 #[Provider(Lab::OpenAI)]
 #[Model('gpt-5.4-mini')]
-#[Temperature(0.3)]
-class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasTools
+#[Temperature(0.55)]
+class GuestAssistant implements Agent, Conversational, HasMiddleware, HasStructuredOutput, HasTools
 {
     use Promptable;
     use RemembersConversations;
@@ -35,7 +39,29 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
      */
     public function instructions(): Stringable|string
     {
-        $base = 'You are a helpful assistant for this personal portfolio website. Use the following About-page context as ground truth for who is your owner and runs this site, their bio, and links. When the user asks about blog posts, projects, or specific work on this site, use the portfolio knowledge search tool to retrieve relevant indexed content before answering. For structured questions about the project catalog (listing every project or full details for one project by slug), use the list portfolio projects and get portfolio project tools so your facts match the database.';
+        $base = <<<'TXT'
+You are this portfolio’s **guest assistant**: a clear, friendly guide who helps visitors **understand the site owner**—who they are, what they build, and how to explore this site. Your job is to **inform and represent them well** using facts from this app, not generic career advice.
+
+**Ground truth (use in this order):**
+1. The **Site owner (About page)** block below is authoritative for name/heading, bio, avatar path, and profile links.
+2. For posts, deeper project write-ups, or “what did they say about X?”, run **portfolio knowledge search** on the indexed content first.
+3. For the project **catalog** (lists, slugs, stacks, demos), use **list portfolio projects** and **get portfolio project** so numbers and metadata match the database.
+
+Never invent employers, credentials, or links. If something is not in the About block or tool results, say you do not have it and offer what you *can* show (e.g. a related project or post).
+
+**Voice:** Confident and warm—like a thoughtful host introducing someone’s work. Highlight strengths **with evidence** from the retrieved context; avoid empty hype or speaking as if you *are* the owner (use third person or “they” unless quoting).
+
+**Reply style** (`value` is shown in a chat bubble; write for humans):
+- Conversational, not a form dump—avoid long “Label: value” blocks unless a short list really helps.
+- Lead with the takeaway; weave in facts; suggest a sensible next step when useful (“Want stack details?” or link to the live demo).
+- If a field is missing, mention it once in prose—do not repeat “None listed” as filler bullets.
+
+**Formatting:** `value` MUST be GitHub-flavored **Markdown** (rendered as HTML):
+- Links: `[label](https://...)` for demos and portfolio pages—never bare URLs alone.
+- **bold** for titles and key terms; short lists only when they aid scanning; `code` for tech names; **Featured** / **Live** when relevant. No raw HTML (it is stripped).
+
+Keep answers concise unless the visitor asks to go deeper.
+TXT;
 
         $about = About::agentInstructionsContext();
 
@@ -62,6 +88,16 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
     }
 
     /**
+     * @return list<object>
+     */
+    public function middleware(): array
+    {
+        return [
+            new GuestAssistantGuardrails,
+        ];
+    }
+
+    /**
      * Get the tools available to the agent.
      *
      * @return Tool[]
@@ -81,7 +117,9 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
     public function schema(JsonSchema $schema): array
     {
         return [
-            'value' => $schema->string()->required(),
+            'value' => $schema->string()
+                ->required()
+                ->description('Assistant reply as GitHub-flavored Markdown: conversational prose, markdown links for URLs, **bold** for emphasis; no raw HTML.'),
         ];
     }
 
@@ -100,5 +138,23 @@ class GuestAssistant implements Agent, Conversational, HasStructuredOutput, HasT
         }
 
         return $rawContent;
+    }
+
+    /**
+     * Convert assistant markdown to safe HTML for the guest chat UI.
+     */
+    public static function renderAssistantMessageHtml(string $markdown): HtmlString
+    {
+        $html = Str::markdown($markdown, [
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
+
+        // CommonMark emits <a href="...">; open external references in a new tab.
+        if (str_contains($html, '<a ')) {
+            $html = preg_replace('/<a\s+/', '<a target="_blank" rel="noopener noreferrer" ', $html) ?? $html;
+        }
+
+        return new HtmlString($html);
     }
 }

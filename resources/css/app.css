@@ -86,3 +86,62 @@ html {
         opacity: 0;
     }
 }
+
+/**
+ * Guest assistant assistant bubbles: Markdown → HTML (Str::markdown).
+ */
+@layer components {
+    .guest-assistant-markdown {
+        @apply text-left;
+    }
+
+    .guest-assistant-markdown > * + * {
+        @apply mt-2;
+    }
+
+    .guest-assistant-markdown p {
+        @apply m-0;
+    }
+
+    .guest-assistant-markdown ul,
+    .guest-assistant-markdown ol {
+        @apply my-1.5 list-outside pl-4;
+    }
+
+    .guest-assistant-markdown ul {
+        @apply list-disc;
+    }
+
+    .guest-assistant-markdown ol {
+        @apply list-decimal;
+    }
+
+    .guest-assistant-markdown li {
+        @apply mt-0.5;
+    }
+
+    .guest-assistant-markdown strong {
+        @apply font-semibold text-[#1b1b18] dark:text-[#EDEDEC];
+    }
+
+    .guest-assistant-markdown code {
+        @apply rounded bg-neutral-100 px-1 py-0.5 font-mono text-[0.85em] text-[#1b1b18] dark:bg-neutral-800 dark:text-[#EDEDEC];
+    }
+
+    .guest-assistant-markdown pre {
+        @apply my-2 overflow-x-auto rounded-lg bg-neutral-100 p-2 text-xs dark:bg-neutral-900;
+    }
+
+    .guest-assistant-markdown pre code {
+        @apply bg-transparent p-0;
+    }
+
+    /* Inline links: match App\View\Components\Ui\Link default + site neutrals (borders / surfaces). */
+    .guest-assistant-markdown a {
+        @apply inline-flex max-w-full items-center gap-1 break-words rounded-md border border-[#e3e3e0] bg-[#fafafa] px-2 py-0.5 text-xs font-medium text-blue-600 underline decoration-blue-600/55 underline-offset-2 transition-colors hover:border-[#1b1b18] hover:bg-white hover:text-blue-700 hover:decoration-blue-700/70 dark:border-[#3E3E3A] dark:bg-[#161615] dark:text-blue-400 dark:decoration-blue-400/55 dark:hover:border-[#EDEDEC] dark:hover:bg-[#1a1a18] dark:hover:text-blue-300 dark:hover:decoration-blue-300/70;
+    }
+
+    .guest-assistant-markdown blockquote {
+        @apply my-2 border-l-2 border-neutral-300 pl-2 text-neutral-600 dark:border-neutral-600 dark:text-neutral-400;
+    }
+}

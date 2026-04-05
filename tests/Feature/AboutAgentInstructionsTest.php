@@ -39,7 +39,7 @@ it('merges about context into guest assistant instructions', function (): void {
     $instructions = (string) (new GuestAssistant)->instructions();
 
     expect($instructions)
-        ->toContain('ground truth')
+        ->toContain('Ground truth')
         ->toContain('Dev Portfolio')
         ->toContain('Full-stack developer.');
 });
