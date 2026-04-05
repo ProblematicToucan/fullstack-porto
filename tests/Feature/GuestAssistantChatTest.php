@@ -181,3 +181,71 @@ it('blocks input when OpenAI moderation marks the message as flagged', function 
 
     Http::assertSent(fn (Request $request): bool => str_contains($request->url(), 'moderations'));
 });
+
+it('caches input moderation so identical visitor text does not call OpenAI twice', function (): void {
+    config(['ai.providers.openai.key' => 'sk-test-key']);
+    config(['ai.guest_assistant_guardrails.input_moderation_cache_ttl' => 3600]);
+
+    Http::fake([
+        '*openai.com/*/moderations' => Http::response([
+            'results' => [
+                ['flagged' => false],
+            ],
+        ], 200),
+    ]);
+
+    GuestAssistant::fake([
+        ['value' => 'First reply'],
+        'Chat title',
+        ['value' => 'Second reply'],
+    ]);
+
+    $text = 'What projects are listed?';
+
+    $test = Livewire::test(GuestAssistantChat::class)
+        ->set('message', $text)
+        ->call('send');
+
+    $test->set('message', $text)->call('send')->assertHasNoErrors();
+
+    $moderationRequests = collect(Http::recorded())->filter(
+        fn (array $pair): bool => str_contains($pair[0]->url(), 'moderations')
+    );
+
+    expect($moderationRequests)->toHaveCount(1);
+});
+
+it('moderates assistant output when enabled and moderation flags the reply', function (): void {
+    config(['ai.providers.openai.key' => 'sk-test-key']);
+    config(['ai.guest_assistant_guardrails.moderate_output' => true]);
+    config(['ai.guest_assistant_guardrails.input_moderation_cache_ttl' => 0]);
+
+    $call = 0;
+
+    Http::fake(function () use (&$call) {
+        $call++;
+        $flagged = $call === 2;
+
+        return Http::response([
+            'results' => [
+                ['flagged' => $flagged],
+            ],
+        ], 200);
+    });
+
+    GuestAssistant::fake([
+        ['value' => 'Assistant reply text'],
+        'Chat title',
+    ]);
+
+    $test = Livewire::test(GuestAssistantChat::class)
+        ->set('message', 'Hello')
+        ->call('send')
+        ->assertHasNoErrors();
+
+    $assistant = collect($test->instance()->thread)->firstWhere('role', 'assistant');
+
+    expect($assistant)->not->toBeNull()
+        ->and($assistant['content'])->toContain("can't help")
+        ->and($call)->toBe(2);
+});
