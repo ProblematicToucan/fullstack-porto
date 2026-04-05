@@ -14,7 +14,13 @@
                 <div
                     class="max-w-[90%] rounded-2xl px-3 py-2 text-sm leading-relaxed @if ($row['role'] === 'user') bg-[#1b1b18] text-white dark:bg-[#eeeeec] dark:text-[#1C1C1A] @else border border-[#e3e3e0] bg-white text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-[#0a0a0a] dark:text-[#EDEDEC] @endif"
                 >
-                    {{ $row['content'] }}
+                    @if ($row['role'] === 'assistant')
+                        <div class="guest-assistant-markdown">
+                            {!! \App\Ai\Agents\GuestAssistant::renderAssistantMessageHtml($row['content']) !!}
+                        </div>
+                    @else
+                        {{ $row['content'] }}
+                    @endif
                 </div>
             </li>
         @empty

@@ -77,6 +77,32 @@ it('extracts the structured value key for display', function (): void {
         ->and(GuestAssistant::formatStoredAssistantContent('not json'))->toBe('not json');
 });
 
+it('renders assistant markdown to safe HTML with link attributes', function (): void {
+    $html = (string) GuestAssistant::renderAssistantMessageHtml('[Open demo](https://example.com/app)');
+
+    expect($html)->toContain('href="https://example.com/app"')
+        ->and($html)->toContain('target="_blank"')
+        ->and($html)->toContain('rel="noopener noreferrer"')
+        ->and($html)->toContain('Open demo');
+});
+
+it('renders assistant markdown in the chat bubble when the panel is open', function (): void {
+    GuestAssistant::fake([
+        ['value' => 'See [the demo](https://example.com/app).'],
+        'Title',
+    ]);
+
+    $html = Livewire::test(GuestAssistantChat::class)
+        ->call('toggle')
+        ->set('message', 'Hi')
+        ->call('send')
+        ->html();
+
+    expect($html)->toContain('guest-assistant-markdown')
+        ->and($html)->toContain('the demo')
+        ->and($html)->toContain('target="_blank"');
+});
+
 it('continues the same conversation on a second message', function (): void {
     GuestAssistant::fake([
         ['value' => 'First reply'],
