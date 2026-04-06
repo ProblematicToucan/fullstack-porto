@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Observers\AboutObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy([AboutObserver::class])]
 class About extends Model
 {
     protected $table = 'about';
