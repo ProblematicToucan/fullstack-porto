@@ -29,7 +29,7 @@ Features a sophisticated conversational assistant (`GuestAssistant`) that acts a
 ## Getting Started
 
 ### Prerequisites
-- PHP 8.2+
+- PHP 8.4+
 - Composer
 - Node.js & NPM
 
