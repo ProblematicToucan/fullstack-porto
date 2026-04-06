@@ -22,7 +22,7 @@
         @endif
 
         @if($project->description !== null && $project->description !== [])
-            <div class="mb-6 text-justify prose prose-zinc dark:prose-invert max-w-none [&_p]:my-0 [&_p]:text-justify [&_p+p]:mt-6 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:text-justify [&_blockquote]:text-justify [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6 [&_figcaption]:text-start [&_p_code]:rounded-md [&_p_code]:bg-zinc-100 [&_p_code]:px-1.5 [&_p_code]:py-px [&_p_code]:font-mono [&_p_code]:text-[0.9em] dark:[&_p_code]:bg-zinc-800 [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-zinc-200 [&_pre]:bg-zinc-50 [&_pre]:p-4 dark:[&_pre]:border-zinc-700 dark:[&_pre]:bg-zinc-900/40 [&_pre_code]:block [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:font-mono [&_pre_code]:text-[13px] [&_pre_code]:leading-relaxed">
+            <div class="mb-6 text-justify prose prose-zinc dark:prose-invert max-w-none overflow-hidden [&_p]:my-0 [&_p]:text-justify [&_p+p]:mt-6 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:text-justify [&_blockquote]:text-justify [&_figure]:my-0 [&_p+figure]:mt-6 [&_figure+p]:mt-6 [&_blockquote+p]:mt-6 [&_figcaption]:text-start [&_p_code]:rounded-md [&_p_code]:bg-zinc-100 [&_p_code]:px-1.5 [&_p_code]:py-px [&_p_code]:font-mono [&_p_code]:text-[0.9em] dark:[&_p_code]:bg-zinc-800 [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-zinc-200 [&_pre]:bg-zinc-50 [&_pre]:p-4 dark:[&_pre]:border-zinc-700 dark:[&_pre]:bg-zinc-900/40 [&_pre_code]:block [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:font-mono [&_pre_code]:text-[13px] [&_pre_code]:leading-relaxed [&_img]:max-w-full [&_img]:h-auto [&_table]:w-full [&_table]:table-fixed">
                 @if(is_array($project->description) && \App\Support\PostContentSanitizer::isBuilderBlocks($project->description))
                     {!! \App\Support\PostContentSanitizer::sanitize($project->description) !!}
                 @elseif(is_array($project->description))
@@ -53,24 +53,24 @@
         </div>
 
         @if($project->techStacks->isNotEmpty())
-            <div class="mb-6">
+            <div class="mb-6 min-w-0">
                 <x-ui.text size="sm" variant="subtle" class="mb-2">Tech stack</x-ui.text>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 min-w-0">
                     @foreach($project->techStacks as $tech)
                         <span @class([
-                            'group relative inline-flex',
+                            'group relative inline-flex max-w-full',
                             'cursor-help' => filled($tech->description),
                         ])>
                             @if(filled($tech->logo))
-                                <span class="inline-flex items-center gap-2 rounded-md border border-[#e3e3e0] bg-white/60 px-2 py-1.5 text-[13px] text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-zinc-900/40 dark:text-[#EDEDEC]">
+                                <span class="inline-flex items-center gap-2 rounded-md border border-[#e3e3e0] bg-white/60 px-2 py-1.5 text-[13px] text-[#1b1b18] dark:border-[#3E3E3A] dark:bg-zinc-900/40 dark:text-[#EDEDEC] max-w-full min-w-0">
                                     <img src="{{ $tech->logo }}" alt="" width="20" height="20" class="size-5 shrink-0 object-contain" loading="lazy" decoding="async" />
-                                    <span>{{ $tech->name }}</span>
+                                    <span class="truncate">{{ $tech->name }}</span>
                                 </span>
                             @else
                                 <x-ui.badge color="blue" size="sm">{{ $tech->name }}</x-ui.badge>
                             @endif
                             @if(filled($tech->description))
-                                <span role="tooltip" class="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 w-max max-w-xs -translate-x-1/2 rounded-md border border-[#e3e3e0] bg-[#fafafa] px-2.5 py-2 text-left text-[12px] leading-snug text-zinc-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 dark:border-[#3E3E3A] dark:bg-zinc-800 dark:text-zinc-200">
+                                <span role="tooltip" class="pointer-events-none absolute left-0 sm:left-1/2 top-full z-30 mt-1.5 w-max max-w-[min(16rem,calc(100vw-3rem))] sm:-translate-x-1/2 rounded-md border border-[#e3e3e0] bg-[#fafafa] px-2.5 py-2 text-left text-[12px] leading-snug text-zinc-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 dark:border-[#3E3E3A] dark:bg-zinc-800 dark:text-zinc-200">
                                     {{ $tech->description }}
                                 </span>
                             @endif

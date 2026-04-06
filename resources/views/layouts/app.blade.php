@@ -14,7 +14,7 @@
     @livewireStyles
 </head>
 
-<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] font-sans min-h-screen flex flex-col">
+<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] font-sans min-h-screen flex flex-col overflow-x-hidden">
     @persist('nav')
     <header class="w-full border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
         <nav class="max-w-4xl mx-auto px-6 py-4 flex flex-wrap items-center gap-4 text-sm">
@@ -26,7 +26,7 @@
     </header>
     @endpersist
 
-    <main class="flex-1 w-full min-w-0 max-w-4xl mx-auto px-6 py-8 lg:py-12">
+    <main class="flex-1 w-full min-w-0 max-w-4xl mx-auto px-6 py-8 lg:py-12 overflow-hidden">
         <div class="min-w-0">
             @yield('content')
         </div>
