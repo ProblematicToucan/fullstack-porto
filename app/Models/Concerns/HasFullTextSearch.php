@@ -19,8 +19,12 @@ use Illuminate\Database\Eloquent\Builder;
  *   protected string $searchLanguage = 'english';       // optional, default 'english'
  *
  * Usage:
+ *   // Full Text Search (tsvector)
  *   Post::search('laravel tips')->paginate();
  *   Post::search('laravel tips')->orderByRelevance('laravel tips')->paginate();
+ *   
+ *   // Fuzzy Search (pg_trgm - requires pg_trgm extension and index)
+ *   Post::whereSimilar('content', 'larvel')->orderBySimilarity('content', 'larvel')->get();
  *   Post::public()->search('laravel tips')->latest()->get();
  */
 trait HasFullTextSearch
@@ -90,5 +94,51 @@ trait HasFullTextSearch
             "ts_rank({$this->fullTextColumn}, websearch_to_tsquery(?, ?)) DESC",
             [$this->searchLanguage, $term]
         );
+    }
+
+    /**
+     * Scope: filter rows using pg_trgm word similarity (Fuzzy Search for long text).
+     *
+     * Note: This requires the `pg_trgm` Postgres extension to be enabled,
+     * and ideally a GIN index using `gin_trgm_ops` on the column.
+     * 
+     * Uses `word_similarity` (<%) instead of `similarity` (%), which finds the 
+     * most similar word/phrase inside a long block of text rather than comparing 
+     * the length of the entire document to the short search query.
+     *
+     * @param  Builder  $query
+     * @param  string  $column  The raw text column to search (e.g., 'title' or 'content')
+     * @param  string  $term    The search term (typos allowed)
+     * @param  float   $threshold Minimum similarity score (0.0 to 1.0)
+     */
+    public function scopeWhereSimilar(Builder $query, string $column, string $term, float $threshold = 0.3): Builder
+    {
+        $term = trim($term);
+
+        if ($term === '') {
+            return $query;
+        }
+
+        // The <% operator means "term has a word_similarity match in the column text". 
+        // We override the default threshold dynamically per query.
+        return $query->whereRaw("? <% {$column}", [$term])
+                     ->whereRaw("word_similarity(?, {$column}) >= ?", [$term, $threshold]);
+    }
+
+    /**
+     * Scope: order results by pg_trgm word similarity (closest substring match first).
+     *
+     * Emits: ORDER BY word_similarity(term, column) DESC
+     */
+    public function scopeOrderBySimilarity(Builder $query, string $column, string $term): Builder
+    {
+        $term = trim($term);
+
+        if ($term === '') {
+            return $query;
+        }
+
+        // word_similarity requires (search_term, document_text)
+        return $query->orderByRaw("word_similarity(?, {$column}) DESC", [$term]);
     }
 }
