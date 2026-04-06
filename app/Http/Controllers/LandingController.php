@@ -10,20 +10,26 @@ class LandingController extends Controller
 {
     public function __invoke(): View
     {
-        $featuredProjects = \Illuminate\Support\Facades\Cache::remember('landing.featured_projects', now()->addHours(6), function () {
+        $featuredProjectsArray = \Illuminate\Support\Facades\Cache::remember('landing.featured_projects', now()->addHours(6), function () {
             return Project::select(['id', 'title', 'slug', 'image'])
                 ->where('is_featured', true)
                 ->take(6)
-                ->get();
+                ->get()
+                ->toArray();
         });
 
-        $latestPosts = \Illuminate\Support\Facades\Cache::remember('landing.latest_posts', now()->addHours(6), function () {
+        $featuredProjects = Project::hydrate($featuredProjectsArray);
+
+        $latestPostsArray = \Illuminate\Support\Facades\Cache::remember('landing.latest_posts', now()->addHours(6), function () {
             return Post::select(['id', 'title', 'slug'])
                 ->public()
                 ->latest()
                 ->take(3)
-                ->get();
+                ->get()
+                ->toArray();
         });
+
+        $latestPosts = Post::hydrate($latestPostsArray);
 
         return view('landing', [
             'featuredProjects' => $featuredProjects,
