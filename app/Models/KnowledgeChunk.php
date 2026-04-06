@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasFullTextSearch;
 use Database\Factories\KnowledgeChunkFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class KnowledgeChunk extends Model
 {
     /** @use HasFactory<KnowledgeChunkFactory> */
-    use HasFactory;
+    use HasFactory, HasFullTextSearch;
+
+    /** tsvector column generated from 'content' — must have a GIN index */
+    protected string $fullTextColumn = 'search_vector';
 
     protected $fillable = [
         'post_id',
