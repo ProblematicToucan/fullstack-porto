@@ -66,6 +66,11 @@ trait HasFullTextSearch
             return $query;
         }
 
+        if ($query->getConnection()->getDriverName() !== 'pgsql') {
+            return $query->where('content', 'like', "%{$term}%")
+                         ->orWhere('title', 'like', "%{$term}%"); // generic fallback
+        }
+
         return $query->whereRaw(
             "{$this->fullTextColumn} @@ websearch_to_tsquery(?, ?)",
             [$this->searchLanguage, $term]
@@ -86,8 +91,8 @@ trait HasFullTextSearch
     {
         $term = trim($term);
 
-        if ($term === '') {
-            return $query;
+        if ($term === '' || $query->getConnection()->getDriverName() !== 'pgsql') {
+            return $query; // Sorting by relevance doesn't apply cleanly in SQLite fallback
         }
 
         return $query->orderByRaw(
@@ -119,6 +124,10 @@ trait HasFullTextSearch
             return $query;
         }
 
+        if ($query->getConnection()->getDriverName() !== 'pgsql') {
+            return $query->where($column, 'like', "%{$term}%");
+        }
+
         // The <% operator means "term has a word_similarity match in the column text". 
         // We override the default threshold dynamically per query.
         return $query->whereRaw("? <% {$column}", [$term])
@@ -134,7 +143,7 @@ trait HasFullTextSearch
     {
         $term = trim($term);
 
-        if ($term === '') {
+        if ($term === '' || $query->getConnection()->getDriverName() !== 'pgsql') {
             return $query;
         }
 
