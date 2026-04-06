@@ -15,13 +15,30 @@ class PortfolioKnowledgeSearch implements Tool
 
     public function __construct()
     {
-        $this->similaritySearch = SimilaritySearch::usingModel(
-            KnowledgeChunk::class,
-            'embedding',
-            minSimilarity: 0.4,
-            limit: 12,
-            query: fn ($query) => $query->searchable(),
-        )->withDescription(
+        $this->similaritySearch = new SimilaritySearch(function (string $query) {
+            // 1. Run Semantic Search
+            $semanticChunks = KnowledgeChunk::query()
+                ->searchable()
+                ->whereVectorSimilarTo('embedding', $query, 0.4)
+                ->limit(10)
+                ->get();
+
+            // 2. Run Full-Text Search (exact match / keyword)
+            $ftsChunks = KnowledgeChunk::query()
+                ->searchable()
+                ->search($query)                // Hits tsvector GIN index
+                ->orderByRelevance($query)      // sort by exact phrases
+                ->limit(10)
+                ->get();
+
+            // 3. Merge, remove duplicates, and remove the heavy embedding array before sending to LLM
+            return $semanticChunks
+                ->concat($ftsChunks)
+                ->unique('id')
+                ->take(15);
+        });
+
+        $this->similaritySearch->withDescription(
             'Search indexed text from this portfolio\'s public blog posts and projects. Use for factual questions about posts, projects, or the site owner\'s work.'
         );
     }

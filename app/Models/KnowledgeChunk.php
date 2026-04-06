@@ -34,6 +34,11 @@ class KnowledgeChunk extends Model
         ];
     }
 
+    protected $hidden = [
+        'embedding',
+        'search_vector',
+    ];
+
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
