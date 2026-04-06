@@ -103,6 +103,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Serializable Classes
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to specify which classes are allowed to be
+    | unserialized from the cache. By default, this is set to false to
+    | prevent PHP deserialization gadget chain attacks.
+    |
+    */
+
+    'serializable_classes' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Key Prefix
     |--------------------------------------------------------------------------
     |
