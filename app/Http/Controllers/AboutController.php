@@ -10,7 +10,7 @@ class AboutController extends Controller
     public function __invoke(): View
     {
         $aboutArray = \Illuminate\Support\Facades\Cache::rememberForever('about_page', function () {
-            return About::first()?->toArray();
+            return About::first()?->getAttributes();
         });
 
         $about = $aboutArray ? About::hydrate([$aboutArray])->first() : null;

@@ -15,6 +15,7 @@ class LandingController extends Controller
                 ->where('is_featured', true)
                 ->take(6)
                 ->get()
+                ->map(fn($model) => $model->getAttributes())
                 ->toArray();
         });
 
@@ -26,6 +27,7 @@ class LandingController extends Controller
                 ->latest()
                 ->take(3)
                 ->get()
+                ->map(fn($model) => $model->getAttributes())
                 ->toArray();
         });
 
