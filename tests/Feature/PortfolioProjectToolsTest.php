@@ -105,7 +105,7 @@ it('lists owner tech stacks from the tech stacks table', function () {
     $rows = json_decode(Str::after($out, "\n\n"), true, 512, JSON_THROW_ON_ERROR);
 
     expect($rows)->toHaveCount(2)
-        ->and($rows[0])->toHaveKeys(['name', 'slug', 'logo', 'description']);
+        ->and($rows[0])->toHaveKeys(['name', 'description']);
 
     $schema = new JsonSchemaTypeFactory;
     expect($tool->schema($schema))->toHaveKey('list_owner_tech_stacks');

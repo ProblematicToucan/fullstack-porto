@@ -16,7 +16,7 @@ class ListTechStacks implements Tool
      */
     public function description(): Stringable|string
     {
-        return 'List the site owner tech stacks from the tech_stacks table. Returns canonical stack metadata (name, slug, logo, description). Use this when visitors ask about skills, technologies, or stack expertise.';
+        return 'List the site owner tech stacks from the tech_stacks table. Returns canonical stack metadata (name, description). Use this when visitors ask about skills, technologies, or stack expertise.';
     }
 
     /**
@@ -26,7 +26,7 @@ class ListTechStacks implements Tool
     {
         $stacks = TechStack::query()
             ->orderBy('name')
-            ->get(['name', 'slug', 'logo', 'description']);
+            ->get(['name', 'description']);
 
         if ($stacks->isEmpty()) {
             return 'No tech stacks are listed in the owner profile yet.';
