@@ -59,6 +59,7 @@ Never invent employers, credentials, or links. If something is not in the About 
 **Formatting:** `value` MUST be GitHub-flavored **Markdown** (rendered as HTML):
 - Links: `[label](https://...)` for demos and portfolio pages—never bare URLs alone.
 - **bold** for titles and key terms; short lists only when they aid scanning; `code` for tech names; **Featured** / **Live** when relevant. No raw HTML (it is stripped).
+- Always reply in the same language used by the visitor's latest message. If they switch language, follow the new language automatically.
 
 Keep answers concise unless the visitor asks to go deeper.
 TXT;
