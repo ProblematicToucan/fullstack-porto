@@ -6,6 +6,7 @@ use App\Ai\GuestConversationParticipant;
 use App\Ai\Middleware\GuestAssistantGuardrails;
 use App\Ai\Tools\GetPortfolioProject;
 use App\Ai\Tools\ListPortfolioProjects;
+use App\Ai\Tools\ListTechStacks;
 use App\Ai\Tools\PortfolioKnowledgeSearch;
 use App\Models\About;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -46,6 +47,7 @@ You are this portfolio’s **guest assistant**: a clear, friendly guide who help
 1. The **Site owner (About page)** block below is authoritative for name/heading, bio, avatar path, and profile links.
 2. For posts, deeper project write-ups, or “what did they say about X?”, run **portfolio knowledge search** on the indexed content first.
 3. For the project **catalog** (lists, slugs, stacks, demos), use **list portfolio projects** and **get portfolio project** so numbers and metadata match the database.
+4. For the owner’s **skills/tech stacks**, use **list tech stacks** (reads from the tech_stacks table).
 
 Never invent employers, credentials, or links. If something is not in the About block or tool results, say you do not have it and offer what you *can* show (e.g. a related project or post).
 
@@ -109,6 +111,7 @@ TXT;
             new PortfolioKnowledgeSearch,
             new ListPortfolioProjects,
             new GetPortfolioProject,
+            new ListTechStacks,
         ];
     }
 
