@@ -70,7 +70,7 @@
                                 <x-ui.badge color="blue" size="sm">{{ $tech->name }}</x-ui.badge>
                             @endif
                             @if(filled($tech->description))
-                                <span role="tooltip" class="pointer-events-none absolute left-0 sm:left-1/2 top-full z-30 mt-1.5 w-max max-w-[min(16rem,calc(100vw-3rem))] sm:-translate-x-1/2 rounded-md border border-[#e3e3e0] bg-[#fafafa] px-2.5 py-2 text-left text-[12px] leading-snug text-zinc-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 dark:border-[#3E3E3A] dark:bg-zinc-800 dark:text-zinc-200">
+                                <span role="tooltip" class="pointer-events-none absolute left-0 top-full z-30 mt-1.5 w-max max-w-[min(16rem,calc(100vw-3rem))] rounded-md border border-[#e3e3e0] bg-[#fafafa] px-2.5 py-2 text-left text-[12px] leading-snug text-zinc-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100 dark:border-[#3E3E3A] dark:bg-zinc-800 dark:text-zinc-200">
                                     {{ $tech->description }}
                                 </span>
                             @endif
