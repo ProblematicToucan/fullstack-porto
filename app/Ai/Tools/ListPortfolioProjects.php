@@ -5,7 +5,6 @@ namespace App\Ai\Tools;
 use App\Ai\Knowledge\PortfolioContentExtractor;
 use App\Models\Project;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Support\Str;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
@@ -61,7 +60,7 @@ class ListPortfolioProjects implements Tool
      * laravel/ai only adds that block when the schema is non-empty (see laravel/ai#313); a minimal
      * required flag keeps the wire format valid until a released SDK fix.
      *
-     * @return array<string, Type>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {
