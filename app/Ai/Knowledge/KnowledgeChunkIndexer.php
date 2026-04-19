@@ -55,16 +55,23 @@ final class KnowledgeChunkIndexer
                 ->dimensions(1536)
                 ->generate(Lab::OpenAI, 'text-embedding-3-small');
 
+            $chunks = [];
+            $now = now();
+
             foreach ($segments as $i => $segment) {
-                KnowledgeChunk::query()->create([
+                $chunks[] = [
                     'post_id' => $post->getKey(),
                     'project_id' => null,
                     'chunk_index' => $segment['chunk_index'],
                     'content' => $segment['text'],
-                    'embedding' => $response->embeddings[$i],
+                    'embedding' => json_encode($response->embeddings[$i]),
                     'is_deleted' => false,
-                ]);
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
             }
+
+            KnowledgeChunk::query()->insert($chunks);
 
             $post->updateQuietly(['knowledge_source_hash' => $hash]);
         });
@@ -105,16 +112,23 @@ final class KnowledgeChunkIndexer
                 ->dimensions(1536)
                 ->generate(Lab::OpenAI, 'text-embedding-3-small');
 
+            $chunks = [];
+            $now = now();
+
             foreach ($segments as $i => $segment) {
-                KnowledgeChunk::query()->create([
+                $chunks[] = [
                     'post_id' => null,
                     'project_id' => $project->getKey(),
                     'chunk_index' => $segment['chunk_index'],
                     'content' => $segment['text'],
-                    'embedding' => $response->embeddings[$i],
+                    'embedding' => json_encode($response->embeddings[$i]),
                     'is_deleted' => false,
-                ]);
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
             }
+
+            KnowledgeChunk::query()->insert($chunks);
 
             $project->updateQuietly(['knowledge_source_hash' => $hash]);
         });
