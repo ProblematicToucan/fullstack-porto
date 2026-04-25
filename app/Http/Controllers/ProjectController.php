@@ -18,7 +18,7 @@ class ProjectController extends Controller
 
     public function show(Project $project): View
     {
-        $project->load('categories', 'techStacks');
+        $project->load('categories', 'techStacks', 'projectMedias');
 
         return view('projects.show', compact('project'));
     }
