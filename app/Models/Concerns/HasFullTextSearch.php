@@ -71,8 +71,10 @@ trait HasFullTextSearch
                          ->orWhere('title', 'like', "%{$term}%"); // generic fallback
         }
 
+        $column = $query->getQuery()->getGrammar()->wrap($this->fullTextColumn);
+
         return $query->whereRaw(
-            "{$this->fullTextColumn} @@ websearch_to_tsquery(?, ?)",
+            "{$column} @@ websearch_to_tsquery(?, ?)",
             [$this->searchLanguage, $term]
         );
     }
@@ -95,8 +97,10 @@ trait HasFullTextSearch
             return $query; // Sorting by relevance doesn't apply cleanly in SQLite fallback
         }
 
+        $column = $query->getQuery()->getGrammar()->wrap($this->fullTextColumn);
+
         return $query->orderByRaw(
-            "ts_rank({$this->fullTextColumn}, websearch_to_tsquery(?, ?)) DESC",
+            "ts_rank({$column}, websearch_to_tsquery(?, ?)) DESC",
             [$this->searchLanguage, $term]
         );
     }
@@ -128,10 +132,12 @@ trait HasFullTextSearch
             return $query->where($column, 'like', "%{$term}%");
         }
 
-        // The <% operator means "term has a word_similarity match in the column text". 
+        $wrappedColumn = $query->getQuery()->getGrammar()->wrap($column);
+
+        // The <% operator means "term has a word_similarity match in the column text".
         // We override the default threshold dynamically per query.
-        return $query->whereRaw("? <% {$column}", [$term])
-                     ->whereRaw("word_similarity(?, {$column}) >= ?", [$term, $threshold]);
+        return $query->whereRaw("? <% {$wrappedColumn}", [$term])
+                     ->whereRaw("word_similarity(?, {$wrappedColumn}) >= ?", [$term, $threshold]);
     }
 
     /**
@@ -147,7 +153,9 @@ trait HasFullTextSearch
             return $query;
         }
 
+        $wrappedColumn = $query->getQuery()->getGrammar()->wrap($column);
+
         // word_similarity requires (search_term, document_text)
-        return $query->orderByRaw("word_similarity(?, {$column}) DESC", [$term]);
+        return $query->orderByRaw("word_similarity(?, {$wrappedColumn}) DESC", [$term]);
     }
 }
